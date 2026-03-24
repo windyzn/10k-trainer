@@ -19,23 +19,31 @@
             --text: #3a2e24;
             --muted: #9a7f6a;
             --hint: #c4aa94;
-            --run: #2d8a4e;
-            --run-bg: #e6f5ec;
-            --run-border: #a8dbb9;
-            --pilates: #9b3fa8;
-            --pilates-bg: #f5e8f8;
-            --pilates-border: #d9a8e8;
-            --yoga: #1a7fa3;
-            --yoga-bg: #e3f3fa;
-            --yoga-border: #90ccdf;
-            --strength: #c46a00;
-            --strength-bg: #fef0dc;
-            --strength-border: #f5c07a;
-            --skip: #b04a10;
-            --skip-bg: #fdf0eb;
-            --skip-border: #f0b49a;
+
+            /* Activity colours — darker text for readable contrast on light fills */
+            --run: #1a6b38;
+            --run-bg: #d6f0e2;
+            --run-border: #7ec9a0;
+            --run-text: #0f4423;
+            --pilates: #6b1f7a;
+            --pilates-bg: #eddff5;
+            --pilates-border: #b87dd0;
+            --pilates-text: #4a1257;
+            --yoga: #0e5f80;
+            --yoga-bg: #d3eef8;
+            --yoga-border: #6bbad6;
+            --yoga-text: #093d54;
+            --strength: #8a4500;
+            --strength-bg: #fde8c4;
+            --strength-border: #e09b50;
+            --strength-text: #5c2e00;
+            --skip: #8c2e00;
+            --skip-bg: #fce4d8;
+            --skip-border: #e8916a;
+            --skip-text: #5c1e00;
+
             --today-border: #e8734a;
-            --prog: #2d8a4e;
+            --prog: #1a6b38;
             --radius: 14px;
             --radius-sm: 8px;
         }
@@ -95,7 +103,7 @@
             padding: 5px 14px;
             border-radius: 20px;
             border: 1.5px solid var(--run-border);
-            color: var(--run);
+            color: var(--run-text);
             background: var(--run-bg);
             white-space: nowrap;
             margin-top: 4px;
@@ -202,7 +210,7 @@
         .nav-btn:hover {
             background: var(--run-bg);
             border-color: var(--run-border);
-            color: var(--run);
+            color: var(--run-text);
         }
 
         .week-label {
@@ -267,9 +275,8 @@
             box-shadow: 0 3px 12px rgba(232, 115, 74, 0.15);
         }
 
-        .day-col.drop-target {
-            border-color: var(--run-border);
-            background: var(--run-bg);
+        .day-col.is-light {
+            background: #fdfaf5;
         }
 
         .day-head {
@@ -294,12 +301,16 @@
             font-weight: 600;
         }
 
-        /* Session cards */
+        .day-col.is-light .day-name {
+            color: var(--hint);
+        }
+
+        /* Session cards — high-contrast readable text */
         .session-card {
             border-radius: 8px;
             padding: 7px 8px;
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             line-height: 1.4;
             border: 1.5px solid transparent;
@@ -310,7 +321,7 @@
 
         .session-card:hover {
             transform: translateY(-1px);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
 
         .session-card:active {
@@ -321,27 +332,30 @@
             font-size: 9px;
             text-transform: uppercase;
             letter-spacing: .07em;
-            opacity: 0.65;
+            font-weight: 700;
             display: block;
             margin-bottom: 2px;
+            opacity: 0.75;
         }
 
         .session-card .s-label {
             display: block;
             word-wrap: break-word;
+            font-weight: 700;
         }
 
         .session-card .s-duration {
             display: block;
-            font-size: 9px;
-            font-weight: 700;
-            opacity: 0.6;
+            font-size: 10px;
+            font-weight: 600;
             margin-top: 3px;
             letter-spacing: .02em;
+            opacity: 0.75;
         }
 
+        /* States */
         .session-card.state-pending {
-            opacity: 0.4;
+            opacity: 0.55;
         }
 
         .session-card.state-done {
@@ -350,11 +364,12 @@
 
         .session-card.state-done .s-label {
             text-decoration: line-through;
-            opacity: 0.55;
+            opacity: 0.6;
         }
 
         .session-card.state-done .s-duration {
             text-decoration: line-through;
+            opacity: 0.5;
         }
 
         .session-card.state-done::after {
@@ -362,15 +377,16 @@
             position: absolute;
             top: 5px;
             right: 7px;
-            font-size: 10px;
-            opacity: 0.65;
+            font-size: 11px;
+            font-weight: 700;
+            opacity: 0.7;
         }
 
         .session-card.state-skipped {
             opacity: 1;
             background: var(--skip-bg) !important;
             border-color: var(--skip-border) !important;
-            color: var(--skip) !important;
+            color: var(--skip-text) !important;
         }
 
         .session-card.state-skipped .s-label {
@@ -378,17 +394,13 @@
             font-style: italic;
         }
 
-        .session-card.state-skipped .s-duration {
-            opacity: 0.5;
-        }
-
         .session-card.state-skipped .s-reason {
             display: block;
             font-size: 9px;
-            font-weight: 400;
+            font-weight: 600;
             font-style: italic;
             margin-top: 3px;
-            opacity: 0.75;
+            opacity: 0.8;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -399,46 +411,44 @@
             position: absolute;
             top: 5px;
             right: 7px;
-            font-size: 12px;
+            font-size: 13px;
             opacity: 0.5;
         }
 
-        /* Rescheduled session cards */
         .session-card.rescheduled {
             border-style: dashed !important;
         }
 
-        .session-card.rescheduled::before {
-            content: '↷';
-            position: absolute;
-            top: 4px;
-            right: 7px;
-            font-size: 10px;
-            opacity: 0.5;
-        }
-
+        /* Type colour sets — background + border + text */
         .type-run {
             background: var(--run-bg);
             border-color: var(--run-border);
-            color: var(--run);
+            color: var(--run-text);
         }
 
         .type-pilates {
             background: var(--pilates-bg);
             border-color: var(--pilates-border);
-            color: var(--pilates);
-        }
-
-        .type-yoga {
-            background: var(--yoga-bg);
-            border-color: var(--yoga-border);
-            color: var(--yoga);
+            color: var(--pilates-text);
         }
 
         .type-strength {
             background: var(--strength-bg);
             border-color: var(--strength-border);
-            color: var(--strength);
+            color: var(--strength-text);
+        }
+
+        /* Yoga — softer/lighter style to read as recovery, not a workout block */
+        .type-yoga {
+            background: #f0f8f0;
+            border-color: #a8d4b0;
+            border-style: dashed;
+            color: #2d6640;
+            font-weight: 600;
+        }
+
+        .type-yoga .s-type {
+            opacity: 0.6;
         }
 
         .rest-label {
@@ -451,7 +461,7 @@
             margin-top: auto;
         }
 
-        /* ── Modals shared ── */
+        /* ── Modals ── */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -472,9 +482,11 @@
             border-radius: var(--radius);
             border: 1.5px solid var(--border2);
             padding: 24px;
-            max-width: 400px;
+            max-width: 420px;
             width: 100%;
             box-shadow: 0 8px 32px rgba(58, 46, 36, 0.18);
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal h3 {
@@ -492,7 +504,6 @@
             line-height: 1.6;
         }
 
-        /* Skip modal */
         .undo-banner {
             background: var(--skip-bg);
             border: 1.5px solid var(--skip-border);
@@ -507,7 +518,7 @@
 
         .undo-banner p {
             font-size: 13px;
-            color: var(--skip);
+            color: var(--skip-text);
             line-height: 1.5;
         }
 
@@ -521,7 +532,7 @@
             border-radius: var(--radius-sm);
             border: 1.5px solid var(--run-border);
             background: var(--run-bg);
-            color: var(--run);
+            color: var(--run-text);
             font-family: 'Nunito', sans-serif;
             font-size: 12px;
             font-weight: 700;
@@ -531,7 +542,7 @@
         }
 
         .btn-undo-skip:hover {
-            background: #cdeedd;
+            background: #c0e6d0;
         }
 
         .skip-reasons {
@@ -556,14 +567,15 @@
         .reason-chip.selected {
             background: var(--skip-bg);
             border-color: var(--skip-border);
-            color: var(--skip);
+            color: var(--skip-text);
         }
 
         .modal-custom {
             margin-bottom: 18px;
         }
 
-        .modal-custom input {
+        .modal-custom input,
+        .modal-custom textarea {
             width: 100%;
             border: 1.5px solid var(--border2);
             border-radius: var(--radius-sm);
@@ -575,8 +587,9 @@
             outline: none;
         }
 
-        .modal-custom input:focus {
-            border-color: var(--skip-border);
+        .modal-custom input:focus,
+        .modal-custom textarea:focus {
+            border-color: var(--run-border);
         }
 
         .modal-actions {
@@ -584,6 +597,7 @@
             gap: 8px;
             justify-content: flex-end;
             flex-wrap: wrap;
+            margin-top: 4px;
         }
 
         .btn {
@@ -609,11 +623,11 @@
         .btn-skip {
             background: var(--skip-bg);
             border-color: var(--skip-border);
-            color: var(--skip);
+            color: var(--skip-text);
         }
 
         .btn-skip:hover {
-            background: #f9ddd2;
+            background: #f5d0c0;
         }
 
         .btn-undodone {
@@ -629,14 +643,34 @@
         .btn-reschedule {
             background: var(--run-bg);
             border-color: var(--run-border);
-            color: var(--run);
+            color: var(--run-text);
         }
 
         .btn-reschedule:hover {
-            background: #cdeedd;
+            background: #c0e6d0;
         }
 
-        /* Reschedule modal */
+        .btn-confirm {
+            background: var(--run-bg);
+            border-color: var(--run-border);
+            color: var(--run-text);
+        }
+
+        .btn-confirm:hover {
+            background: #c0e6d0;
+        }
+
+        .btn-danger {
+            background: #fce4d8;
+            border-color: #e8916a;
+            color: #5c1e00;
+        }
+
+        .btn-danger:hover {
+            background: #f5c8b0;
+        }
+
+        /* Reschedule grid */
         .reschedule-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -661,7 +695,7 @@
         .rday-btn:hover:not(.rday-disabled) {
             background: var(--run-bg);
             border-color: var(--run-border);
-            color: var(--run);
+            color: var(--run-text);
         }
 
         .rday-btn.rday-disabled {
@@ -672,7 +706,7 @@
         .rday-btn.rday-selected {
             background: var(--run-bg);
             border-color: var(--run-border);
-            color: var(--run);
+            color: var(--run-text);
         }
 
         .rday-name {
@@ -685,15 +719,21 @@
             font-size: 12px;
         }
 
-        /* Auto-log confirm modal */
-        .autolog-fields {
+        /* Auto-log / edit fields */
+        .field-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
-        .autolog-field label {
+        .field {}
+
+        .field.full {
+            grid-column: 1/-1;
+        }
+
+        .field label {
             display: block;
             font-size: 11px;
             font-weight: 700;
@@ -703,7 +743,8 @@
             margin-bottom: 5px;
         }
 
-        .autolog-field input {
+        .field input,
+        .field textarea {
             width: 100%;
             border: 1.5px solid var(--border2);
             border-radius: var(--radius-sm);
@@ -713,24 +754,12 @@
             font-size: 13px;
             padding: 7px 10px;
             outline: none;
+            resize: vertical;
         }
 
-        .autolog-field input:focus {
+        .field input:focus,
+        .field textarea:focus {
             border-color: var(--run-border);
-        }
-
-        .autolog-field.full-width {
-            grid-column: 1/-1;
-        }
-
-        .btn-confirm {
-            background: var(--run-bg);
-            border-color: var(--run-border);
-            color: var(--run);
-        }
-
-        .btn-confirm:hover {
-            background: #cdeedd;
         }
 
         /* ── Stats panel ── */
@@ -779,7 +808,7 @@
         .chart-tab.active {
             background: var(--run-bg);
             border-color: var(--run-border);
-            color: var(--run);
+            color: var(--run-text);
         }
 
         .chart-wrap {
@@ -798,7 +827,6 @@
             background: var(--surface2);
             border-radius: var(--radius-sm);
             padding: 8px 12px;
-            font-size: 12px;
             flex: 1;
             min-width: 100px;
         }
@@ -880,7 +908,7 @@
         .log-btn {
             background: var(--run-bg);
             border: 1.5px solid var(--run-border);
-            color: var(--run);
+            color: var(--run-text);
             font-family: 'Nunito', sans-serif;
             font-size: 13px;
             font-weight: 700;
@@ -892,10 +920,10 @@
         }
 
         .log-btn:hover {
-            background: #cdeedd;
+            background: #c0e6d0;
         }
 
-        /* History */
+        /* History — expandable rows */
         .history-wrap {
             background: var(--surface);
             border: 1.5px solid var(--border);
@@ -905,36 +933,131 @@
             box-shadow: 0 2px 8px rgba(180, 130, 90, 0.06);
         }
 
-        .history-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
+        .hist-row {
+            border-bottom: 1px solid var(--border);
         }
 
-        .history-table th {
+        .hist-row:last-child {
+            border-bottom: none;
+        }
+
+        .hist-summary {
+            display: grid;
+            grid-template-columns: 80px 64px 64px 1fr auto;
+            gap: 8px;
+            align-items: center;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--text);
+            transition: background .12s;
+        }
+
+        .hist-summary:hover {
+            background: var(--surface2);
+        }
+
+        .hist-summary .h-type {}
+
+        .hist-summary .h-dur,
+        .hist-summary .h-km {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .hist-summary .h-note {
+            color: var(--muted);
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .hist-summary .h-chevron {
+            color: var(--hint);
+            font-size: 12px;
+            flex-shrink: 0;
+            transition: transform .2s;
+        }
+
+        .hist-row.expanded .h-chevron {
+            transform: rotate(180deg);
+        }
+
+        .hist-detail {
+            display: none;
+            padding: 0 14px 14px;
+            border-top: 1px solid var(--border);
+        }
+
+        .hist-row.expanded .hist-detail {
+            display: block;
+        }
+
+        .hist-note-full {
+            font-size: 13px;
+            color: var(--text);
+            background: var(--surface2);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            min-height: 36px;
+        }
+
+        .hist-detail-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .hist-edit-btn,
+        .hist-del-btn {
+            padding: 5px 14px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border2);
+            font-family: 'Nunito', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .15s;
+        }
+
+        .hist-edit-btn {
+            background: var(--run-bg);
+            border-color: var(--run-border);
+            color: var(--run-text);
+        }
+
+        .hist-edit-btn:hover {
+            background: #c0e6d0;
+        }
+
+        .hist-del-btn {
+            background: transparent;
+            color: var(--muted);
+        }
+
+        .hist-del-btn:hover {
+            background: #fce4d8;
+            border-color: #e8916a;
+            color: #5c1e00;
+        }
+
+        .history-table-head {
+            display: grid;
+            grid-template-columns: 80px 64px 64px 1fr auto;
+            gap: 8px;
+            padding: 10px 14px;
+            border-bottom: 1.5px solid var(--border);
+        }
+
+        .history-table-head span {
             font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: .07em;
             color: var(--muted);
-            text-align: left;
-            padding: 10px 14px;
-            border-bottom: 1.5px solid var(--border);
-        }
-
-        .history-table td {
-            padding: 9px 14px;
-            border-bottom: 1px solid var(--border);
-            color: var(--text);
-            vertical-align: middle;
-        }
-
-        .history-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .history-table tr:hover td {
-            background: var(--surface2);
         }
 
         .type-badge {
@@ -942,21 +1065,6 @@
             font-weight: 700;
             padding: 2px 8px;
             border-radius: 6px;
-        }
-
-        .del-btn {
-            background: none;
-            border: none;
-            color: var(--hint);
-            cursor: pointer;
-            font-size: 16px;
-            line-height: 1;
-            padding: 0 4px;
-            transition: color .15s;
-        }
-
-        .del-btn:hover {
-            color: #d04040;
         }
 
         .empty-state {
@@ -999,6 +1107,10 @@
 
             .chart-wrap {
                 height: 140px;
+            }
+
+            .hist-summary {
+                grid-template-columns: 72px 52px 52px 1fr auto;
             }
         }
     </style>
@@ -1053,23 +1165,23 @@
         </div>
     </div>
 
-    <!-- ── Auto-log confirm modal ── -->
+    <!-- ── Auto-log modal (on check-off) ── -->
     <div class="modal-overlay" id="autolog-modal">
         <div class="modal">
             <h3>Log this session?</h3>
-            <p class="modal-subtext">Great work! Fill in what actually happened — or just confirm the plan.</p>
-            <div class="autolog-fields">
-                <div class="autolog-field">
+            <p class="modal-subtext">Fill in what actually happened, or just confirm the plan.</p>
+            <div class="field-grid">
+                <div class="field">
                     <label>Duration (min)</label>
                     <input type="number" id="al-dur" min="1" max="300">
                 </div>
-                <div class="autolog-field">
+                <div class="field" id="al-km-wrap">
                     <label>Distance (km)</label>
                     <input type="number" id="al-km" min="0" max="50" step="0.1">
                 </div>
-                <div class="autolog-field full-width">
+                <div class="field full">
                     <label>Notes</label>
-                    <input type="text" id="al-note" placeholder="How did it feel?">
+                    <textarea id="al-note" rows="3" placeholder="How did it feel?"></textarea>
                 </div>
             </div>
             <div class="modal-actions">
@@ -1079,8 +1191,44 @@
         </div>
     </div>
 
-    <div class="app">
+    <!-- ── Edit log entry modal ── -->
+    <div class="modal-overlay" id="edit-modal">
+        <div class="modal">
+            <h3>Edit session</h3>
+            <p class="modal-subtext" id="edit-modal-subtext"></p>
+            <div class="field-grid">
+                <div class="field">
+                    <label>Type</label>
+                    <select id="edit-type"
+                        style="width:100%;border:1.5px solid var(--border2);border-radius:var(--radius-sm);background:var(--surface2);color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;padding:7px 10px;outline:none;appearance:none;">
+                        <option value="run">Run</option>
+                        <option value="pilates">Pilates</option>
+                        <option value="yoga">Yoga</option>
+                        <option value="strength">Strength</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Duration (min)</label>
+                    <input type="number" id="edit-dur" min="1" max="300">
+                </div>
+                <div class="field">
+                    <label>Distance (km)</label>
+                    <input type="number" id="edit-km" min="0" max="50" step="0.1">
+                </div>
+                <div class="field full">
+                    <label>Notes</label>
+                    <textarea id="edit-note" rows="4" placeholder="Notes…"></textarea>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-ghost" onclick="closeModal('edit-modal')">Cancel</button>
+                <button class="btn btn-danger" onclick="deleteLogFromEdit()">Delete</button>
+                <button class="btn btn-confirm" onclick="saveEdit()">Save changes</button>
+            </div>
+        </div>
+    </div>
 
+    <div class="app">
         <div class="header">
             <div class="header-left">
                 <h1>10K Training</h1>
@@ -1113,16 +1261,12 @@
         </div>
 
         <div class="prog-wrap">
-            <div class="prog-meta">
-                <span>Overall progress</span>
-                <span id="prog-label">Week 1 of 18</span>
-            </div>
+            <div class="prog-meta"><span>Overall progress</span><span id="prog-label">Week 1 of 18</span></div>
             <div class="prog-track">
                 <div class="prog-bar" id="prog-bar" style="width:0%"></div>
             </div>
         </div>
 
-        <!-- ── Stats panel ── -->
         <div class="stats-panel">
             <div class="stats-panel-header">
                 <span class="stats-panel-title">Your progress</span>
@@ -1132,9 +1276,7 @@
                     <button class="chart-tab" onclick="switchChart('streak')">Streak</button>
                 </div>
             </div>
-            <div class="chart-wrap">
-                <canvas id="main-chart"></canvas>
-            </div>
+            <div class="chart-wrap"><canvas id="main-chart"></canvas></div>
             <div class="milestone-row" id="milestone-row"></div>
         </div>
 
@@ -1146,16 +1288,16 @@
             </div>
             <div class="legend">
                 <div class="leg">
-                    <div class="leg-dot" style="background:var(--run)"></div>Run
+                    <div class="leg-dot" style="background:var(--run-border)"></div>Run
                 </div>
                 <div class="leg">
-                    <div class="leg-dot" style="background:var(--pilates)"></div>Pilates
+                    <div class="leg-dot" style="background:var(--pilates-border)"></div>Pilates
                 </div>
                 <div class="leg">
-                    <div class="leg-dot" style="background:var(--yoga)"></div>Yoga
+                    <div class="leg-dot" style="background:#a8d4b0;border:1px dashed #6aaa7c"></div>Yoga
                 </div>
                 <div class="leg">
-                    <div class="leg-dot" style="background:var(--strength)"></div>Strength
+                    <div class="leg-dot" style="background:var(--strength-border)"></div>Strength
                 </div>
                 <div class="leg">
                     <div class="leg-dot" style="background:var(--skip-border)"></div>Skipped
@@ -1163,7 +1305,7 @@
             </div>
         </div>
 
-        <p class="tap-hint">Tap once to mark done &nbsp;·&nbsp; tap again to skip, reschedule, or undo</p>
+        <p class="tap-hint">Tap once to mark done · tap again to skip, reschedule, or undo</p>
 
         <div class="cal-grid" id="cal-grid"></div>
 
@@ -1185,21 +1327,21 @@
 
         <div class="section-title">Session history — week <span id="hist-week">1</span></div>
         <div class="history-wrap" id="history-wrap"></div>
-
     </div>
 
     <script src="config.js"></script>
     <script src="schedule.js"></script>
     <script>
-
         const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         const DAYS_SHORT = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+        // Wed=2, Sat=5, Sun=6 are light days
+        const LIGHT_DAYS = new Set([2, 5, 6]);
 
         // ── State ─────────────────────────────────────────────────────────────────────
         let week = 1;
-        let sessionState = {};   // key → 'done' | 'skipped'
-        let skipReasons = {};   // key → string
-        let rescheduled = {};   // "w-newDay" → { fromKey, act } — extra sessions added by reschedule
+        let sessionState = {};
+        let skipReasons = {};
+        let rescheduled = {};
         let log = [];
         let activeChart = 'completion';
         let chartInst = null;
@@ -1217,9 +1359,7 @@
         } catch (e) { }
 
         function save() {
-            try {
-                localStorage.setItem('_10k_tracker_v5', JSON.stringify({ sessionState, skipReasons, rescheduled, log, week }));
-            } catch (e) { }
+            try { localStorage.setItem('_10k_tracker_v5', JSON.stringify({ sessionState, skipReasons, rescheduled, log, week })); } catch (e) { }
         }
 
         // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -1242,22 +1382,19 @@
         }
         function typeBadgeStyle(t) {
             const m = {
-                run: 'background:var(--run-bg);color:var(--run);border:1px solid var(--run-border)',
-                pilates: 'background:var(--pilates-bg);color:var(--pilates);border:1px solid var(--pilates-border)',
-                yoga: 'background:var(--yoga-bg);color:var(--yoga);border:1px solid var(--yoga-border)',
-                strength: 'background:var(--strength-bg);color:var(--strength);border:1px solid var(--strength-border)',
+                run: 'background:var(--run-bg);color:var(--run-text);border:1px solid var(--run-border)',
+                pilates: 'background:var(--pilates-bg);color:var(--pilates-text);border:1px solid var(--pilates-border)',
+                yoga: 'background:#f0f8f0;color:#2d6640;border:1px solid #a8d4b0',
+                strength: 'background:var(--strength-bg);color:var(--strength-text);border:1px solid var(--strength-border)',
             };
             return m[t] || '';
         }
-
-        // Get all sessions for a given week+day, including rescheduled ones
         function getActsForDay(w, d) {
             const base = (SCHEDULE[String(w)] || []).filter(s => s.day === d).map((act, ai) => ({
                 act, key: `${w}-${d}-${ai}`, isRescheduled: false
             }));
             const extra = [];
             Object.entries(rescheduled).forEach(([rkey, info]) => {
-                // rkey format: "w-newDay-rIdx"
                 const parts = rkey.split('-');
                 if (parseInt(parts[0]) === w && parseInt(parts[1]) === d) {
                     extra.push({ act: info.act, key: rkey, isRescheduled: true, fromKey: info.fromKey });
@@ -1266,76 +1403,45 @@
             return [...base, ...extra];
         }
 
-        // ── Skip / session modal ──────────────────────────────────────────────────────
-        let pendingKey = null;
-        let pendingAct = null;
-        let selReason = null;
+        // ── Skip modal ────────────────────────────────────────────────────────────────
+        let pendingKey = null, pendingAct = null, selReason = null;
 
         function openSessionModal(key, act, currentState) {
-            pendingKey = key;
-            pendingAct = act;
-            selReason = null;
-
-            const isSkipped = currentState === 'skipped';
-            const isDone = currentState === 'done';
-
+            pendingKey = key; pendingAct = act; selReason = null;
+            const isSkipped = currentState === 'skipped', isDone = currentState === 'done';
             document.getElementById('modal-heading').textContent = isSkipped ? 'Session skipped' : 'Skip this session?';
-            document.getElementById('modal-subtext').textContent = isSkipped
-                ? 'You can undo this if it was a mistake, or keep it as skipped.'
-                : `Skipping "${act.label}". What's the reason? (optional)`;
-
+            document.getElementById('modal-subtext').textContent = isSkipped ? 'Undo if this was a mistake.' : `Skipping "${act.label}". Reason? (optional)`;
             document.getElementById('undo-banner').style.display = isSkipped ? 'flex' : 'none';
             document.getElementById('skip-form-section').style.display = isSkipped ? 'none' : '';
             document.getElementById('btn-confirmskip').style.display = isSkipped ? 'none' : 'inline-block';
             document.getElementById('btn-undodone').style.display = isDone ? 'inline-block' : 'none';
-            // Show reschedule button when skipping (not for rescheduled sessions already)
-            const canReschedule = !isSkipped && !key.startsWith('r-');
-            document.getElementById('btn-reschedule').style.display = canReschedule ? 'inline-block' : 'none';
-
+            document.getElementById('btn-reschedule').style.display = (!isSkipped && !key.startsWith('r-')) ? 'inline-block' : 'none';
             document.getElementById('skip-custom').value = '';
             document.querySelectorAll('.reason-chip').forEach(c => c.classList.remove('selected'));
             document.getElementById('session-modal').classList.add('open');
         }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('open');
-        }
-
+        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
         document.querySelectorAll('.modal-overlay').forEach(el => {
             el.addEventListener('click', function (e) { if (e.target === this) this.classList.remove('open'); });
         });
-
         function selectReason(el, r) {
             document.querySelectorAll('.reason-chip').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-            selReason = r;
+            el.classList.add('selected'); selReason = r;
             document.getElementById('skip-custom').value = '';
         }
         function clearChips() {
             document.querySelectorAll('.reason-chip').forEach(c => c.classList.remove('selected'));
             selReason = null;
         }
-
         function confirmSkip() {
             if (!pendingKey) return;
             const custom = document.getElementById('skip-custom').value.trim();
-            const reason = custom || selReason || 'Skipped';
             sessionState[pendingKey] = 'skipped';
-            skipReasons[pendingKey] = reason;
+            skipReasons[pendingKey] = custom || selReason || 'Skipped';
             save(); closeModal('session-modal'); render();
         }
-        function undoSkip() {
-            if (!pendingKey) return;
-            delete sessionState[pendingKey];
-            delete skipReasons[pendingKey];
-            save(); closeModal('session-modal'); render();
-        }
-        function undoDone() {
-            if (!pendingKey) return;
-            delete sessionState[pendingKey];
-            delete skipReasons[pendingKey];
-            save(); closeModal('session-modal'); render();
-        }
+        function undoSkip() { if (!pendingKey) return; delete sessionState[pendingKey]; delete skipReasons[pendingKey]; save(); closeModal('session-modal'); render(); }
+        function undoDone() { if (!pendingKey) return; delete sessionState[pendingKey]; delete skipReasons[pendingKey]; save(); closeModal('session-modal'); render(); }
 
         // ── Reschedule modal ──────────────────────────────────────────────────────────
         let rescheduleTargetDay = null;
@@ -1343,259 +1449,188 @@
         function openRescheduleModal() {
             closeModal('session-modal');
             rescheduleTargetDay = null;
-
-            // Parse current day from key: "w-day-idx" or rescheduled key
-            const parts = pendingKey.split('-');
-            const fromDay = parseInt(parts[1]);
-            const w = parseInt(parts[0]);
-
-            document.getElementById('reschedule-subtext').textContent =
-                `Move "${pendingAct.label}" to another day this week.`;
-
+            const parts = pendingKey.split('-'), w = parseInt(parts[0]), fromDay = parseInt(parts[1]);
+            document.getElementById('reschedule-subtext').textContent = `Move "${pendingAct.label}" to another day this week.`;
             const grid = document.getElementById('reschedule-grid');
             grid.innerHTML = '';
             const confirmBtn = document.getElementById('btn-confirm-reschedule');
-            confirmBtn.disabled = true;
-            confirmBtn.style.opacity = '0.4';
-
+            confirmBtn.disabled = true; confirmBtn.style.opacity = '0.4';
             DAYS_SHORT.forEach((dname, di) => {
-                const dt = getDate(w, di);
                 const acts = getActsForDay(w, di);
-                // Disable the original day and days that already have 3+ sessions
-                const isSame = di === fromDay;
-                const isFull = acts.length >= 3;
-                const disabled = isSame || isFull;
-
+                const disabled = di === fromDay || acts.length >= 3;
                 const btn = document.createElement('div');
                 btn.className = 'rday-btn' + (disabled ? ' rday-disabled' : '');
-                btn.innerHTML = `<div class="rday-name">${dname}</div><div class="rday-date">${dt.getDate()}</div>`;
-                if (!disabled) {
-                    btn.onclick = () => {
-                        document.querySelectorAll('.rday-btn').forEach(b => b.classList.remove('rday-selected'));
-                        btn.classList.add('rday-selected');
-                        rescheduleTargetDay = di;
-                        confirmBtn.disabled = false;
-                        confirmBtn.style.opacity = '1';
-                    };
-                }
+                btn.innerHTML = `<div class="rday-name">${dname}</div><div class="rday-date">${getDate(w, di).getDate()}</div>`;
+                if (!disabled) btn.onclick = () => {
+                    document.querySelectorAll('.rday-btn').forEach(b => b.classList.remove('rday-selected'));
+                    btn.classList.add('rday-selected');
+                    rescheduleTargetDay = di;
+                    confirmBtn.disabled = false; confirmBtn.style.opacity = '1';
+                };
                 grid.appendChild(btn);
             });
-
             document.getElementById('reschedule-modal').classList.add('open');
         }
-
         function confirmReschedule() {
             if (rescheduleTargetDay === null || !pendingKey || !pendingAct) return;
-
-            const parts = pendingKey.split('-');
-            const w = parseInt(parts[0]);
-
-            // Mark original as skipped with a note
+            const w = parseInt(pendingKey.split('-')[0]);
             sessionState[pendingKey] = 'skipped';
             skipReasons[pendingKey] = 'Rescheduled';
-
-            // Add to rescheduled map under new day
             const rIdx = Object.keys(rescheduled).filter(k => k.startsWith(`${w}-${rescheduleTargetDay}-r`)).length;
-            const rkey = `${w}-${rescheduleTargetDay}-r${rIdx}`;
-            rescheduled[rkey] = { act: pendingAct, fromKey: pendingKey };
-
+            rescheduled[`${w}-${rescheduleTargetDay}-r${rIdx}`] = { act: pendingAct, fromKey: pendingKey };
             save(); closeModal('reschedule-modal'); render();
         }
 
         // ── Auto-log modal ────────────────────────────────────────────────────────────
-        let autologKey = null;
-        let autologAct = null;
-        let autologWeek = null;
+        let autologKey = null, autologAct = null, autologWeek = null;
 
         function openAutoLogModal(key, act, w) {
-            autologKey = key;
-            autologAct = act;
-            autologWeek = w;
-
+            autologKey = key; autologAct = act; autologWeek = w;
             document.getElementById('al-dur').value = act.duration || '';
             document.getElementById('al-km').value = '';
             document.getElementById('al-note').value = '';
-
-            // Only show km field for runs
-            document.getElementById('al-dur').parentElement.style.display = '';
-            document.getElementById('al-km').parentElement.style.display = act.type === 'run' ? '' : 'none';
-
+            document.getElementById('al-km-wrap').style.display = act.type === 'run' ? '' : 'none';
             document.getElementById('autolog-modal').classList.add('open');
         }
-
         function confirmAutoLog() {
             const dur = document.getElementById('al-dur').value;
             const km = document.getElementById('al-km').value;
             const note = document.getElementById('al-note').value.trim();
-            if (dur || km) {
-                log.push({
-                    week: autologWeek,
-                    type: autologAct.type,
-                    dur: dur || null,
-                    km: km || null,
-                    note: note || null,
-                    ts: Date.now(),
-                    fromSchedule: true,
-                });
+            if (dur || km || note) {
+                log.push({ week: autologWeek, type: autologAct.type, dur: dur || null, km: km || null, note: note || null, ts: Date.now() });
                 save();
             }
-            closeModal('autolog-modal');
-            render();
+            closeModal('autolog-modal'); render();
+        }
+
+        // ── Edit log modal ────────────────────────────────────────────────────────────
+        let editIdx = null;
+
+        function openEditModal(idx) {
+            editIdx = idx;
+            const e = log[idx];
+            document.getElementById('edit-modal-subtext').textContent = `Logged ${new Date(e.ts).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}`;
+            document.getElementById('edit-type').value = e.type || 'run';
+            document.getElementById('edit-dur').value = e.dur || '';
+            document.getElementById('edit-km').value = e.km || '';
+            document.getElementById('edit-note').value = e.note || '';
+            document.getElementById('edit-modal').classList.add('open');
+        }
+        function saveEdit() {
+            if (editIdx === null) return;
+            log[editIdx] = {
+                ...log[editIdx],
+                type: document.getElementById('edit-type').value,
+                dur: document.getElementById('edit-dur').value || null,
+                km: document.getElementById('edit-km').value || null,
+                note: document.getElementById('edit-note').value.trim() || null,
+            };
+            save(); closeModal('edit-modal'); render();
+        }
+        function deleteLogFromEdit() {
+            if (editIdx === null) return;
+            log.splice(editIdx, 1);
+            save(); closeModal('edit-modal'); render();
         }
 
         // ── Tap logic ─────────────────────────────────────────────────────────────────
         function tapSession(key, act) {
             const st = sessionState[key];
-            if (!st) {
-                // pending → done, then open auto-log
-                sessionState[key] = 'done';
-                save();
-                openAutoLogModal(key, act, week);
-                render();
-            } else {
-                openSessionModal(key, act, st);
-            }
+            if (!st) { sessionState[key] = 'done'; save(); openAutoLogModal(key, act, week); render(); }
+            else openSessionModal(key, act, st);
         }
 
         // ── Chart ─────────────────────────────────────────────────────────────────────
         function switchChart(type) {
             activeChart = type;
-            document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.chart-tab').forEach(t => {
-                if (t.textContent.toLowerCase().replace(' ', '') === type.toLowerCase().replace(' ', '')) t.classList.add('active');
+                const map = { completion: 'Completion', runmin: 'Run minutes', streak: 'Streak' };
+                t.classList.toggle('active', t.textContent.trim() === map[type]);
             });
             renderChart();
         }
-
         function getWeekStats() {
-            const stats = [];
-            for (let w = 1; w <= CONFIG.totalWeeks; w++) {
+            return Array.from({ length: CONFIG.totalWeeks }, (_, i) => {
+                const w = i + 1;
                 let total = 0, done = 0, skipped = 0, runMin = 0;
                 for (let d = 0; d < 7; d++) {
-                    const acts = getActsForDay(w, d);
-                    acts.forEach((item, ai) => {
-                        const k = item.key;
-                        const st = sessionState[k];
+                    getActsForDay(w, d).forEach(({ key }) => {
+                        const st = sessionState[key];
                         total++;
                         if (st === 'done') done++;
                         if (st === 'skipped') skipped++;
                     });
                 }
-                // Run minutes from log
-                log.filter(e => e.week === w && e.type === 'run' && e.dur)
-                    .forEach(e => runMin += parseFloat(e.dur));
-                stats.push({ w, total, done, skipped, runMin, pct: total ? Math.round((done / total) * 100) : 0 });
-            }
-            return stats;
+                log.filter(e => e.week === w && e.type === 'run' && e.dur).forEach(e => runMin += parseFloat(e.dur));
+                return { w, total, done, skipped, runMin, pct: total ? Math.round((done / total) * 100) : 0 };
+            });
         }
-
         function renderChart() {
             const stats = getWeekStats();
             const labels = stats.map(s => `W${s.w}`);
-            const tdStyle = getComputedStyle(document.documentElement);
-            const runClr = '#2d8a4e';
-            const skipClr = '#f0b49a';
-            const mutedClr = '#c4aa94';
-
+            const runClr = '#1a6b38', mutedClr = '#c4aa94';
             let datasets, yLabel, chartType = 'bar';
 
             if (activeChart === 'completion') {
                 datasets = [{
-                    label: 'Done %',
-                    data: stats.map(s => s.pct),
+                    label: 'Done %', data: stats.map(s => s.pct),
                     backgroundColor: stats.map(s => s.done > 0 ? runClr + 'cc' : mutedClr + '44'),
                     borderColor: stats.map(s => s.done > 0 ? runClr : mutedClr + '88'),
-                    borderWidth: 1.5,
-                    borderRadius: 4,
+                    borderWidth: 1.5, borderRadius: 4
                 }];
                 yLabel = '%';
             } else if (activeChart === 'runmin') {
                 datasets = [{
-                    label: 'Run minutes',
-                    data: stats.map(s => s.runMin),
-                    backgroundColor: runClr + 'aa',
-                    borderColor: runClr,
-                    borderWidth: 1.5,
-                    borderRadius: 4,
+                    label: 'Run minutes', data: stats.map(s => s.runMin),
+                    backgroundColor: runClr + 'aa', borderColor: runClr, borderWidth: 1.5, borderRadius: 4
                 }];
                 yLabel = 'min';
             } else {
-                // streak: consecutive weeks with >50% done
                 let streak = 0, streakData = [];
-                stats.forEach(s => {
-                    if (s.pct >= 50) streak++;
-                    else streak = 0;
-                    streakData.push(streak);
-                });
+                stats.forEach(s => { streak = s.pct >= 50 ? streak + 1 : 0; streakData.push(streak); });
                 datasets = [{
-                    label: 'Streak (weeks)',
-                    data: streakData,
-                    borderColor: runClr,
-                    backgroundColor: runClr + '22',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: runClr,
-                    pointRadius: 3,
+                    label: 'Streak', data: streakData, borderColor: runClr, backgroundColor: runClr + '22',
+                    borderWidth: 2, fill: true, tension: 0.4, pointBackgroundColor: runClr, pointRadius: 3
                 }];
-                yLabel = 'weeks';
-                chartType = 'line';
+                yLabel = 'weeks'; chartType = 'line';
             }
-
             if (chartInst) chartInst.destroy();
-
             chartInst = new Chart(document.getElementById('main-chart'), {
-                type: chartType,
-                data: { labels, datasets },
+                type: chartType, data: { labels, datasets },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: ctx => ` ${Math.round(ctx.parsed.y)} ${yLabel}`
-                            }
-                        }
-                    },
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${Math.round(ctx.parsed.y)} ${yLabel}` } } },
                     scales: {
                         x: {
-                            grid: { display: false },
-                            ticks: {
+                            grid: { display: false }, ticks: {
                                 font: { family: 'Nunito', size: 10 }, color: '#c4aa94',
-                                callback: (v, i) => i === week - 1 ? `▶ W${week}` : labels[i]
+                                callback: (v, i) => i === week - 1 ? `▶W${week}` : labels[i]
                             }
                         },
                         y: {
-                            beginAtZero: true,
-                            max: activeChart === 'completion' ? 100 : undefined,
-                            grid: { color: 'rgba(180,130,90,0.08)' },
-                            ticks: { font: { family: 'Nunito', size: 10 }, color: '#c4aa94' }
+                            beginAtZero: true, max: activeChart === 'completion' ? 100 : undefined,
+                            grid: { color: 'rgba(180,130,90,0.08)' }, ticks: { font: { family: 'Nunito', size: 10 }, color: '#c4aa94' }
                         }
                     }
                 }
             });
         }
-
         function renderMilestones() {
             const stats = getWeekStats();
             const totalDone = stats.reduce((a, s) => a + s.done, 0);
             const totalRunMin = stats.reduce((a, s) => a + s.runMin, 0);
             const weeksActive = stats.filter(s => s.done > 0).length;
-            const bestWeekPct = Math.max(...stats.map(s => s.pct));
-
+            const bestWeekPct = Math.max(0, ...stats.map(s => s.pct));
             document.getElementById('milestone-row').innerHTML = `
-    <div class="milestone"><div class="milestone-val">${totalDone}</div><div class="milestone-label">Sessions completed</div></div>
-    <div class="milestone"><div class="milestone-val">${Math.round(totalRunMin)}</div><div class="milestone-label">Run minutes logged</div></div>
+    <div class="milestone"><div class="milestone-val">${totalDone}</div><div class="milestone-label">Sessions done</div></div>
+    <div class="milestone"><div class="milestone-val">${Math.round(totalRunMin)}</div><div class="milestone-label">Run minutes</div></div>
     <div class="milestone"><div class="milestone-val">${weeksActive}</div><div class="milestone-label">Weeks active</div></div>
-    <div class="milestone"><div class="milestone-val">${bestWeekPct}%</div><div class="milestone-label">Best week completion</div></div>
-  `;
+    <div class="milestone"><div class="milestone-val">${bestWeekPct}%</div><div class="milestone-label">Best week</div></div>`;
         }
 
         // ── Render ────────────────────────────────────────────────────────────────────
         function render() {
             const td = todayWD();
-
             document.getElementById('week-label').textContent = 'Week ' + week;
             document.getElementById('phase-pill').textContent = getPhase(week);
             document.getElementById('hist-week').textContent = week;
@@ -1603,37 +1638,27 @@
             // Calendar
             const grid = document.getElementById('cal-grid');
             grid.innerHTML = '';
-
             DAYS.forEach((dname, di) => {
                 const items = getActsForDay(week, di);
                 const dt = getDate(week, di);
                 const isToday = td && td.w === week && td.d === di;
+                const isLight = LIGHT_DAYS.has(di);
 
                 const col = document.createElement('div');
-                col.className = 'day-col' + (isToday ? ' is-today' : '');
-                col.innerHTML = `<div class="day-head">
-      <div class="day-name">${dname}</div>
-      <div class="day-date">${dt.getDate()}/${dt.getMonth() + 1}</div>
-    </div>`;
+                col.className = 'day-col' + (isToday ? ' is-today' : '') + (isLight ? ' is-light' : '');
+                col.innerHTML = `<div class="day-head"><div class="day-name">${dname}</div><div class="day-date">${dt.getDate()}/${dt.getMonth() + 1}</div></div>`;
 
                 if (items.length === 0) {
-                    const r = document.createElement('div');
-                    r.className = 'rest-label';
-                    r.textContent = 'rest';
-                    col.appendChild(r);
+                    const r = document.createElement('div'); r.className = 'rest-label'; r.textContent = 'rest'; col.appendChild(r);
                 } else {
                     items.forEach(({ act, key, isRescheduled }) => {
                         const st = sessionState[key] || 'pending';
                         const reason = skipReasons[key] || '';
-
-                        const durHtml = (act.type === 'run' && act.duration)
-                            ? `<span class="s-duration">~${act.duration} min total</span>` : '';
-                        const reasonHtml = (st === 'skipped' && reason)
-                            ? `<span class="s-reason">${reason}</span>` : '';
-
+                        const durHtml = (act.type === 'run' && act.duration) ? `<span class="s-duration">~${act.duration} min</span>` : '';
+                        const reasonHtml = (st === 'skipped' && reason) ? `<span class="s-reason">${reason}</span>` : '';
                         const card = document.createElement('div');
                         card.className = `session-card ${typeClass(act.type)} state-${st}${isRescheduled ? ' rescheduled' : ''}`;
-                        card.innerHTML = `<span class="s-type">${act.type}${isRescheduled ? ' ↷' : ''}</span><span class="s-label">${act.label}</span>${durHtml}${reasonHtml}`;
+                        card.innerHTML = `<span class="s-type">${act.type}</span><span class="s-label">${act.label}</span>${durHtml}${reasonHtml}`;
                         card.onclick = () => tapSession(key, act);
                         col.appendChild(card);
                     });
@@ -1650,11 +1675,8 @@
                     if (st === 'skipped') weekSkipped++;
                 });
             }
-            log.filter(e => e.week === week && e.type === 'run' && e.dur)
-                .forEach(e => weekRunMin += parseFloat(e.dur));
-
+            log.filter(e => e.week === week && e.type === 'run' && e.dur).forEach(e => weekRunMin += parseFloat(e.dur));
             const pct = Math.round(((week - 1) / CONFIG.totalWeeks) * 100);
-
             document.getElementById('s-done').textContent = weekDone;
             document.getElementById('s-km').textContent = Math.round(weekRunMin);
             document.getElementById('s-skipped').textContent = weekSkipped;
@@ -1662,35 +1684,49 @@
             document.getElementById('prog-bar').style.width = pct + '%';
             document.getElementById('prog-label').textContent = `Week ${week} of ${CONFIG.totalWeeks}`;
 
-            // Charts
             renderChart();
             renderMilestones();
 
-            // History
+            // History — expandable rows
             const hw = document.getElementById('history-wrap');
-            const wlog = log.filter(e => e.week === week).slice().reverse();
+            const wlog = log.map((e, i) => ({ ...e, realIdx: i })).filter(e => e.week === week).reverse();
 
             if (wlog.length === 0) {
                 hw.innerHTML = '<div class="empty-state">No sessions logged this week yet.</div>';
-            } else {
-                let html = `<table class="history-table">
-      <thead><tr><th>Type</th><th>Duration</th><th>Distance</th><th>Notes</th><th></th></tr></thead><tbody>`;
-                wlog.forEach((e, ri) => {
-                    const realIdx = log.length - 1 - ri;
-                    html += `<tr>
-        <td><span class="type-badge" style="${typeBadgeStyle(e.type)}">${e.type}</span></td>
-        <td>${e.dur ? Math.round(e.dur) + ' min' : '—'}</td>
-        <td>${e.km ? parseFloat(e.km).toFixed(1) + ' km' : '—'}</td>
-        <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)">${e.note || '—'}</td>
-        <td><button class="del-btn" onclick="delLog(${realIdx})">×</button></td>
-      </tr>`;
-                });
-                html += '</tbody></table>';
-                hw.innerHTML = html;
+                return;
             }
+            let html = `<div class="history-table-head">
+    <span>Type</span><span>Duration</span><span>Distance</span><span>Notes</span><span></span>
+  </div>`;
+            wlog.forEach(e => {
+                const shortNote = (e.note || '').length > 40 ? e.note.slice(0, 40) + '…' : (e.note || '—');
+                const hasLongNote = (e.note || '').length > 40;
+                html += `<div class="hist-row" id="hrow-${e.realIdx}">
+      <div class="hist-summary" onclick="toggleHistRow(${e.realIdx})">
+        <span class="h-type"><span class="type-badge" style="${typeBadgeStyle(e.type)}">${e.type}</span></span>
+        <span class="h-dur">${e.dur ? Math.round(e.dur) + ' min' : '—'}</span>
+        <span class="h-km">${e.km ? parseFloat(e.km).toFixed(1) + ' km' : '—'}</span>
+        <span class="h-note">${shortNote}</span>
+        <span class="h-chevron">▾</span>
+      </div>
+      <div class="hist-detail">
+        ${e.note ? `<div class="hist-note-full">${e.note}</div>` : ''}
+        <div class="hist-detail-actions">
+          <button class="hist-edit-btn" onclick="openEditModal(${e.realIdx})">Edit session</button>
+          <button class="hist-del-btn"  onclick="delLog(${e.realIdx})">Delete</button>
+        </div>
+      </div>
+    </div>`;
+            });
+            hw.innerHTML = html;
         }
 
-        // ── Manual log ────────────────────────────────────────────────────────────────
+        function toggleHistRow(idx) {
+            const row = document.getElementById(`hrow-${idx}`);
+            if (row) row.classList.toggle('expanded');
+        }
+
+        // ── Actions ───────────────────────────────────────────────────────────────────
         function logSession() {
             const type = document.getElementById('log-type').value;
             const dur = document.getElementById('log-dur').value;
@@ -1703,13 +1739,8 @@
             document.getElementById('log-note').value = '';
             save(); render();
         }
-
-        function delLog(i) { log.splice(i, 1); save(); render(); }
-
-        function changeWeek(dir) {
-            week = Math.max(1, Math.min(CONFIG.totalWeeks, week + dir));
-            save(); render();
-        }
+        function delLog(i) { if (confirm('Delete this log entry?')) { log.splice(i, 1); save(); render(); } }
+        function changeWeek(dir) { week = Math.max(1, Math.min(CONFIG.totalWeeks, week + dir)); save(); render(); }
 
         render();
     </script>
