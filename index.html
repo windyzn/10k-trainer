@@ -877,6 +877,25 @@
             opacity: .6;
         }
 
+        /* Fixed commitment cards — coloured by intensity */
+        .type-fixed-easy {
+            background: #f0f8f0;
+            border-color: #a8d4b0;
+            color: #2d6640;
+        }
+
+        .type-fixed-moderate {
+            background: var(--pilates-bg);
+            border-color: var(--pilates-border);
+            color: var(--pilates-text);
+        }
+
+        .type-fixed-hard {
+            background: var(--strength-bg);
+            border-color: var(--strength-border);
+            color: var(--strength-text);
+        }
+
         .rest-label {
             font-size: 11px;
             color: var(--hint);
@@ -2154,14 +2173,10 @@
                     if (!isDeload && !isRaceWk) sessions.push({ day, type: 'yoga', label: 'Yoga — evening stretch' });
                 });
 
-                // Fixed commitments — intensity drives card colour, label is the activity name
+                // Fixed commitments — stored with type:'fixed' + intensity for card colour
                 Object.entries(commitMap).forEach(([dayStr, info]) => {
-                    // Map intensity to a display type for card colouring
-                    const displayType = info.intensity === 'hard' ? 'strength'
-                        : info.intensity === 'moderate' ? 'pilates'
-                            : 'yoga';  // easy = yoga-style soft card
                     const suffix = isDeload ? ' (easy today)' : '';
-                    sessions.push({ day: Number(dayStr), type: displayType, label: info.label + suffix, intensity: info.intensity, isFixed: true });
+                    sessions.push({ day: Number(dayStr), type: 'fixed', label: info.label + suffix, intensity: info.intensity, isFixed: true });
                 });
 
                 // Pilates slot — only add if no moderate/hard fixed commitment already fills a support day
@@ -2267,10 +2282,17 @@
             if (diff < 0 || diff >= CONFIG.totalWeeks * 7) return null;
             return { w: Math.floor(diff / 7) + 1, d: diff % 7 };
         }
-        function typeClass(t) {
+        function typeClass(t, intensity) {
+            if (t === 'fixed') return `type-fixed-${intensity || 'moderate'}`;
             return { run: 'type-run', pilates: 'type-pilates', yoga: 'type-yoga', strength: 'type-strength' }[t] || '';
         }
-        function typeBadgeStyle(t) {
+        function typeBadgeStyle(t, intensity) {
+            if (t === 'fixed') {
+                const i = intensity || 'moderate';
+                if (i === 'hard') return 'background:var(--strength-bg);color:var(--strength-text);border:1px solid var(--strength-border)';
+                if (i === 'easy') return 'background:#f0f8f0;color:#2d6640;border:1px solid #a8d4b0';
+                return 'background:var(--pilates-bg);color:var(--pilates-text);border:1px solid var(--pilates-border)';
+            }
             const m = {
                 run: 'background:var(--run-bg);color:var(--run-text);border:1px solid var(--run-border)',
                 pilates: 'background:var(--pilates-bg);color:var(--pilates-text);border:1px solid var(--pilates-border)',
@@ -2485,8 +2507,9 @@
                     const durHtml = (act.type === 'run' && act.duration) ? `<span class="s-duration">~${act.duration} min</span>` : '';
                     const reasonHtml = (st === 'skipped' && reason) ? `<span class="s-reason">${reason}</span>` : '';
                     const card = document.createElement('div');
-                    card.className = `session-card ${typeClass(act.type)} state-${st}${isRescheduled ? ' rescheduled' : ''}`;
-                    card.innerHTML = `<span class="s-type">${act.type}</span><span class="s-label">${act.label}</span>${durHtml}${reasonHtml}`;
+                    card.className = `session-card ${typeClass(act.type, act.intensity)} state-${st}${isRescheduled ? ' rescheduled' : ''}`;
+                    const typeTag = act.type === 'fixed' ? (act.intensity || 'moderate') : act.type;
+                    card.innerHTML = `<span class="s-type">${typeTag}</span><span class="s-label">${act.label}</span>${durHtml}${reasonHtml}`;
                     card.onclick = () => tapSession(key, act);
                     col.appendChild(card);
                 });
@@ -2513,7 +2536,7 @@
                 const shortNote = (e.note || '').length > 40 ? e.note.slice(0, 40) + '…' : (e.note || '—');
                 html += `<div class="hist-row" id="hrow-${e.realIdx}">
       <div class="hist-summary" onclick="toggleHistRow(${e.realIdx})">
-        <span><span class="type-badge" style="${typeBadgeStyle(e.type)}">${e.type}</span></span>
+        <span><span class="type-badge" style="${typeBadgeStyle(e.type, e.intensity)}">${e.type === 'fixed' ? (e.intensity || 'moderate') : e.type}</span></span>
         <span class="h-dur">${e.dur ? Math.round(e.dur) + ' min' : '—'}</span>
         <span class="h-km">${e.km ? parseFloat(e.km).toFixed(1) + ' km' : '—'}</span>
         <span class="h-note">${shortNote}</span>
