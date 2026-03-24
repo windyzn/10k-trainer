@@ -1536,6 +1536,105 @@
                 grid-template-columns: 72px 52px 52px 1fr auto;
             }
         }
+
+        /* ── Coach panel ── */
+        .coach-panel {
+            background: var(--surface);
+            border: 1.5px solid var(--accent-border);
+            border-radius: var(--radius);
+            padding: 18px 20px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 12px rgba(200, 224, 64, 0.10);
+        }
+
+        .coach-header {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 12px;
+        }
+
+        .coach-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--accent-bg);
+            border: 1.5px solid var(--accent-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .coach-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent-text);
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+
+        .coach-message {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 14px;
+        }
+
+        .coach-message strong {
+            font-weight: 700;
+        }
+
+        .coach-message p {
+            margin-bottom: 10px;
+        }
+
+        .coach-message p:last-child {
+            margin-bottom: 0;
+        }
+
+        .coach-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .coach-chip {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1.5px solid var(--accent-border);
+            color: var(--accent-text);
+            background: var(--accent-bg);
+            line-height: 1.5;
+        }
+
+        .coach-chip.chip-warn {
+            border-color: var(--skip-border);
+            color: var(--skip-text);
+            background: var(--skip-bg);
+        }
+
+        .coach-chip.chip-good {
+            border-color: var(--run-border);
+            color: var(--run-text);
+            background: var(--run-bg);
+        }
+
+        /* Unaccounted session cards — dashed, muted */
+        .type-untracked {
+            background: var(--surface2);
+            border-color: var(--border2);
+            border-style: dashed;
+            color: var(--muted);
+        }
+
+        .type-untracked .s-type {
+            opacity: .55;
+        }
     </style>
 </head>
 
@@ -1904,7 +2003,7 @@
             <!-- ── Coach panel ── -->
             <div class="coach-panel" id="coach-panel" style="display:none">
                 <div class="coach-header">
-                    <div class="coach-avatar">🏃</div>
+                    <div class="coach-avatar">💬</div>
                     <div class="coach-name">Your Coach</div>
                 </div>
                 <div class="coach-message" id="coach-message"></div>
@@ -2799,7 +2898,9 @@
             const isTaper = week >= taperStart && !isRaceWk;
             const phaseName = getPhase(week);
             const firstName = CONFIG.userName ? CONFIG.userName.split(' ')[0] : null;
+            // cap = function to capitalise the first word after the greeting
             const greeting = firstName ? `${firstName}, ` : '';
+            const cap = s => greeting ? s : s.charAt(0).toUpperCase() + s.slice(1);
 
             // Count this week's sessions
             const weekActs = [];
@@ -2835,12 +2936,12 @@
 
                 // ── Taper ─────────────────────────────────────────────────────────────────
             } else if (isTaper) {
-                msg = `<strong>${greeting}you're in the taper now.</strong> Volume drops on purpose — this isn't going backwards, it's letting your body consolidate everything you've built. Resist the urge to squeeze in extra training. Keep the runs easy, sleep well, and trust the process.`;
+                msg = `<strong>${greeting}${cap("you're")} in the taper now.</strong> Volume drops on purpose — this isn't going backwards, it's letting your body consolidate everything you've built. Resist the urge to squeeze in extra training. Keep the runs easy, sleep well, and trust the process.`;
                 chips.push({ text: 'Taper week — legs are fresh', cls: 'chip-good' });
 
                 // ── Deload ────────────────────────────────────────────────────────────────
             } else if (isDeload) {
-                msg = `<strong>${greeting}this is a deload week.</strong> Volume is cut by about 35% on purpose. Your body adapts during recovery, not during the hard weeks — this is when the fitness from the last three weeks actually sticks. Keep efforts easy. Resist the temptation to push.`;
+                msg = `<strong>${greeting}${cap('this')} is a deload week.</strong> Volume is cut by about 35% on purpose. Your body adapts during recovery, not during the hard weeks — this is when the fitness from the last three weeks actually sticks. Keep efforts easy. Resist the temptation to push.`;
                 chips.push({ text: 'Deload — lower volume intentionally', cls: '' });
                 if (injury) chips.push({ text: 'Extra important with your injury history', cls: 'chip-warn' });
 
@@ -2851,7 +2952,7 @@
                     intermediate: `Even with your background, starting conservatively builds the connective tissue resilience you'll need later. These first weeks aren't about fitness — they're about laying a durable foundation.`,
                     advanced: `Trust the process. The easy early weeks build aerobic efficiency at the cellular level. Pushing harder now doesn't accelerate progress; it just increases injury risk.`,
                 };
-                msg = `<strong>${greeting}you're building your base.</strong> ${levelMsgs[level] || levelMsgs.beginner}`;
+                msg = `<strong>${greeting}${cap("you're")} building your base.</strong> ${levelMsgs[level] || levelMsgs.beginner}`;
                 chips.push({ text: `${phaseName}`, cls: '' });
                 if (level === 'beginner') chips.push({ text: 'Walk/run ratio improving each week', cls: 'chip-good' });
 
@@ -2867,16 +2968,16 @@
                 const context = GOAL_CONTEXT[goal] || 'your goal';
 
                 if (prevPct >= 80) {
-                    msg = `<strong>${greeting}great week last week.</strong> ${prevDone} sessions completed — that consistency is what builds fitness. Keep the easy runs easy (conversational pace — you should be able to hold a full conversation). The hard sessions only work because of the easy ones around them.`;
+                    msg = `<strong>${greeting}${cap('great')} week last week.</strong> ${prevDone} sessions completed — that consistency is what builds fitness. Keep the easy runs easy (conversational pace — you should be able to hold a full conversation). The hard sessions only work because of the easy ones around them.`;
                     chips.push({ text: `Last week: ${prevPct}% completion`, cls: 'chip-good' });
                 } else if (prevPct >= 50 && prevPct < 80) {
-                    msg = `<strong>${greeting}solid effort last week.</strong> Life gets in the way sometimes — that's fine. What matters is getting back on it this week. Pick up where you left off and don't try to compensate by doing extra. One missed session has no meaningful impact on your fitness for ${context}.`;
+                    msg = `<strong>${greeting}${cap('solid')} effort last week.</strong> Life gets in the way sometimes — that's fine. What matters is getting back on it this week. Pick up where you left off and don't try to compensate by doing extra. One missed session has no meaningful impact on your fitness for ${context}.`;
                     chips.push({ text: `Last week: ${prevPct}% — getting back on track`, cls: '' });
                 } else if (week > 2 && prevPct < 50) {
-                    msg = `<strong>${greeting}it was a tough week.</strong> Don't try to make it up. Cramming extra sessions to compensate almost always leads to injury. Just start fresh this week with the plan as written. Progress in running is built over months, not individual weeks.`;
+                    msg = `<strong>${greeting}${cap('it')} was a tough week.</strong> Don't try to make it up. Cramming extra sessions to compensate almost always leads to injury. Just start fresh this week with the plan as written. Progress in running is built over months, not individual weeks.`;
                     chips.push({ text: 'Fresh start this week', cls: 'chip-warn' });
                 } else {
-                    msg = `<strong>${greeting}this week's focus</strong> is steady aerobic work. Keep easy runs at a pace where you could hold a full conversation. The goal right now is time on feet — pace is secondary. You're ${Math.round(((week - 1) / CONFIG.totalWeeks) * 100)}% through the plan.`;
+                    msg = `<strong>${greeting}${cap("this week's focus")}</strong> is steady aerobic work. Keep easy runs at a pace where you could hold a full conversation. The goal right now is time on feet — pace is secondary. You're ${Math.round(((week - 1) / CONFIG.totalWeeks) * 100)}% through the plan.`;
                 }
             }
 
@@ -2884,32 +2985,38 @@
             if (doneSessions > 0 && !allDone) {
                 const remaining = totalSessions - doneSessions - skipped;
                 if (remaining === 1) {
-                    msg += ` <strong>One session left this week.</strong>`;
+                    msg += ' <strong>One session left this week.</strong>';
                     chips.push({ text: '1 session to go', cls: 'chip-good' });
                 } else if (remaining > 1) {
                     chips.push({ text: `${remaining} sessions left this week`, cls: '' });
                 }
             } else if (allDone && totalSessions > 0) {
-                msg += ` <strong>Week complete — well done.</strong>`;
+                msg += ' <strong>Week complete — well done.</strong>';
                 chips.push({ text: 'Week complete ✓', cls: 'chip-good' });
             }
 
-            // ── Injury reminder ───────────────────────────────────────────────────────
+            // ── Injury reminder — shown as a second paragraph, not a chip ────────────
             if (injury && !isDeload && !isRaceWk) {
                 const injuryReminders = {
-                    knee: 'Remember: stop if knee pain reaches 3/10. Glute and hip strength sessions are your best injury prevention.',
-                    back: 'Core braced on every run. If your back tightens after a session, take an extra rest day — don\'t push through.',
-                    shin: 'Soft surfaces where possible this week. Any shin tightness: walk the rest of that session.',
-                    general: 'Still early days returning. Stop at discomfort, not pain. Progress is gradual.',
+                    knee: 'Knee reminder: stop if pain reaches 3/10. Glute and hip strength sessions are your best protection.',
+                    back: 'Back reminder: keep your core braced on every run. If your back tightens after a session, take an extra rest day.',
+                    shin: 'Shin reminder: soft surfaces where possible. Any shin tightness mid-run — walk the rest of that session.',
+                    general: 'Returning from injury: stop at discomfort, not pain. Progress is gradual and that\'s fine.',
                 };
-                if (injuryReminders[injury]) chips.push({ text: injuryReminders[injury], cls: 'chip-warn' });
+                if (injuryReminders[injury]) {
+                    msg += `<p style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:13px;color:var(--skip-text)">${injuryReminders[injury]}</p>`;
+                }
             }
 
+            // ── Ensure first visible word is capitalised ──────────────────────────────
+            // Strip any leading HTML tags to find and capitalise the first text character
+            msg = msg.replace(/^(<[^>]+>)*([a-z])/, (match, tags, char) => (tags || '') + char.toUpperCase());
+
             // ── Render ────────────────────────────────────────────────────────────────
-            msgEl.innerHTML = msg;
-            chipsEl.innerHTML = chips.map(c =>
-                `<span class="coach-chip ${c.cls || ''}">${c.text}</span>`
-            ).join('');
+            msgEl.innerHTML = `<p>${msg}</p>`;
+            chipsEl.innerHTML = chips.length
+                ? chips.map(c => `<span class="coach-chip ${c.cls || ''}">${c.text}</span>`).join('')
+                : '';
         }
 
         // ── Render ────────────────────────────────────────────────────────────────────
