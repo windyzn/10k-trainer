@@ -5,22 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>10K Training Tracker</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Lora:ital,wght@0,500;1,400&display=swap"
         rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <style>
         :root {
-            --bg: #fdf6ee;
+            --bg: #f8f9ee;
             --surface: #ffffff;
-            --surface2: #fef9f4;
-            --border: rgba(180, 130, 90, 0.13);
-            --border2: rgba(180, 130, 90, 0.22);
-            --text: #3a2e24;
-            --muted: #9a7f6a;
-            --hint: #c4aa94;
+            --surface2: #fafaef;
+            --border: rgba(140, 150, 30, 0.15);
+            --border2: rgba(140, 150, 30, 0.28);
+            --text: #2e2e18;
+            --muted: #7a8040;
+            --hint: #b0b870;
 
-            /* Activity colours — darker text for readable contrast on light fills */
+            /* Citrus accent — used for primary actions, progress, nav */
+            --accent: #c8e040;
+            --accent-dark: #9ab020;
+            --accent-text: #3a4a08;
+            --accent-bg: #f2f8c8;
+            --accent-border: #b8d030;
+
+            /* Activity colours */
             --run: #1a6b38;
             --run-bg: #d6f0e2;
             --run-border: #7ec9a0;
@@ -42,8 +50,8 @@
             --skip-border: #e8916a;
             --skip-text: #5c1e00;
 
-            --today-border: #e8734a;
-            --prog: #1a6b38;
+            --today-border: #c8e040;
+            --prog: #c8e040;
             --radius: 14px;
             --radius-sm: 8px;
         }
@@ -57,9 +65,9 @@
         body {
             background: var(--bg);
             background-image:
-                radial-gradient(circle at 15% 20%, rgba(255, 220, 180, 0.35) 0%, transparent 45%),
-                radial-gradient(circle at 85% 75%, rgba(200, 235, 210, 0.35) 0%, transparent 45%),
-                radial-gradient(circle at 55% 10%, rgba(255, 200, 220, 0.2) 0%, transparent 35%);
+                radial-gradient(circle at 15% 20%, rgba(200, 224, 64, 0.18) 0%, transparent 45%),
+                radial-gradient(circle at 85% 75%, rgba(200, 235, 210, 0.30) 0%, transparent 45%),
+                radial-gradient(circle at 55% 10%, rgba(220, 234, 100, 0.15) 0%, transparent 35%);
             color: var(--text);
             font-family: 'Nunito', sans-serif;
             font-size: 14px;
@@ -102,9 +110,9 @@
             font-weight: 600;
             padding: 5px 14px;
             border-radius: 20px;
-            border: 1.5px solid var(--run-border);
-            color: var(--run-text);
-            background: var(--run-bg);
+            border: 1.5px solid var(--accent-border);
+            color: var(--accent-text);
+            background: var(--accent-bg);
             white-space: nowrap;
             margin-top: 4px;
         }
@@ -208,9 +216,9 @@
         }
 
         .nav-btn:hover {
-            background: var(--run-bg);
-            border-color: var(--run-border);
-            color: var(--run-text);
+            background: var(--accent-bg);
+            border-color: var(--accent-border);
+            color: var(--accent-text);
         }
 
         .week-label {
@@ -271,8 +279,8 @@
         }
 
         .day-col.is-today {
-            border-color: var(--today-border);
-            box-shadow: 0 3px 12px rgba(232, 115, 74, 0.15);
+            border-color: var(--accent);
+            box-shadow: 0 3px 14px rgba(200, 224, 64, 0.35);
         }
 
         .day-col.is-light {
@@ -530,9 +538,9 @@
             flex-shrink: 0;
             padding: 6px 14px;
             border-radius: var(--radius-sm);
-            border: 1.5px solid var(--run-border);
-            background: var(--run-bg);
-            color: var(--run-text);
+            border: 1.5px solid var(--accent-border);
+            background: var(--accent-bg);
+            color: var(--accent-text);
             font-family: 'Nunito', sans-serif;
             font-size: 12px;
             font-weight: 700;
@@ -542,7 +550,7 @@
         }
 
         .btn-undo-skip:hover {
-            background: #c0e6d0;
+            background: #ddf050;
         }
 
         .skip-reasons {
@@ -589,7 +597,7 @@
 
         .modal-custom input:focus,
         .modal-custom textarea:focus {
-            border-color: var(--run-border);
+            border-color: var(--accent-border);
         }
 
         .modal-actions {
@@ -641,23 +649,23 @@
         }
 
         .btn-reschedule {
-            background: var(--run-bg);
-            border-color: var(--run-border);
-            color: var(--run-text);
+            background: var(--accent-bg);
+            border-color: var(--accent-border);
+            color: var(--accent-text);
         }
 
         .btn-reschedule:hover {
-            background: #c0e6d0;
+            background: #ddf050;
         }
 
         .btn-confirm {
-            background: var(--run-bg);
-            border-color: var(--run-border);
-            color: var(--run-text);
+            background: var(--accent-bg);
+            border-color: var(--accent-border);
+            color: var(--accent-text);
         }
 
         .btn-confirm:hover {
-            background: #c0e6d0;
+            background: #ddf050;
         }
 
         .btn-danger {
@@ -693,9 +701,9 @@
         }
 
         .rday-btn:hover:not(.rday-disabled) {
-            background: var(--run-bg);
-            border-color: var(--run-border);
-            color: var(--run-text);
+            background: var(--accent-bg);
+            border-color: var(--accent-border);
+            color: var(--accent-text);
         }
 
         .rday-btn.rday-disabled {
@@ -704,9 +712,9 @@
         }
 
         .rday-btn.rday-selected {
-            background: var(--run-bg);
-            border-color: var(--run-border);
-            color: var(--run-text);
+            background: var(--accent-bg);
+            border-color: var(--accent-border);
+            color: var(--accent-text);
         }
 
         .rday-name {
@@ -759,7 +767,7 @@
 
         .field input:focus,
         .field textarea:focus {
-            border-color: var(--run-border);
+            border-color: var(--accent-border);
         }
 
         /* ── Stats panel ── */
@@ -806,9 +814,9 @@
         }
 
         .chart-tab.active {
-            background: var(--run-bg);
-            border-color: var(--run-border);
-            color: var(--run-text);
+            background: var(--accent-bg);
+            border-color: var(--accent-border);
+            color: var(--accent-text);
         }
 
         .chart-wrap {
@@ -884,7 +892,7 @@
 
         .form-row select:focus,
         .form-row input:focus {
-            border-color: var(--run-border);
+            border-color: var(--accent-border);
         }
 
         .form-row input[type=number] {
@@ -906,9 +914,9 @@
         }
 
         .log-btn {
-            background: var(--run-bg);
-            border: 1.5px solid var(--run-border);
-            color: var(--run-text);
+            background: var(--accent-bg);
+            border: 1.5px solid var(--accent-border);
+            color: var(--accent-text);
             font-family: 'Nunito', sans-serif;
             font-size: 13px;
             font-weight: 700;
@@ -920,7 +928,7 @@
         }
 
         .log-btn:hover {
-            background: #c0e6d0;
+            background: #ddf050;
         }
 
         /* History — expandable rows */
@@ -1024,13 +1032,13 @@
         }
 
         .hist-edit-btn {
-            background: var(--run-bg);
-            border-color: var(--run-border);
-            color: var(--run-text);
+            background: var(--accent-bg);
+            border-color: var(--accent-border);
+            color: var(--accent-text);
         }
 
         .hist-edit-btn:hover {
-            background: #c0e6d0;
+            background: #ddf050;
         }
 
         .hist-del-btn {
@@ -1568,7 +1576,7 @@
         function renderChart() {
             const stats = getWeekStats();
             const labels = stats.map(s => `W${s.w}`);
-            const runClr = '#1a6b38', mutedClr = '#c4aa94';
+            const runClr = '#9ab020', mutedClr = '#b0b870';
             let datasets, yLabel, chartType = 'bar';
 
             if (activeChart === 'completion') {
