@@ -1,633 +1,1100 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>10K Training Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Lora:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg: #fdf6ee;
-  --surface: #ffffff;
-  --surface2: #fef9f4;
-  --border: rgba(180,130,90,0.13);
-  --border2: rgba(180,130,90,0.22);
-  --text: #3a2e24;
-  --muted: #9a7f6a;
-  --hint: #c4aa94;
-  --run: #2d8a4e;
-  --run-bg: #e6f5ec;
-  --run-border: #a8dbb9;
-  --pilates: #9b3fa8;
-  --pilates-bg: #f5e8f8;
-  --pilates-border: #d9a8e8;
-  --yoga: #1a7fa3;
-  --yoga-bg: #e3f3fa;
-  --yoga-border: #90ccdf;
-  --strength: #c46a00;
-  --strength-bg: #fef0dc;
-  --strength-border: #f5c07a;
-  --today-border: #e8734a;
-  --prog: #2d8a4e;
-  --radius: 14px;
-  --radius-sm: 8px;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10K Training Tracker</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Lora:ital,wght@0,500;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fdf6ee;
+            --surface: #ffffff;
+            --surface2: #fef9f4;
+            --border: rgba(180, 130, 90, 0.13);
+            --border2: rgba(180, 130, 90, 0.22);
+            --text: #3a2e24;
+            --muted: #9a7f6a;
+            --hint: #c4aa94;
+            --run: #2d8a4e;
+            --run-bg: #e6f5ec;
+            --run-border: #a8dbb9;
+            --pilates: #9b3fa8;
+            --pilates-bg: #f5e8f8;
+            --pilates-border: #d9a8e8;
+            --yoga: #1a7fa3;
+            --yoga-bg: #e3f3fa;
+            --yoga-border: #90ccdf;
+            --strength: #c46a00;
+            --strength-bg: #fef0dc;
+            --strength-border: #f5c07a;
+            --skip: #b04a10;
+            --skip-bg: #fdf0eb;
+            --skip-border: #f0b49a;
+            --today-border: #e8734a;
+            --prog: #2d8a4e;
+            --radius: 14px;
+            --radius-sm: 8px;
+        }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-body {
-  background: var(--bg);
-  background-image:
-    radial-gradient(circle at 15% 20%, rgba(255,220,180,0.35) 0%, transparent 45%),
-    radial-gradient(circle at 85% 75%, rgba(200,235,210,0.35) 0%, transparent 45%),
-    radial-gradient(circle at 55% 10%, rgba(255,200,220,0.2) 0%, transparent 35%);
-  color: var(--text);
-  font-family: 'Nunito', sans-serif;
-  font-size: 14px;
-  min-height: 100vh;
-  line-height: 1.5;
-}
+        body {
+            background: var(--bg);
+            background-image:
+                radial-gradient(circle at 15% 20%, rgba(255, 220, 180, 0.35) 0%, transparent 45%),
+                radial-gradient(circle at 85% 75%, rgba(200, 235, 210, 0.35) 0%, transparent 45%),
+                radial-gradient(circle at 55% 10%, rgba(255, 200, 220, 0.2) 0%, transparent 35%);
+            color: var(--text);
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            min-height: 100vh;
+            line-height: 1.5;
+        }
 
-.app {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 32px 20px 60px;
-}
+        .app {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 20px 60px;
+        }
 
-/* ── Header ── */
-.header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 28px;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-.header-left h1 {
-  font-family: 'Lora', serif;
-  font-size: 26px;
-  font-weight: 500;
-  font-style: italic;
-  color: var(--text);
-  margin-bottom: 4px;
-}
-.header-left p {
-  font-size: 13px;
-  color: var(--muted);
-}
-.phase-pill {
-  font-size: 12px;
-  font-weight: 600;
-  padding: 5px 14px;
-  border-radius: 20px;
-  border: 1.5px solid var(--run-border);
-  color: var(--run);
-  background: var(--run-bg);
-  white-space: nowrap;
-  margin-top: 4px;
-}
+        /* Header */
+        .header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
 
-/* ── Stats ── */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-  margin-bottom: 20px;
-}
-.stat {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  box-shadow: 0 2px 8px rgba(180,130,90,0.07);
-}
-.stat-label {
-  font-size: 11px;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: .07em;
-  margin-bottom: 6px;
-  font-weight: 600;
-}
-.stat-value {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1;
-  margin-bottom: 3px;
-}
-.stat-sub { font-size: 11px; color: var(--hint); }
+        .header-left h1 {
+            font-family: 'Lora', serif;
+            font-size: 26px;
+            font-weight: 500;
+            font-style: italic;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
 
-/* ── Progress bar ── */
-.prog-wrap { margin-bottom: 24px; }
-.prog-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: var(--muted);
-  margin-bottom: 8px;
-  font-weight: 600;
-  letter-spacing: .03em;
-}
-.prog-track {
-  height: 8px;
-  background: rgba(180,130,90,0.12);
-  border-radius: 4px;
-  overflow: hidden;
-}
-.prog-bar {
-  height: 100%;
-  background: var(--prog);
-  border-radius: 4px;
-  transition: width 0.5s ease;
-}
+        .header-left p {
+            font-size: 13px;
+            color: var(--muted);
+        }
 
-/* ── Week navigation ── */
-.week-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.week-nav-center {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.nav-btn {
-  background: var(--surface);
-  border: 1.5px solid var(--border2);
-  border-radius: 50%;
-  color: var(--muted);
-  width: 34px; height: 34px;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
-}
-.nav-btn:hover { background: var(--run-bg); border-color: var(--run-border); color: var(--run); }
-.week-label {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text);
-  min-width: 64px;
-  text-align: center;
-}
-.legend {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-.leg { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
-.leg-dot { width: 8px; height: 8px; border-radius: 3px; }
+        .phase-pill {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 5px 14px;
+            border-radius: 20px;
+            border: 1.5px solid var(--run-border);
+            color: var(--run);
+            background: var(--run-bg);
+            white-space: nowrap;
+            margin-top: 4px;
+        }
 
-/* ── Calendar grid ── */
-.cal-grid {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 6px;
-  margin-bottom: 24px;
-}
-.day-col {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 8px 6px;
-  min-height: 130px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  transition: border-color 0.15s, box-shadow 0.15s;
-  box-shadow: 0 2px 6px rgba(180,130,90,0.05);
-}
-.day-col.is-today {
-  border-color: var(--today-border);
-  box-shadow: 0 3px 12px rgba(232,115,74,0.15);
-}
-.day-head { text-align: center; margin-bottom: 4px; }
-.day-name {
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: .07em;
-}
-.day-date { font-size: 10px; color: var(--hint); margin-top: 1px; }
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
 
-/* ── Session pills ── */
-.pill {
-  border-radius: 7px;
-  padding: 4px 5px;
-  font-size: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  text-align: center;
-  line-height: 1.3;
-  border: 1.5px solid transparent;
-  transition: opacity 0.15s, transform 0.1s;
-  user-select: none;
-}
-.pill:hover { transform: scale(1.04); }
-.pill:active { transform: scale(0.96); }
-.pill.pending { opacity: 0.3; }
-.pill.done { opacity: 1; }
-.pill.done .pill-text { text-decoration: line-through; opacity: 0.55; }
+        .stat {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            box-shadow: 0 2px 8px rgba(180, 130, 90, 0.07);
+        }
 
-.pill-run      { background: var(--run-bg);      border-color: var(--run-border);      color: var(--run);      }
-.pill-pilates  { background: var(--pilates-bg);  border-color: var(--pilates-border);  color: var(--pilates); }
-.pill-yoga     { background: var(--yoga-bg);     border-color: var(--yoga-border);     color: var(--yoga);    }
-.pill-strength { background: var(--strength-bg); border-color: var(--strength-border); color: var(--strength);}
-.pill-rest     { background: transparent; color: var(--hint); border-color: transparent; font-size: 10px; opacity: 0.3; }
+        .stat-label {
+            font-size: 11px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
 
-/* ── Log form ── */
-.section-title {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .09em;
-  color: var(--muted);
-  margin-bottom: 12px;
-}
-.log-form {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 8px rgba(180,130,90,0.06);
-}
-.form-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-.form-row select,
-.form-row input {
-  background: var(--surface2);
-  border: 1.5px solid var(--border2);
-  border-radius: var(--radius-sm);
-  color: var(--text);
-  font-family: 'Nunito', sans-serif;
-  font-size: 13px;
-  padding: 7px 10px;
-  outline: none;
-  transition: border-color 0.15s;
-}
-.form-row select:focus,
-.form-row input:focus { border-color: var(--run-border); }
-.form-row input[type=number] { width: 72px; }
-.form-row input[type=text]   { flex: 1; min-width: 120px; }
-.form-row select {
-  appearance: none;
-  padding-right: 24px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239a7f6a'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 8px center;
-  background-color: var(--surface2);
-}
-.log-btn {
-  background: var(--run-bg);
-  border: 1.5px solid var(--run-border);
-  color: var(--run);
-  font-family: 'Nunito', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  padding: 7px 16px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s;
-}
-.log-btn:hover { background: #cdeedd; }
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1;
+            margin-bottom: 3px;
+        }
 
-/* ── History table ── */
-.history-wrap {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  margin-bottom: 24px;
-  box-shadow: 0 2px 8px rgba(180,130,90,0.06);
-}
-.history-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-.history-table th {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .07em;
-  color: var(--muted);
-  text-align: left;
-  padding: 10px 14px;
-  border-bottom: 1.5px solid var(--border);
-}
-.history-table td {
-  padding: 9px 14px;
-  border-bottom: 1px solid var(--border);
-  color: var(--text);
-}
-.history-table tr:last-child td { border-bottom: none; }
-.history-table tr:hover td { background: var(--surface2); }
-.type-badge {
-  font-size: 11px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 6px;
-}
-.del-btn {
-  background: none;
-  border: none;
-  color: var(--hint);
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 1;
-  padding: 0 4px;
-  transition: color 0.15s;
-}
-.del-btn:hover { color: #d04040; }
-.empty-state {
-  text-align: center;
-  padding: 24px;
-  color: var(--hint);
-  font-size: 13px;
-}
+        .stat-sub {
+            font-size: 11px;
+            color: var(--hint);
+        }
 
-/* ── Responsive ── */
-@media (max-width: 600px) {
-  .stats { grid-template-columns: repeat(2, 1fr); }
-  .stat-value { font-size: 20px; }
-  .cal-grid { gap: 4px; }
-  .day-col { padding: 5px 3px; min-height: 100px; }
-  .pill { font-size: 9px; padding: 3px 3px; }
-  .form-row { flex-direction: column; }
-  .form-row input[type=text] { width: 100%; }
-}
-</style>
+        /* Progress */
+        .prog-wrap {
+            margin-bottom: 24px;
+        }
+
+        .prog-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+            letter-spacing: .03em;
+        }
+
+        .prog-track {
+            height: 8px;
+            background: rgba(180, 130, 90, 0.12);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .prog-bar {
+            height: 100%;
+            background: var(--prog);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Week nav */
+        .week-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .week-nav-center {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            background: var(--surface);
+            border: 1.5px solid var(--border2);
+            border-radius: 50%;
+            color: var(--muted);
+            width: 34px;
+            height: 34px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s, border-color .15s, color .15s;
+        }
+
+        .nav-btn:hover {
+            background: var(--run-bg);
+            border-color: var(--run-border);
+            color: var(--run);
+        }
+
+        .week-label {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+            min-width: 64px;
+            text-align: center;
+        }
+
+        .legend {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .leg {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .leg-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .tap-hint {
+            font-size: 11px;
+            color: var(--hint);
+            font-style: italic;
+            margin-bottom: 14px;
+        }
+
+        /* Calendar */
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .day-col {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px 8px;
+            min-height: 175px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            box-shadow: 0 2px 6px rgba(180, 130, 90, 0.05);
+        }
+
+        .day-col.is-today {
+            border-color: var(--today-border);
+            box-shadow: 0 3px 12px rgba(232, 115, 74, 0.15);
+        }
+
+        .day-head {
+            text-align: center;
+            margin-bottom: 6px;
+            padding-bottom: 7px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .day-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .07em;
+        }
+
+        .day-date {
+            font-size: 11px;
+            color: var(--hint);
+            margin-top: 2px;
+            font-weight: 600;
+        }
+
+        /* Session cards */
+        .session-card {
+            border-radius: 8px;
+            padding: 7px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            line-height: 1.4;
+            border: 1.5px solid transparent;
+            transition: opacity .15s, transform .1s, box-shadow .15s;
+            user-select: none;
+            position: relative;
+        }
+
+        .session-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .session-card:active {
+            transform: scale(0.98);
+        }
+
+        .session-card .s-type {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            opacity: 0.65;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .session-card .s-label {
+            display: block;
+            word-wrap: break-word;
+        }
+
+        /* Pending */
+        .session-card.state-pending {
+            opacity: 0.4;
+        }
+
+        /* Done */
+        .session-card.state-done {
+            opacity: 1;
+        }
+
+        .session-card.state-done .s-label {
+            text-decoration: line-through;
+            opacity: 0.55;
+        }
+
+        .session-card.state-done::after {
+            content: '✓';
+            position: absolute;
+            top: 5px;
+            right: 7px;
+            font-size: 10px;
+            opacity: 0.65;
+        }
+
+        /* Skipped */
+        .session-card.state-skipped {
+            opacity: 1;
+            background: var(--skip-bg) !important;
+            border-color: var(--skip-border) !important;
+            color: var(--skip) !important;
+        }
+
+        .session-card.state-skipped .s-label {
+            opacity: 0.65;
+            font-style: italic;
+        }
+
+        .session-card.state-skipped .s-reason {
+            display: block;
+            font-size: 9px;
+            font-weight: 400;
+            font-style: italic;
+            margin-top: 3px;
+            opacity: 0.75;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .session-card.state-skipped::after {
+            content: '–';
+            position: absolute;
+            top: 5px;
+            right: 7px;
+            font-size: 12px;
+            opacity: 0.5;
+        }
+
+        /* Type colours */
+        .type-run {
+            background: var(--run-bg);
+            border-color: var(--run-border);
+            color: var(--run);
+        }
+
+        .type-pilates {
+            background: var(--pilates-bg);
+            border-color: var(--pilates-border);
+            color: var(--pilates);
+        }
+
+        .type-yoga {
+            background: var(--yoga-bg);
+            border-color: var(--yoga-border);
+            color: var(--yoga);
+        }
+
+        .type-strength {
+            background: var(--strength-bg);
+            border-color: var(--strength-border);
+            color: var(--strength);
+        }
+
+        .rest-label {
+            font-size: 11px;
+            color: var(--hint);
+            text-align: center;
+            padding: 6px 0;
+            opacity: 0.4;
+            font-style: italic;
+            margin-top: auto;
+        }
+
+        /* Skip modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(58, 46, 36, 0.38);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 1.5px solid var(--border2);
+            padding: 24px;
+            max-width: 380px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(58, 46, 36, 0.18);
+        }
+
+        .modal h3 {
+            font-family: 'Lora', serif;
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        .modal p {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .modal .session-name {
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .skip-reasons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-bottom: 14px;
+        }
+
+        .reason-chip {
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1.5px solid var(--border2);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--muted);
+            background: var(--surface2);
+            transition: all .15s;
+        }
+
+        .reason-chip.selected {
+            background: var(--skip-bg);
+            border-color: var(--skip-border);
+            color: var(--skip);
+        }
+
+        .modal-custom {
+            margin-bottom: 18px;
+        }
+
+        .modal-custom input {
+            width: 100%;
+            border: 1.5px solid var(--border2);
+            border-radius: var(--radius-sm);
+            background: var(--surface2);
+            color: var(--text);
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            padding: 8px 12px;
+            outline: none;
+        }
+
+        .modal-custom input:focus {
+            border-color: var(--skip-border);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border2);
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .15s;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--muted);
+        }
+
+        .btn-ghost:hover {
+            background: var(--surface2);
+        }
+
+        .btn-skip {
+            background: var(--skip-bg);
+            border-color: var(--skip-border);
+            color: var(--skip);
+        }
+
+        .btn-skip:hover {
+            background: #f9ddd2;
+        }
+
+        .btn-clear {
+            background: var(--run-bg);
+            border-color: var(--run-border);
+            color: var(--run);
+        }
+
+        .btn-clear:hover {
+            background: #cdeedd;
+        }
+
+        /* Log form */
+        .section-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .09em;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .log-form {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(180, 130, 90, 0.06);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .form-row select,
+        .form-row input {
+            background: var(--surface2);
+            border: 1.5px solid var(--border2);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            padding: 7px 10px;
+            outline: none;
+            transition: border-color .15s;
+        }
+
+        .form-row select:focus,
+        .form-row input:focus {
+            border-color: var(--run-border);
+        }
+
+        .form-row input[type=number] {
+            width: 72px;
+        }
+
+        .form-row input[type=text] {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .form-row select {
+            appearance: none;
+            padding-right: 24px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239a7f6a'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-color: var(--surface2);
+        }
+
+        .log-btn {
+            background: var(--run-bg);
+            border: 1.5px solid var(--run-border);
+            color: var(--run);
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 7px 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background .15s;
+        }
+
+        .log-btn:hover {
+            background: #cdeedd;
+        }
+
+        /* History */
+        .history-wrap {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(180, 130, 90, 0.06);
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .history-table th {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            color: var(--muted);
+            text-align: left;
+            padding: 10px 14px;
+            border-bottom: 1.5px solid var(--border);
+        }
+
+        .history-table td {
+            padding: 9px 14px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            vertical-align: middle;
+        }
+
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .history-table tr:hover td {
+            background: var(--surface2);
+        }
+
+        .type-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        .del-btn {
+            background: none;
+            border: none;
+            color: var(--hint);
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+            padding: 0 4px;
+            transition: color .15s;
+        }
+
+        .del-btn:hover {
+            color: #d04040;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 24px;
+            color: var(--hint);
+            font-size: 13px;
+        }
+
+        @media (max-width:620px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stat-value {
+                font-size: 22px;
+            }
+
+            .cal-grid {
+                gap: 5px;
+            }
+
+            .day-col {
+                padding: 7px 5px;
+                min-height: 145px;
+            }
+
+            .session-card {
+                font-size: 10px;
+                padding: 5px 6px;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            .form-row input[type=text] {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<div class="app">
 
-  <div class="header">
-    <div class="header-left">
-      <h1>10K Training</h1>
-      <p>18-week plan — run, pilates, yoga &amp; strength</p>
+    <!-- Skip modal -->
+    <div class="modal-overlay" id="skip-modal">
+        <div class="modal">
+            <h3>Skip this session?</h3>
+            <p>Skipping <span class="session-name" id="modal-session-name"></span>. What's the reason? (optional)</p>
+            <div class="skip-reasons">
+                <div class="reason-chip" onclick="selectReason(this,'Weather')">Weather</div>
+                <div class="reason-chip" onclick="selectReason(this,'Too busy')">Too busy</div>
+                <div class="reason-chip" onclick="selectReason(this,'Tired / recovering')">Tired / recovering</div>
+                <div class="reason-chip" onclick="selectReason(this,'Injury check')">Injury check</div>
+                <div class="reason-chip" onclick="selectReason(this,'Planned rest')">Planned rest</div>
+                <div class="reason-chip" onclick="selectReason(this,'Travel')">Travel</div>
+            </div>
+            <div class="modal-custom">
+                <input type="text" id="skip-custom" placeholder="Or type your own reason…" oninput="clearChips()">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-clear" onclick="clearSession()" id="btn-clear" style="display:none">Mark
+                    undone</button>
+                <button class="btn btn-skip" onclick="confirmSkip()">Skip session</button>
+            </div>
+        </div>
     </div>
-    <div class="phase-pill" id="phase-pill">Phase 1 — Return</div>
-  </div>
 
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-label">This week</div>
-      <div class="stat-value" id="s-done">0</div>
-      <div class="stat-sub">sessions done</div>
+    <div class="app">
+
+        <div class="header">
+            <div class="header-left">
+                <h1>10K Training</h1>
+                <p>18-week plan — run, pilates, yoga &amp; strength</p>
+            </div>
+            <div class="phase-pill" id="phase-pill">Phase 1 — Return</div>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-label">This week</div>
+                <div class="stat-value" id="s-done">0</div>
+                <div class="stat-sub">sessions done</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Run km</div>
+                <div class="stat-value" id="s-km">0</div>
+                <div class="stat-sub">this week</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Skipped</div>
+                <div class="stat-value" id="s-skipped">0</div>
+                <div class="stat-sub">this week</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Progress</div>
+                <div class="stat-value" id="s-pct">0%</div>
+                <div class="stat-sub">of 18 weeks</div>
+            </div>
+        </div>
+
+        <div class="prog-wrap">
+            <div class="prog-meta">
+                <span>Overall progress</span>
+                <span id="prog-label">Week 1 of 18</span>
+            </div>
+            <div class="prog-track">
+                <div class="prog-bar" id="prog-bar" style="width:0%"></div>
+            </div>
+        </div>
+
+        <div class="week-nav">
+            <div class="week-nav-center">
+                <button class="nav-btn" onclick="changeWeek(-1)">&#8592;</button>
+                <span class="week-label" id="week-label">Week 1</span>
+                <button class="nav-btn" onclick="changeWeek(1)">&#8594;</button>
+            </div>
+            <div class="legend">
+                <div class="leg">
+                    <div class="leg-dot" style="background:var(--run)"></div>Run
+                </div>
+                <div class="leg">
+                    <div class="leg-dot" style="background:var(--pilates)"></div>Pilates
+                </div>
+                <div class="leg">
+                    <div class="leg-dot" style="background:var(--yoga)"></div>Yoga
+                </div>
+                <div class="leg">
+                    <div class="leg-dot" style="background:var(--strength)"></div>Strength
+                </div>
+                <div class="leg">
+                    <div class="leg-dot" style="background:var(--skip-border)"></div>Skipped
+                </div>
+            </div>
+        </div>
+
+        <p class="tap-hint">Tap once to mark done &nbsp;·&nbsp; tap again to skip or undo</p>
+
+        <div class="cal-grid" id="cal-grid"></div>
+
+        <div class="section-title">Log a session</div>
+        <div class="log-form">
+            <div class="form-row">
+                <select id="log-type">
+                    <option value="run">Run</option>
+                    <option value="pilates">Pilates</option>
+                    <option value="yoga">Yoga</option>
+                    <option value="strength">Strength</option>
+                </select>
+                <input type="number" id="log-dur" placeholder="min" min="1" max="300">
+                <input type="number" id="log-km" placeholder="km" min="0" max="50" step="0.1">
+                <input type="text" id="log-note" placeholder="Notes (optional)">
+                <button class="log-btn" onclick="logSession()">Log session &#8594;</button>
+            </div>
+        </div>
+
+        <div class="section-title">Session history — week <span id="hist-week">1</span></div>
+        <div class="history-wrap" id="history-wrap"></div>
+
     </div>
-    <div class="stat">
-      <div class="stat-label">Run km</div>
-      <div class="stat-value" id="s-km">0</div>
-      <div class="stat-sub">this week</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">All time</div>
-      <div class="stat-value" id="s-total">0</div>
-      <div class="stat-sub">sessions logged</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Progress</div>
-      <div class="stat-value" id="s-pct">0%</div>
-      <div class="stat-sub">of 18 weeks</div>
-    </div>
-  </div>
 
-  <div class="prog-wrap">
-    <div class="prog-meta">
-      <span>Overall progress</span>
-      <span id="prog-label">Week 1 of 18</span>
-    </div>
-    <div class="prog-track">
-      <div class="prog-bar" id="prog-bar" style="width:0%"></div>
-    </div>
-  </div>
+    <script src="config.js"></script>
+    <script src="schedule.js"></script>
+    <script>
 
-  <div class="week-nav">
-    <div class="week-nav-center">
-      <button class="nav-btn" onclick="changeWeek(-1)">&#8592;</button>
-      <span class="week-label" id="week-label">Week 1</span>
-      <button class="nav-btn" onclick="changeWeek(1)">&#8594;</button>
-    </div>
-    <div class="legend">
-      <div class="leg"><div class="leg-dot" style="background:var(--run)"></div>Run</div>
-      <div class="leg"><div class="leg-dot" style="background:var(--pilates)"></div>Pilates</div>
-      <div class="leg"><div class="leg-dot" style="background:var(--yoga)"></div>Yoga</div>
-      <div class="leg"><div class="leg-dot" style="background:var(--strength)"></div>Strength</div>
-    </div>
-  </div>
+        const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-  <div class="cal-grid" id="cal-grid"></div>
+        // ── State ─────────────────────────────────────────────────────────────────────
+        let week = 1;
+        let sessionState = {};   // key → 'done' | 'skipped'
+        let skipReasons = {};   // key → string
+        let log = [];
 
-  <div class="section-title">Log a session</div>
-  <div class="log-form">
-    <div class="form-row">
-      <select id="log-type">
-        <option value="run">Run</option>
-        <option value="pilates">Pilates</option>
-        <option value="yoga">Yoga</option>
-        <option value="strength">Strength</option>
-      </select>
-      <input type="number" id="log-dur" placeholder="min" min="1" max="300">
-      <input type="number" id="log-km"  placeholder="km"  min="0" max="50" step="0.1">
-      <input type="text"   id="log-note" placeholder="Notes (optional)">
-      <button class="log-btn" onclick="logSession()">Log session &#8594;</button>
-    </div>
-  </div>
+        try {
+            const raw = localStorage.getItem('_10k_tracker_v4');
+            if (raw) {
+                const d = JSON.parse(raw);
+                sessionState = d.sessionState || {};
+                skipReasons = d.skipReasons || {};
+                log = d.log || [];
+                week = d.week || 1;
+            }
+        } catch (e) { }
 
-  <div class="section-title">Session history — week <span id="hist-week">1</span></div>
-  <div class="history-wrap" id="history-wrap"></div>
+        function save() {
+            try {
+                localStorage.setItem('_10k_tracker_v4', JSON.stringify({ sessionState, skipReasons, log, week }));
+            } catch (e) { }
+        }
 
-</div>
+        // ── Modal ─────────────────────────────────────────────────────────────────────
+        let pendingKey = null;
+        let selReason = null;
 
-<!-- Load config and schedule first, then the app logic -->
-<script src="config.js"></script>
-<script src="schedule.js"></script>
-<script>
+        function openSkipModal(key, label, isDone) {
+            pendingKey = key;
+            selReason = null;
+            document.getElementById('modal-session-name').textContent = label;
+            document.getElementById('skip-custom').value = '';
+            document.getElementById('btn-clear').style.display = isDone ? 'inline-block' : 'none';
+            document.querySelectorAll('.reason-chip').forEach(c => c.classList.remove('selected'));
+            document.getElementById('skip-modal').classList.add('open');
+        }
 
-const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+        function closeModal() {
+            document.getElementById('skip-modal').classList.remove('open');
+            pendingKey = null;
+        }
 
-// ── Helpers ──────────────────────────────────
+        document.getElementById('skip-modal').addEventListener('click', function (e) {
+            if (e.target === this) closeModal();
+        });
 
-function getPhase(w) {
-  for (const p of CONFIG.phases) if (w <= p.max) return p.label;
-  return CONFIG.phases[CONFIG.phases.length - 1].label;
-}
+        function selectReason(el, r) {
+            document.querySelectorAll('.reason-chip').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            selReason = r;
+            document.getElementById('skip-custom').value = '';
+        }
 
-function getDate(w, d) {
-  const dt = new Date(CONFIG.startDate);
-  dt.setDate(dt.getDate() + (w - 1) * 7 + d);
-  return dt;
-}
+        function clearChips() {
+            document.querySelectorAll('.reason-chip').forEach(c => c.classList.remove('selected'));
+            selReason = null;
+        }
 
-function todayWD() {
-  const diff = Math.floor((new Date() - CONFIG.startDate) / 86400000);
-  if (diff < 0 || diff >= CONFIG.totalWeeks * 7) return null;
-  return { w: Math.floor(diff / 7) + 1, d: diff % 7 };
-}
+        function confirmSkip() {
+            if (!pendingKey) return;
+            const custom = document.getElementById('skip-custom').value.trim();
+            const reason = custom || selReason || 'Skipped';
+            sessionState[pendingKey] = 'skipped';
+            skipReasons[pendingKey] = reason;
+            save(); closeModal(); render();
+        }
 
-function pillClass(type) {
-  return { run: 'pill-run', pilates: 'pill-pilates', yoga: 'pill-yoga', strength: 'pill-strength' }[type] || 'pill-rest';
-}
+        function clearSession() {
+            if (!pendingKey) return;
+            delete sessionState[pendingKey];
+            delete skipReasons[pendingKey];
+            save(); closeModal(); render();
+        }
 
-function typeBadgeStyle(type) {
-  const map = {
-    run:      'background:var(--run-bg);color:var(--run);border:1px solid var(--run-border)',
-    pilates:  'background:var(--pilates-bg);color:var(--pilates);border:1px solid var(--pilates-border)',
-    yoga:     'background:var(--yoga-bg);color:var(--yoga);border:1px solid var(--yoga-border)',
-    strength: 'background:var(--strength-bg);color:var(--strength);border:1px solid var(--strength-border)',
-  };
-  return map[type] || '';
-}
+        // ── Tap logic — pending → done → modal ───────────────────────────────────────
+        function tapSession(key, label) {
+            const st = sessionState[key];
+            if (!st) {
+                sessionState[key] = 'done';
+                delete skipReasons[key];
+                save(); render();
+            } else {
+                openSkipModal(key, label, st === 'done');
+            }
+        }
 
-// ── State ────────────────────────────────────
+        // ── Helpers ───────────────────────────────────────────────────────────────────
+        function getPhase(w) {
+            for (const p of CONFIG.phases) if (w <= p.max) return p.label;
+            return CONFIG.phases[CONFIG.phases.length - 1].label;
+        }
+        function getDate(w, d) {
+            const dt = new Date(CONFIG.startDate);
+            dt.setDate(dt.getDate() + (w - 1) * 7 + d);
+            return dt;
+        }
+        function todayWD() {
+            const diff = Math.floor((new Date() - CONFIG.startDate) / 86400000);
+            if (diff < 0 || diff >= CONFIG.totalWeeks * 7) return null;
+            return { w: Math.floor(diff / 7) + 1, d: diff % 7 };
+        }
+        function typeClass(type) {
+            return { run: 'type-run', pilates: 'type-pilates', yoga: 'type-yoga', strength: 'type-strength' }[type] || '';
+        }
+        function typeBadgeStyle(type) {
+            const m = {
+                run: 'background:var(--run-bg);color:var(--run);border:1px solid var(--run-border)',
+                pilates: 'background:var(--pilates-bg);color:var(--pilates);border:1px solid var(--pilates-border)',
+                yoga: 'background:var(--yoga-bg);color:var(--yoga);border:1px solid var(--yoga-border)',
+                strength: 'background:var(--strength-bg);color:var(--strength);border:1px solid var(--strength-border)',
+            };
+            return m[type] || '';
+        }
 
-let week = 1;
-let done = {};
-let log  = [];
+        // ── Render ────────────────────────────────────────────────────────────────────
+        function render() {
+            const td = todayWD();
 
-try {
-  const raw = localStorage.getItem('_10k_tracker_v3');
-  if (raw) { const d = JSON.parse(raw); done = d.done || {}; log = d.log || []; week = d.week || 1; }
-} catch(e) {}
+            document.getElementById('week-label').textContent = 'Week ' + week;
+            document.getElementById('phase-pill').textContent = getPhase(week);
+            document.getElementById('hist-week').textContent = week;
 
-function save() {
-  try { localStorage.setItem('_10k_tracker_v3', JSON.stringify({ done, log, week })); } catch(e) {}
-}
+            // Calendar
+            const grid = document.getElementById('cal-grid');
+            grid.innerHTML = '';
 
-// ── Session toggling ─────────────────────────
+            DAYS.forEach((dname, di) => {
+                const acts = (SCHEDULE[String(week)] || []).filter(s => s.day === di);
+                const dt = getDate(week, di);
+                const isToday = td && td.w === week && td.d === di;
 
-function toggle(w, d, i) {
-  const k = `${w}-${d}-${i}`;
-  done[k] = !done[k];
-  save(); render();
-}
-
-// ── Render ───────────────────────────────────
-
-function render() {
-  const td = todayWD();
-
-  document.getElementById('week-label').textContent = 'Week ' + week;
-  document.getElementById('phase-pill').textContent = getPhase(week);
-  document.getElementById('hist-week').textContent  = week;
-
-  // Calendar
-  const grid = document.getElementById('cal-grid');
-  grid.innerHTML = '';
-
-  DAYS.forEach((dname, di) => {
-    const weekSessions = SCHEDULE[String(week)] || [];
-    const acts = weekSessions.filter(s => s.day === di);
-    const dt = getDate(week, di);
-    const isToday = td && td.w === week && td.d === di;
-
-    const col = document.createElement('div');
-    col.className = 'day-col' + (isToday ? ' is-today' : '');
-    col.innerHTML = `<div class="day-head">
+                const col = document.createElement('div');
+                col.className = 'day-col' + (isToday ? ' is-today' : '');
+                col.innerHTML = `<div class="day-head">
       <div class="day-name">${dname}</div>
       <div class="day-date">${dt.getDate()}/${dt.getMonth() + 1}</div>
     </div>`;
 
-    if (acts.length === 0) {
-      const r = document.createElement('div');
-      r.className = 'pill pill-rest';
-      r.textContent = 'rest';
-      col.appendChild(r);
-    } else {
-      acts.forEach((act, ai) => {
-        const k = `${week}-${di}-${ai}`;
-        const isDone = !!done[k];
-        const p = document.createElement('div');
-        p.className = `pill ${pillClass(act.type)} ${isDone ? 'done' : 'pending'}`;
-        const short = act.label.length > 16 ? act.label.slice(0, 15) + '…' : act.label;
-        p.innerHTML = `<span class="pill-text">${short}</span>`;
-        p.title = act.label;
-        p.onclick = () => toggle(week, di, ai);
-        col.appendChild(p);
-      });
-    }
-    grid.appendChild(col);
-  });
+                if (acts.length === 0) {
+                    const r = document.createElement('div');
+                    r.className = 'rest-label';
+                    r.textContent = 'rest';
+                    col.appendChild(r);
+                } else {
+                    acts.forEach((act, ai) => {
+                        const k = `${week}-${di}-${ai}`;
+                        const st = sessionState[k] || 'pending';
+                        const reason = skipReasons[k] || '';
 
-  // Stats
-  let weekDone = 0, weekKm = 0;
-  for (let d = 0; d < 7; d++) {
-    const weekSessions = SCHEDULE[String(week)] || [];
-    const acts = weekSessions.filter(s => s.day === d);
-    acts.forEach((_, ai) => { if (done[`${week}-${d}-${ai}`]) weekDone++; });
-  }
-  log.filter(e => e.week === week && e.type === 'run' && e.km)
-     .forEach(e => weekKm += parseFloat(e.km));
+                        const card = document.createElement('div');
+                        card.className = `session-card ${typeClass(act.type)} state-${st}`;
+                        card.innerHTML = `<span class="s-type">${act.type}</span><span class="s-label">${act.label}</span>${st === 'skipped' && reason ? `<span class="s-reason">${reason}</span>` : ''}`;
+                        card.onclick = () => tapSession(k, act.label);
+                        col.appendChild(card);
+                    });
+                }
+                grid.appendChild(col);
+            });
 
-  const totalDone = Object.values(done).filter(Boolean).length;
-  const pct = Math.round(((week - 1) / CONFIG.totalWeeks) * 100);
+            // Stats
+            let weekDone = 0, weekSkipped = 0, weekKm = 0;
+            for (let d = 0; d < 7; d++) {
+                const acts = (SCHEDULE[String(week)] || []).filter(s => s.day === d);
+                acts.forEach((_, ai) => {
+                    const st = sessionState[`${week}-${d}-${ai}`];
+                    if (st === 'done') weekDone++;
+                    if (st === 'skipped') weekSkipped++;
+                });
+            }
+            log.filter(e => e.week === week && e.type === 'run' && e.km)
+                .forEach(e => weekKm += parseFloat(e.km));
 
-  document.getElementById('s-done').textContent  = weekDone;
-  document.getElementById('s-km').textContent    = weekKm.toFixed(1);
-  document.getElementById('s-total').textContent = totalDone;
-  document.getElementById('s-pct').textContent   = pct + '%';
-  document.getElementById('prog-bar').style.width = pct + '%';
-  document.getElementById('prog-label').textContent = `Week ${week} of ${CONFIG.totalWeeks}`;
+            const pct = Math.round(((week - 1) / CONFIG.totalWeeks) * 100);
 
-  // History
-  const hw = document.getElementById('history-wrap');
-  const wlog = log.filter(e => e.week === week).slice().reverse();
+            document.getElementById('s-done').textContent = weekDone;
+            document.getElementById('s-km').textContent = weekKm.toFixed(1);
+            document.getElementById('s-skipped').textContent = weekSkipped;
+            document.getElementById('s-pct').textContent = pct + '%';
+            document.getElementById('prog-bar').style.width = pct + '%';
+            document.getElementById('prog-label').textContent = `Week ${week} of ${CONFIG.totalWeeks}`;
 
-  if (wlog.length === 0) {
-    hw.innerHTML = '<div class="empty-state">No sessions logged this week yet.</div>';
-  } else {
-    let html = `<table class="history-table">
+            // History
+            const hw = document.getElementById('history-wrap');
+            const wlog = log.filter(e => e.week === week).slice().reverse();
+
+            if (wlog.length === 0) {
+                hw.innerHTML = '<div class="empty-state">No sessions logged this week yet.</div>';
+            } else {
+                let html = `<table class="history-table">
       <thead><tr><th>Type</th><th>Duration</th><th>Distance</th><th>Notes</th><th></th></tr></thead><tbody>`;
-    wlog.forEach((e, ri) => {
-      const realIdx = log.length - 1 - ri;
-      html += `<tr>
+                wlog.forEach((e, ri) => {
+                    const realIdx = log.length - 1 - ri;
+                    html += `<tr>
         <td><span class="type-badge" style="${typeBadgeStyle(e.type)}">${e.type}</span></td>
         <td>${e.dur ? e.dur + ' min' : '—'}</td>
         <td>${e.km ? parseFloat(e.km).toFixed(1) + ' km' : '—'}</td>
         <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)">${e.note || '—'}</td>
         <td><button class="del-btn" onclick="delLog(${realIdx})">×</button></td>
       </tr>`;
-    });
-    html += '</tbody></table>';
-    hw.innerHTML = html;
-  }
-}
+                });
+                html += '</tbody></table>';
+                hw.innerHTML = html;
+            }
+        }
 
-// ── Actions ──────────────────────────────────
+        // ── Actions ───────────────────────────────────────────────────────────────────
+        function logSession() {
+            const type = document.getElementById('log-type').value;
+            const dur = document.getElementById('log-dur').value;
+            const km = document.getElementById('log-km').value;
+            const note = document.getElementById('log-note').value.trim();
+            if (!dur && !km) { alert('Please add a duration or distance.'); return; }
+            log.push({ week, type, dur: dur || null, km: km || null, note: note || null, ts: Date.now() });
+            document.getElementById('log-dur').value = '';
+            document.getElementById('log-km').value = '';
+            document.getElementById('log-note').value = '';
+            save(); render();
+        }
 
-function logSession() {
-  const type = document.getElementById('log-type').value;
-  const dur  = document.getElementById('log-dur').value;
-  const km   = document.getElementById('log-km').value;
-  const note = document.getElementById('log-note').value.trim();
-  if (!dur && !km) { alert('Please add a duration or distance.'); return; }
-  log.push({ week, type, dur: dur || null, km: km || null, note: note || null, ts: Date.now() });
-  document.getElementById('log-dur').value  = '';
-  document.getElementById('log-km').value   = '';
-  document.getElementById('log-note').value = '';
-  save(); render();
-}
+        function delLog(i) { log.splice(i, 1); save(); render(); }
 
-function delLog(i) { log.splice(i, 1); save(); render(); }
+        function changeWeek(dir) {
+            week = Math.max(1, Math.min(CONFIG.totalWeeks, week + dir));
+            save(); render();
+        }
 
-function changeWeek(dir) {
-  week = Math.max(1, Math.min(CONFIG.totalWeeks, week + dir));
-  save(); render();
-}
-
-render();
-</script>
+        render();
+    </script>
 </body>
+
 </html>
