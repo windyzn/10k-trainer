@@ -20,15 +20,11 @@
             --text: #2e2e18;
             --muted: #7a8040;
             --hint: #b0b870;
-
-            /* Citrus accent — used for primary actions, progress, nav */
             --accent: #c8e040;
             --accent-dark: #9ab020;
             --accent-text: #3a4a08;
             --accent-bg: #f2f8c8;
             --accent-border: #b8d030;
-
-            /* Activity colours */
             --run: #1a6b38;
             --run-bg: #d6f0e2;
             --run-border: #7ec9a0;
@@ -49,7 +45,6 @@
             --skip-bg: #fce4d8;
             --skip-border: #e8916a;
             --skip-text: #5c1e00;
-
             --today-border: #c8e040;
             --prog: #c8e040;
             --radius: 14px;
@@ -64,15 +59,432 @@
 
         body {
             background: var(--bg);
-            background-image:
-                radial-gradient(circle at 15% 20%, rgba(200, 224, 64, 0.18) 0%, transparent 45%),
-                radial-gradient(circle at 85% 75%, rgba(200, 235, 210, 0.30) 0%, transparent 45%),
-                radial-gradient(circle at 55% 10%, rgba(220, 234, 100, 0.15) 0%, transparent 35%);
+            background-image: radial-gradient(circle at 15% 20%, rgba(200, 224, 64, 0.18) 0%, transparent 45%), radial-gradient(circle at 85% 75%, rgba(200, 235, 210, 0.30) 0%, transparent 45%), radial-gradient(circle at 55% 10%, rgba(220, 234, 100, 0.15) 0%, transparent 35%);
             color: var(--text);
             font-family: 'Nunito', sans-serif;
             font-size: 14px;
             min-height: 100vh;
             line-height: 1.5;
+        }
+
+        /* ══ ONBOARDING ══════════════════════════════════════════════════════════════ */
+        #onboarding {
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 48px 24px 80px;
+        }
+
+        .ob-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .ob-header h1 {
+            font-family: 'Lora', serif;
+            font-size: 32px;
+            font-style: italic;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .ob-header p {
+            font-size: 15px;
+            color: var(--muted);
+        }
+
+        .ob-progress {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .ob-step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border2);
+            transition: background .3s;
+        }
+
+        .ob-step-dot.active {
+            background: var(--accent-dark);
+        }
+
+        .ob-step-dot.done {
+            background: var(--accent);
+        }
+
+        .ob-step {
+            display: none;
+            animation: fadeIn .25s ease;
+        }
+
+        .ob-step.visible {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .ob-q {
+            font-family: 'Lora', serif;
+            font-size: 20px;
+            font-style: italic;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .ob-sub {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 22px;
+            line-height: 1.6;
+        }
+
+        .ob-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .ob-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 16px;
+            border: 1.5px solid var(--border2);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all .15s;
+            background: var(--surface);
+        }
+
+        .ob-option:hover {
+            border-color: var(--accent-border);
+            background: var(--accent-bg);
+        }
+
+        .ob-option.selected {
+            border-color: var(--accent-dark);
+            background: var(--accent-bg);
+        }
+
+        .ob-option .ob-opt-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--accent-bg);
+            border: 1.5px solid var(--accent-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .ob-option.selected .ob-opt-icon {
+            background: var(--accent);
+            border-color: var(--accent-dark);
+        }
+
+        .ob-option .ob-opt-text {
+            flex: 1;
+        }
+
+        .ob-option .ob-opt-label {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text);
+            display: block;
+        }
+
+        .ob-option .ob-opt-desc {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .ob-day-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-bottom: 28px;
+        }
+
+        .ob-day-btn {
+            padding: 10px 4px;
+            border: 1.5px solid var(--border2);
+            border-radius: 10px;
+            background: var(--surface);
+            text-align: center;
+            cursor: pointer;
+            transition: all .15s;
+        }
+
+        .ob-day-btn:hover {
+            border-color: var(--accent-border);
+            background: var(--accent-bg);
+        }
+
+        .ob-day-btn.selected {
+            border-color: var(--accent-dark);
+            background: var(--accent-bg);
+        }
+
+        .ob-day-btn.committed {
+            border-color: var(--run-border);
+            background: var(--run-bg);
+        }
+
+        .ob-day-name {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: var(--muted);
+            margin-bottom: 3px;
+        }
+
+        .ob-day-num {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .ob-commitments {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .ob-commit-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: var(--surface);
+            border: 1.5px solid var(--border2);
+            border-radius: 10px;
+            padding: 10px 12px;
+        }
+
+        .ob-commit-row .ob-commit-day {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--text);
+            min-width: 32px;
+        }
+
+        .ob-commit-row input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            color: var(--text);
+            outline: none;
+        }
+
+        .ob-commit-row select {
+            border: none;
+            background: transparent;
+            font-family: 'Nunito', sans-serif;
+            font-size: 12px;
+            color: var(--muted);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .ob-commit-intensity-sel {
+            font-weight: 700;
+            font-size: 11px !important;
+            padding: 3px 6px;
+            border-radius: 6px !important;
+            border: 1.5px solid var(--border2) !important;
+            background: var(--surface2) !important;
+        }
+
+        .ob-commit-intensity-sel option[value="easy"] {
+            color: #0e5f80;
+        }
+
+        .ob-commit-intensity-sel option[value="moderate"] {
+            color: #8a4500;
+        }
+
+        .ob-commit-intensity-sel option[value="hard"] {
+            color: #6b1f7a;
+        }
+
+        .ob-commit-row .ob-remove {
+            color: var(--hint);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0 4px;
+            border: none;
+            background: none;
+            transition: color .15s;
+        }
+
+        .ob-commit-row .ob-remove:hover {
+            color: var(--skip-text);
+        }
+
+        .ob-add-commit {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 8px 4px;
+            border: none;
+            background: none;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .ob-add-commit:hover {
+            color: var(--accent-text);
+        }
+
+        .ob-date-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .ob-date-row label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+
+        .ob-date-row input[type=date] {
+            border: 1.5px solid var(--border2);
+            border-radius: var(--radius-sm);
+            background: var(--surface);
+            color: var(--text);
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            padding: 8px 12px;
+            outline: none;
+        }
+
+        .ob-date-row input[type=date]:focus {
+            border-color: var(--accent-border);
+        }
+
+        .ob-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ob-btn {
+            padding: 10px 24px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border2);
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .15s;
+        }
+
+        .ob-btn-back {
+            background: transparent;
+            color: var(--muted);
+        }
+
+        .ob-btn-back:hover {
+            background: var(--surface);
+        }
+
+        .ob-btn-next {
+            background: var(--accent);
+            border-color: var(--accent-dark);
+            color: var(--accent-text);
+            min-width: 120px;
+        }
+
+        .ob-btn-next:hover {
+            background: #ddf050;
+        }
+
+        .ob-btn-next:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+        }
+
+        .ob-btn-generate {
+            background: var(--accent);
+            border-color: var(--accent-dark);
+            color: var(--accent-text);
+            font-size: 15px;
+            padding: 12px 32px;
+            border-radius: var(--radius);
+        }
+
+        .ob-btn-generate:hover {
+            background: #ddf050;
+        }
+
+        .ob-summary {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .ob-summary-title {
+            font-family: 'Lora', serif;
+            font-size: 16px;
+            font-style: italic;
+            color: var(--text);
+            margin-bottom: 14px;
+        }
+
+        .ob-summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ob-summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .ob-summary-label {
+            color: var(--muted);
+        }
+
+        .ob-summary-val {
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        /* ══ TRACKER ═════════════════════════════════════════════════════════════════ */
+        #tracker {
+            display: none;
         }
 
         .app {
@@ -81,7 +493,6 @@
             padding: 32px 20px 60px;
         }
 
-        /* Header */
         .header {
             display: flex;
             align-items: flex-start;
@@ -105,6 +516,13 @@
             color: var(--muted);
         }
 
+        .header-right {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
         .phase-pill {
             font-size: 12px;
             font-weight: 600;
@@ -114,10 +532,27 @@
             color: var(--accent-text);
             background: var(--accent-bg);
             white-space: nowrap;
-            margin-top: 4px;
         }
 
-        /* Stats row */
+        .reset-btn {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1.5px solid var(--border2);
+            color: var(--muted);
+            background: transparent;
+            cursor: pointer;
+            transition: all .15s;
+            white-space: nowrap;
+        }
+
+        .reset-btn:hover {
+            background: var(--skip-bg);
+            border-color: var(--skip-border);
+            color: var(--skip-text);
+        }
+
         .stats {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -130,7 +565,7 @@
             border: 1.5px solid var(--border);
             border-radius: var(--radius);
             padding: 14px 16px;
-            box-shadow: 0 2px 8px rgba(180, 130, 90, 0.07);
+            box-shadow: 0 2px 8px rgba(140, 150, 30, 0.07);
         }
 
         .stat-label {
@@ -155,7 +590,6 @@
             color: var(--hint);
         }
 
-        /* Progress bar */
         .prog-wrap {
             margin-bottom: 24px;
         }
@@ -167,12 +601,11 @@
             color: var(--muted);
             margin-bottom: 8px;
             font-weight: 600;
-            letter-spacing: .03em;
         }
 
         .prog-track {
             height: 8px;
-            background: rgba(180, 130, 90, 0.12);
+            background: rgba(140, 150, 30, 0.12);
             border-radius: 4px;
             overflow: hidden;
         }
@@ -181,10 +614,9 @@
             height: 100%;
             background: var(--prog);
             border-radius: 4px;
-            transition: width 0.5s ease;
+            transition: width .5s ease;
         }
 
-        /* Week nav */
         .week-nav {
             display: flex;
             align-items: center;
@@ -212,7 +644,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background .15s, border-color .15s, color .15s;
+            transition: all .15s;
         }
 
         .nav-btn:hover {
@@ -258,7 +690,6 @@
             margin-bottom: 14px;
         }
 
-        /* Calendar */
         .cal-grid {
             display: grid;
             grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -275,7 +706,7 @@
             display: flex;
             flex-direction: column;
             gap: 5px;
-            box-shadow: 0 2px 6px rgba(180, 130, 90, 0.05);
+            box-shadow: 0 2px 6px rgba(140, 150, 30, 0.05);
         }
 
         .day-col.is-today {
@@ -284,7 +715,7 @@
         }
 
         .day-col.is-light {
-            background: #fdfaf5;
+            background: #fafaef;
         }
 
         .day-head {
@@ -309,11 +740,6 @@
             font-weight: 600;
         }
 
-        .day-col.is-light .day-name {
-            color: var(--hint);
-        }
-
-        /* Session cards — high-contrast readable text */
         .session-card {
             border-radius: 8px;
             padding: 7px 8px;
@@ -343,7 +769,7 @@
             font-weight: 700;
             display: block;
             margin-bottom: 2px;
-            opacity: 0.75;
+            opacity: .75;
         }
 
         .session-card .s-label {
@@ -357,27 +783,21 @@
             font-size: 10px;
             font-weight: 600;
             margin-top: 3px;
-            letter-spacing: .02em;
-            opacity: 0.75;
+            opacity: .75;
         }
 
-        /* States */
         .session-card.state-pending {
-            opacity: 0.55;
+            opacity: .55;
         }
 
         .session-card.state-done {
             opacity: 1;
         }
 
-        .session-card.state-done .s-label {
-            text-decoration: line-through;
-            opacity: 0.6;
-        }
-
+        .session-card.state-done .s-label,
         .session-card.state-done .s-duration {
             text-decoration: line-through;
-            opacity: 0.5;
+            opacity: .55;
         }
 
         .session-card.state-done::after {
@@ -387,7 +807,7 @@
             right: 7px;
             font-size: 11px;
             font-weight: 700;
-            opacity: 0.7;
+            opacity: .7;
         }
 
         .session-card.state-skipped {
@@ -398,7 +818,7 @@
         }
 
         .session-card.state-skipped .s-label {
-            opacity: 0.65;
+            opacity: .65;
             font-style: italic;
         }
 
@@ -408,7 +828,7 @@
             font-weight: 600;
             font-style: italic;
             margin-top: 3px;
-            opacity: 0.8;
+            opacity: .8;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -420,14 +840,13 @@
             top: 5px;
             right: 7px;
             font-size: 13px;
-            opacity: 0.5;
+            opacity: .5;
         }
 
         .session-card.rescheduled {
             border-style: dashed !important;
         }
 
-        /* Type colour sets — background + border + text */
         .type-run {
             background: var(--run-bg);
             border-color: var(--run-border);
@@ -446,7 +865,6 @@
             color: var(--strength-text);
         }
 
-        /* Yoga — softer/lighter style to read as recovery, not a workout block */
         .type-yoga {
             background: #f0f8f0;
             border-color: #a8d4b0;
@@ -456,7 +874,7 @@
         }
 
         .type-yoga .s-type {
-            opacity: 0.6;
+            opacity: .6;
         }
 
         .rest-label {
@@ -464,17 +882,17 @@
             color: var(--hint);
             text-align: center;
             padding: 6px 0;
-            opacity: 0.4;
+            opacity: .4;
             font-style: italic;
             margin-top: auto;
         }
 
-        /* ── Modals ── */
+        /* Modals */
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(58, 46, 36, 0.38);
+            background: rgba(46, 46, 24, 0.4);
             z-index: 100;
             align-items: center;
             justify-content: center;
@@ -492,7 +910,7 @@
             padding: 24px;
             max-width: 420px;
             width: 100%;
-            box-shadow: 0 8px 32px rgba(58, 46, 36, 0.18);
+            box-shadow: 0 8px 32px rgba(46, 46, 24, 0.18);
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -527,7 +945,6 @@
         .undo-banner p {
             font-size: 13px;
             color: var(--skip-text);
-            line-height: 1.5;
         }
 
         .undo-banner p strong {
@@ -545,8 +962,6 @@
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
-            white-space: nowrap;
-            transition: background .15s;
         }
 
         .btn-undo-skip:hover {
@@ -644,26 +1059,14 @@
             color: var(--muted);
         }
 
-        .btn-undodone:hover {
-            background: #e8e0d8;
-        }
-
-        .btn-reschedule {
-            background: var(--accent-bg);
-            border-color: var(--accent-border);
-            color: var(--accent-text);
-        }
-
-        .btn-reschedule:hover {
-            background: #ddf050;
-        }
-
+        .btn-reschedule,
         .btn-confirm {
             background: var(--accent-bg);
             border-color: var(--accent-border);
             color: var(--accent-text);
         }
 
+        .btn-reschedule:hover,
         .btn-confirm:hover {
             background: #ddf050;
         }
@@ -678,7 +1081,6 @@
             background: #f5c8b0;
         }
 
-        /* Reschedule grid */
         .reschedule-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -707,7 +1109,7 @@
         }
 
         .rday-btn.rday-disabled {
-            opacity: 0.3;
+            opacity: .3;
             cursor: not-allowed;
         }
 
@@ -719,7 +1121,7 @@
 
         .rday-name {
             font-size: 9px;
-            opacity: 0.7;
+            opacity: .7;
             margin-bottom: 2px;
         }
 
@@ -727,15 +1129,12 @@
             font-size: 12px;
         }
 
-        /* Auto-log / edit fields */
         .field-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-bottom: 16px;
         }
-
-        .field {}
 
         .field.full {
             grid-column: 1/-1;
@@ -752,7 +1151,8 @@
         }
 
         .field input,
-        .field textarea {
+        .field textarea,
+        .field select {
             width: 100%;
             border: 1.5px solid var(--border2);
             border-radius: var(--radius-sm);
@@ -766,18 +1166,19 @@
         }
 
         .field input:focus,
-        .field textarea:focus {
+        .field textarea:focus,
+        .field select:focus {
             border-color: var(--accent-border);
         }
 
-        /* ── Stats panel ── */
+        /* Stats panel */
         .stats-panel {
             background: var(--surface);
             border: 1.5px solid var(--border);
             border-radius: var(--radius);
             padding: 20px;
             margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(180, 130, 90, 0.06);
+            box-shadow: 0 2px 8px rgba(140, 150, 30, 0.06);
         }
 
         .stats-panel-header {
@@ -851,7 +1252,7 @@
             margin-top: 1px;
         }
 
-        /* Log form */
+        /* Log form + history */
         .section-title {
             font-size: 11px;
             font-weight: 700;
@@ -867,7 +1268,7 @@
             border-radius: var(--radius);
             padding: 16px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(180, 130, 90, 0.06);
+            box-shadow: 0 2px 8px rgba(140, 150, 30, 0.06);
         }
 
         .form-row {
@@ -907,7 +1308,7 @@
         .form-row select {
             appearance: none;
             padding-right: 24px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239a7f6a'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237a8040'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 8px center;
             background-color: var(--surface2);
@@ -931,14 +1332,13 @@
             background: #ddf050;
         }
 
-        /* History — expandable rows */
         .history-wrap {
             background: var(--surface);
             border: 1.5px solid var(--border);
             border-radius: var(--radius);
             overflow: hidden;
             margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(180, 130, 90, 0.06);
+            box-shadow: 0 2px 8px rgba(140, 150, 30, 0.06);
         }
 
         .hist-row {
@@ -964,8 +1364,6 @@
         .hist-summary:hover {
             background: var(--surface2);
         }
-
-        .hist-summary .h-type {}
 
         .hist-summary .h-dur,
         .hist-summary .h-km {
@@ -1019,22 +1417,16 @@
             gap: 8px;
         }
 
-        .hist-edit-btn,
-        .hist-del-btn {
+        .hist-edit-btn {
             padding: 5px 14px;
             border-radius: var(--radius-sm);
-            border: 1.5px solid var(--border2);
+            border: 1.5px solid var(--accent-border);
+            background: var(--accent-bg);
+            color: var(--accent-text);
             font-family: 'Nunito', sans-serif;
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
-            transition: background .15s;
-        }
-
-        .hist-edit-btn {
-            background: var(--accent-bg);
-            border-color: var(--accent-border);
-            color: var(--accent-text);
         }
 
         .hist-edit-btn:hover {
@@ -1042,8 +1434,15 @@
         }
 
         .hist-del-btn {
+            padding: 5px 14px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border2);
             background: transparent;
             color: var(--muted);
+            font-family: 'Nunito', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
         }
 
         .hist-del-btn:hover {
@@ -1117,6 +1516,10 @@
                 height: 140px;
             }
 
+            .ob-day-grid {
+                gap: 5px;
+            }
+
             .hist-summary {
                 grid-template-columns: 72px 52px 52px 1fr auto;
             }
@@ -1126,226 +1529,374 @@
 
 <body>
 
-    <!-- ── Skip / session modal ── -->
-    <div class="modal-overlay" id="session-modal">
-        <div class="modal">
-            <h3 id="modal-heading">Skip this session?</h3>
-            <p class="modal-subtext" id="modal-subtext"></p>
-            <div class="undo-banner" id="undo-banner" style="display:none">
-                <p>Marked as skipped. <strong>Tap "Undo skip" to restore it.</strong></p>
-                <button class="btn-undo-skip" onclick="undoSkip()">Undo skip</button>
-            </div>
-            <div id="skip-form-section">
-                <div class="skip-reasons">
-                    <div class="reason-chip" onclick="selectReason(this,'Weather')">Weather</div>
-                    <div class="reason-chip" onclick="selectReason(this,'Too busy')">Too busy</div>
-                    <div class="reason-chip" onclick="selectReason(this,'Tired / recovering')">Tired / recovering</div>
-                    <div class="reason-chip" onclick="selectReason(this,'Injury check')">Injury check</div>
-                    <div class="reason-chip" onclick="selectReason(this,'Planned rest')">Planned rest</div>
-                    <div class="reason-chip" onclick="selectReason(this,'Travel')">Travel</div>
+    <!-- ══ ONBOARDING ════════════════════════════════════════════════════════════ -->
+    <div id="onboarding">
+        <div class="ob-header">
+            <h1>Let's build your plan</h1>
+            <p>A few quick questions to create a training schedule that fits your life.</p>
+        </div>
+
+        <div class="ob-progress" id="ob-progress"></div>
+
+        <!-- Step 1: Goal -->
+        <div class="ob-step visible" id="ob-step-0">
+            <p class="ob-q">What's your goal?</p>
+            <p class="ob-sub">We'll build the whole plan around this — length, intensity, everything.</p>
+            <div class="ob-options">
+                <div class="ob-option" onclick="selectOpt(this,'goal','fitness')">
+                    <div class="ob-opt-icon">🏃</div>
+                    <div class="ob-opt-text"><span class="ob-opt-label">General fitness</span><span
+                            class="ob-opt-desc">Build a running habit, no race in mind</span></div>
                 </div>
-                <div class="modal-custom">
-                    <input type="text" id="skip-custom" placeholder="Or type your own reason…" oninput="clearChips()">
+                <div class="ob-option" onclick="selectOpt(this,'goal','5k')">
+                    <div class="ob-opt-icon">🎯</div>
+                    <div class="ob-opt-text"><span class="ob-opt-label">5K</span><span class="ob-opt-desc">A great first
+                            race goal — 10–12 weeks</span></div>
+                </div>
+                <div class="ob-option" onclick="selectOpt(this,'goal','10k')">
+                    <div class="ob-opt-icon">📈</div>
+                    <div class="ob-opt-text"><span class="ob-opt-label">10K</span><span class="ob-opt-desc">Step up the
+                            distance — 16–18 weeks</span></div>
+                </div>
+                <div class="ob-option" onclick="selectOpt(this,'goal','half')">
+                    <div class="ob-opt-icon">🏅</div>
+                    <div class="ob-opt-text"><span class="ob-opt-label">Half marathon</span><span
+                            class="ob-opt-desc">The big leap — 20 weeks</span></div>
+                </div>
+                <div class="ob-option" onclick="selectOpt(this,'goal','marathon')">
+                    <div class="ob-opt-icon">🏆</div>
+                    <div class="ob-opt-text"><span class="ob-opt-label">Full marathon</span><span
+                            class="ob-opt-desc">The ultimate challenge — 24 weeks</span></div>
                 </div>
             </div>
-            <div class="modal-actions">
-                <button class="btn btn-ghost" onclick="closeModal('session-modal')">Cancel</button>
-                <button class="btn btn-undodone" id="btn-undodone" style="display:none" onclick="undoDone()">Mark
-                    undone</button>
-                <button class="btn btn-reschedule" id="btn-reschedule" style="display:none"
-                    onclick="openRescheduleModal()">Reschedule ↷</button>
-                <button class="btn btn-skip" id="btn-confirmskip" onclick="confirmSkip()">Skip session</button>
+            <div class="ob-nav"><span></span><button class="ob-btn ob-btn-next" onclick="nextStep()" id="next-0"
+                    disabled>Next →</button></div>
+        </div>
+
+        <!-- Step 2: Fitness level -->
+        <div class="ob-step" id="ob-step-1">
+            <p class="ob-q">How would you describe your current fitness?</p>
+            <p class="ob-sub">Be honest — the plan works better when it's calibrated to where you actually are right
+                now.</p>
+            <div class="ob-options">
+                <div class="ob-option" onclick="selectOpt(this,'level','beginner')">
+                    <div class="ob-opt-icon">🌱</div>
+                    <div class="ob-opt-text"><span class="ob-opt-label">Beginner</span><span class="ob-opt-desc">Haven't
+                            run regularly, or returning after 6+ months off</span></div>
+                </div>
+                <div class="ob-option" onclick="selectOpt(this,'level','intermediate')">
+                    <div class="ob-opt-icon">💪</div>
+                    <div class="ob-opt-text"><span class="ob-opt-label">Intermediate</span><span
+                            class="ob-opt-desc">Running occasionally, can comfortably run 20–30 min</span></div>
+                </div>
+                <div class="ob-option" onclick="selectOpt(this,'level','advanced')">
+                    <div class="ob-opt-icon">⚡</div>
+                    <div class="ob-opt-text"><span class="ob-opt-label">Advanced</span><span class="ob-opt-desc">Running
+                            regularly, looking to push further or faster</span></div>
+                </div>
+            </div>
+            <div class="ob-nav">
+                <button class="ob-btn ob-btn-back" onclick="prevStep()">← Back</button>
+                <button class="ob-btn ob-btn-next" onclick="nextStep()" id="next-1" disabled>Next →</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Days per week -->
+        <div class="ob-step" id="ob-step-2">
+            <p class="ob-q">How many days per week can you train?</p>
+            <p class="ob-sub">This counts running, pilates, and strength — not yoga, which we treat as a light recovery
+                add-on.</p>
+            <div class="ob-options">
+                <div class="ob-option" onclick="selectOpt(this,'daysPerWeek',3)">
+                    <div class="ob-opt-icon">3</div>
+                    <div class="ob-opt-text"><span class="ob-opt-label">3 days</span><span class="ob-opt-desc">A solid
+                            minimum — works well with a busy schedule</span></div>
+                </div>
+                <div class="ob-option" onclick="selectOpt(this,'daysPerWeek',4)">
+                    <div class="ob-opt-icon">4</div>
+                    <div class="ob-opt-text"><span class="ob-opt-label">4 days</span><span class="ob-opt-desc">Good
+                            balance of training and recovery</span></div>
+                </div>
+                <div class="ob-option" onclick="selectOpt(this,'daysPerWeek',5)">
+                    <div class="ob-opt-icon">5</div>
+                    <div class="ob-opt-text"><span class="ob-opt-label">5 days</span><span class="ob-opt-desc">High
+                            commitment — make sure rest days are protected</span></div>
+                </div>
+            </div>
+            <div class="ob-nav">
+                <button class="ob-btn ob-btn-back" onclick="prevStep()">← Back</button>
+                <button class="ob-btn ob-btn-next" onclick="nextStep()" id="next-2" disabled>Next →</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Rest days -->
+        <div class="ob-step" id="ob-step-3">
+            <p class="ob-q">Which days do you want kept free?</p>
+            <p class="ob-sub">Tap any days you want as guaranteed rest — the plan won't schedule anything on these.</p>
+            <div class="ob-day-grid" id="rest-day-grid"></div>
+            <div class="ob-nav">
+                <button class="ob-btn ob-btn-back" onclick="prevStep()">← Back</button>
+                <button class="ob-btn ob-btn-next" onclick="nextStep()">Next →</button>
+            </div>
+        </div>
+
+        <!-- Step 5: Fixed commitments -->
+        <div class="ob-step" id="ob-step-4">
+            <p class="ob-q">Any fixed classes or sessions?</p>
+            <p class="ob-sub">Add anything that's already in your week — pilates, spin, badminton, whatever. Tell us the
+                intensity so the plan can schedule runs sensibly around it.</p>
+            <div class="ob-commitments" id="ob-commit-list"></div>
+            <button class="ob-add-commit" onclick="addCommitment()">+ Add a session</button>
+            <div class="ob-nav" style="margin-top:24px">
+                <button class="ob-btn ob-btn-back" onclick="prevStep()">← Back</button>
+                <button class="ob-btn ob-btn-next" onclick="nextStep()">Next →</button>
+            </div>
+        </div>
+
+        <!-- Step 6: Start date + review -->
+        <div class="ob-step" id="ob-step-5">
+            <p class="ob-q">When do you want to start?</p>
+            <p class="ob-sub">Pick the Monday you want your first week to begin.</p>
+            <div class="ob-date-row">
+                <label>Start date</label>
+                <input type="date" id="ob-start-date"
+                    onchange="profile.startDate = new Date(this.value + 'T12:00:00'); updateSummary()">
+            </div>
+            <div class="ob-summary">
+                <div class="ob-summary-title">Your plan at a glance</div>
+                <div id="ob-summary-rows"></div>
+            </div>
+            <div class="ob-nav">
+                <button class="ob-btn ob-btn-back" onclick="prevStep()">← Back</button>
+                <button class="ob-btn ob-btn-generate" onclick="generateAndLaunch()">Build my plan →</button>
             </div>
         </div>
     </div>
 
-    <!-- ── Reschedule modal ── -->
-    <div class="modal-overlay" id="reschedule-modal">
-        <div class="modal">
-            <h3>Reschedule session</h3>
-            <p class="modal-subtext" id="reschedule-subtext"></p>
-            <div class="reschedule-grid" id="reschedule-grid"></div>
-            <div class="modal-actions">
-                <button class="btn btn-ghost" onclick="closeModal('reschedule-modal')">Cancel</button>
-                <button class="btn btn-confirm" id="btn-confirm-reschedule" onclick="confirmReschedule()" disabled
-                    style="opacity:.4">Move session</button>
+    <!-- ══ TRACKER ════════════════════════════════════════════════════════════════ -->
+    <div id="tracker">
+
+        <!-- Skip / session modal -->
+        <div class="modal-overlay" id="session-modal">
+            <div class="modal">
+                <h3 id="modal-heading">Skip this session?</h3>
+                <p class="modal-subtext" id="modal-subtext"></p>
+                <div class="undo-banner" id="undo-banner" style="display:none">
+                    <p>Marked as skipped. <strong>Tap "Undo skip" to restore it.</strong></p>
+                    <button class="btn-undo-skip" onclick="undoSkip()">Undo skip</button>
+                </div>
+                <div id="skip-form-section">
+                    <div class="skip-reasons">
+                        <div class="reason-chip" onclick="selectReason(this,'Weather')">Weather</div>
+                        <div class="reason-chip" onclick="selectReason(this,'Too busy')">Too busy</div>
+                        <div class="reason-chip" onclick="selectReason(this,'Tired / recovering')">Tired / recovering
+                        </div>
+                        <div class="reason-chip" onclick="selectReason(this,'Injury check')">Injury check</div>
+                        <div class="reason-chip" onclick="selectReason(this,'Planned rest')">Planned rest</div>
+                        <div class="reason-chip" onclick="selectReason(this,'Travel')">Travel</div>
+                    </div>
+                    <div class="modal-custom"><input type="text" id="skip-custom" placeholder="Or type your own reason…"
+                            oninput="clearChips()"></div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-ghost" onclick="closeModal('session-modal')">Cancel</button>
+                    <button class="btn btn-undodone" id="btn-undodone" style="display:none" onclick="undoDone()">Mark
+                        undone</button>
+                    <button class="btn btn-reschedule" id="btn-reschedule" style="display:none"
+                        onclick="openRescheduleModal()">Reschedule ↷</button>
+                    <button class="btn btn-skip" id="btn-confirmskip" onclick="confirmSkip()">Skip session</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- ── Auto-log modal (on check-off) ── -->
-    <div class="modal-overlay" id="autolog-modal">
-        <div class="modal">
-            <h3>Log this session?</h3>
-            <p class="modal-subtext">Fill in what actually happened, or just confirm the plan.</p>
-            <div class="field-grid">
-                <div class="field">
-                    <label>Duration (min)</label>
-                    <input type="number" id="al-dur" min="1" max="300">
+        <!-- Reschedule modal -->
+        <div class="modal-overlay" id="reschedule-modal">
+            <div class="modal">
+                <h3>Reschedule session</h3>
+                <p class="modal-subtext" id="reschedule-subtext"></p>
+                <div class="reschedule-grid" id="reschedule-grid"></div>
+                <div class="modal-actions">
+                    <button class="btn btn-ghost" onclick="closeModal('reschedule-modal')">Cancel</button>
+                    <button class="btn btn-confirm" id="btn-confirm-reschedule" onclick="confirmReschedule()" disabled
+                        style="opacity:.4">Move session</button>
                 </div>
-                <div class="field" id="al-km-wrap">
-                    <label>Distance (km)</label>
-                    <input type="number" id="al-km" min="0" max="50" step="0.1">
-                </div>
-                <div class="field full">
-                    <label>Notes</label>
-                    <textarea id="al-note" rows="3" placeholder="How did it feel?"></textarea>
-                </div>
-            </div>
-            <div class="modal-actions">
-                <button class="btn btn-ghost" onclick="closeModal('autolog-modal')">Skip logging</button>
-                <button class="btn btn-confirm" onclick="confirmAutoLog()">Save to history ✓</button>
             </div>
         </div>
-    </div>
 
-    <!-- ── Edit log entry modal ── -->
-    <div class="modal-overlay" id="edit-modal">
-        <div class="modal">
-            <h3>Edit session</h3>
-            <p class="modal-subtext" id="edit-modal-subtext"></p>
-            <div class="field-grid">
-                <div class="field">
-                    <label>Type</label>
-                    <select id="edit-type"
-                        style="width:100%;border:1.5px solid var(--border2);border-radius:var(--radius-sm);background:var(--surface2);color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;padding:7px 10px;outline:none;appearance:none;">
+        <!-- Auto-log modal -->
+        <div class="modal-overlay" id="autolog-modal">
+            <div class="modal">
+                <h3>Log this session?</h3>
+                <p class="modal-subtext">Fill in what actually happened, or just confirm the plan.</p>
+                <div class="field-grid">
+                    <div class="field"><label>Duration (min)</label><input type="number" id="al-dur" min="1" max="300">
+                    </div>
+                    <div class="field" id="al-km-wrap"><label>Distance (km)</label><input type="number" id="al-km"
+                            min="0" max="100" step="0.1"></div>
+                    <div class="field full"><label>Notes</label><textarea id="al-note" rows="3"
+                            placeholder="How did it feel?"></textarea></div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-ghost" onclick="closeModal('autolog-modal')">Skip logging</button>
+                    <button class="btn btn-confirm" onclick="confirmAutoLog()">Save to history ✓</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit log modal -->
+        <div class="modal-overlay" id="edit-modal">
+            <div class="modal">
+                <h3>Edit session</h3>
+                <p class="modal-subtext" id="edit-modal-subtext"></p>
+                <div class="field-grid">
+                    <div class="field"><label>Type</label>
+                        <select id="edit-type">
+                            <option value="run">Run</option>
+                            <option value="pilates">Pilates</option>
+                            <option value="yoga">Yoga</option>
+                            <option value="strength">Strength</option>
+                        </select>
+                    </div>
+                    <div class="field"><label>Duration (min)</label><input type="number" id="edit-dur" min="1"
+                            max="300"></div>
+                    <div class="field"><label>Distance (km)</label><input type="number" id="edit-km" min="0" max="100"
+                            step="0.1"></div>
+                    <div class="field full"><label>Notes</label><textarea id="edit-note" rows="4"
+                            placeholder="Notes…"></textarea></div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-ghost" onclick="closeModal('edit-modal')">Cancel</button>
+                    <button class="btn btn-danger" onclick="deleteLogFromEdit()">Delete</button>
+                    <button class="btn btn-confirm" onclick="saveEdit()">Save changes</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reset confirm modal -->
+        <div class="modal-overlay" id="reset-modal">
+            <div class="modal">
+                <h3>Start over?</h3>
+                <p class="modal-subtext">This will delete your current plan and all logged sessions. You'll go back to
+                    the questionnaire to build a new plan.</p>
+                <div class="modal-actions">
+                    <button class="btn btn-ghost" onclick="closeModal('reset-modal')">Keep my plan</button>
+                    <button class="btn btn-danger" onclick="confirmReset()">Yes, start over</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="app">
+            <div class="header">
+                <div class="header-left">
+                    <h1 id="tracker-title">Training Tracker</h1>
+                    <p id="tracker-subtitle">Loading your plan…</p>
+                </div>
+                <div class="header-right">
+                    <div class="phase-pill" id="phase-pill">–</div>
+                    <button class="reset-btn" onclick="openModal('reset-modal')">↺ New plan</button>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-label">This week</div>
+                    <div class="stat-value" id="s-done">0</div>
+                    <div class="stat-sub">sessions done</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Run min</div>
+                    <div class="stat-value" id="s-km">0</div>
+                    <div class="stat-sub">logged this week</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Skipped</div>
+                    <div class="stat-value" id="s-skipped">0</div>
+                    <div class="stat-sub">this week</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Progress</div>
+                    <div class="stat-value" id="s-pct">0%</div>
+                    <div class="stat-sub" id="s-pct-sub">of 18 weeks</div>
+                </div>
+            </div>
+
+            <div class="prog-wrap">
+                <div class="prog-meta"><span>Overall progress</span><span id="prog-label">Week 1</span></div>
+                <div class="prog-track">
+                    <div class="prog-bar" id="prog-bar" style="width:0%"></div>
+                </div>
+            </div>
+
+            <div class="stats-panel">
+                <div class="stats-panel-header">
+                    <span class="stats-panel-title">Your progress</span>
+                    <div class="chart-tabs">
+                        <button class="chart-tab active" onclick="switchChart('completion')">Completion</button>
+                        <button class="chart-tab" onclick="switchChart('runmin')">Run minutes</button>
+                        <button class="chart-tab" onclick="switchChart('streak')">Streak</button>
+                    </div>
+                </div>
+                <div class="chart-wrap"><canvas id="main-chart"></canvas></div>
+                <div class="milestone-row" id="milestone-row"></div>
+            </div>
+
+            <div class="week-nav">
+                <div class="week-nav-center">
+                    <button class="nav-btn" onclick="changeWeek(-1)">&#8592;</button>
+                    <span class="week-label" id="week-label">Week 1</span>
+                    <button class="nav-btn" onclick="changeWeek(1)">&#8594;</button>
+                </div>
+                <div class="legend">
+                    <div class="leg">
+                        <div class="leg-dot" style="background:var(--run-border)"></div>Run
+                    </div>
+                    <div class="leg">
+                        <div class="leg-dot" style="background:var(--pilates-border)"></div>Pilates
+                    </div>
+                    <div class="leg">
+                        <div class="leg-dot" style="background:#a8d4b0;border:1px dashed #6aaa7c"></div>Yoga
+                    </div>
+                    <div class="leg">
+                        <div class="leg-dot" style="background:var(--strength-border)"></div>Strength
+                    </div>
+                    <div class="leg">
+                        <div class="leg-dot" style="background:var(--skip-border)"></div>Skipped
+                    </div>
+                </div>
+            </div>
+            <p class="tap-hint">Tap once to mark done · tap again to skip, reschedule, or undo</p>
+
+            <div class="cal-grid" id="cal-grid"></div>
+
+            <div class="section-title">Log a session manually</div>
+            <div class="log-form">
+                <div class="form-row">
+                    <select id="log-type">
                         <option value="run">Run</option>
                         <option value="pilates">Pilates</option>
                         <option value="yoga">Yoga</option>
                         <option value="strength">Strength</option>
                     </select>
-                </div>
-                <div class="field">
-                    <label>Duration (min)</label>
-                    <input type="number" id="edit-dur" min="1" max="300">
-                </div>
-                <div class="field">
-                    <label>Distance (km)</label>
-                    <input type="number" id="edit-km" min="0" max="50" step="0.1">
-                </div>
-                <div class="field full">
-                    <label>Notes</label>
-                    <textarea id="edit-note" rows="4" placeholder="Notes…"></textarea>
+                    <input type="number" id="log-dur" placeholder="min" min="1" max="300">
+                    <input type="number" id="log-km" placeholder="km" min="0" max="100" step="0.1">
+                    <input type="text" id="log-note" placeholder="Notes (optional)">
+                    <button class="log-btn" onclick="logSession()">Log session →</button>
                 </div>
             </div>
-            <div class="modal-actions">
-                <button class="btn btn-ghost" onclick="closeModal('edit-modal')">Cancel</button>
-                <button class="btn btn-danger" onclick="deleteLogFromEdit()">Delete</button>
-                <button class="btn btn-confirm" onclick="saveEdit()">Save changes</button>
-            </div>
+
+            <div class="section-title">Session history — week <span id="hist-week">1</span></div>
+            <div class="history-wrap" id="history-wrap"></div>
         </div>
-    </div>
+    </div><!-- /tracker -->
 
-    <div class="app">
-        <div class="header">
-            <div class="header-left">
-                <h1>10K Training</h1>
-                <p>18-week plan — run, pilates, yoga &amp; strength</p>
-            </div>
-            <div class="phase-pill" id="phase-pill">Phase 1 — Return</div>
-        </div>
-
-        <div class="stats">
-            <div class="stat">
-                <div class="stat-label">This week</div>
-                <div class="stat-value" id="s-done">0</div>
-                <div class="stat-sub">sessions done</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Run min</div>
-                <div class="stat-value" id="s-km">0</div>
-                <div class="stat-sub">logged this week</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Skipped</div>
-                <div class="stat-value" id="s-skipped">0</div>
-                <div class="stat-sub">this week</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Progress</div>
-                <div class="stat-value" id="s-pct">0%</div>
-                <div class="stat-sub">of 18 weeks</div>
-            </div>
-        </div>
-
-        <div class="prog-wrap">
-            <div class="prog-meta"><span>Overall progress</span><span id="prog-label">Week 1 of 18</span></div>
-            <div class="prog-track">
-                <div class="prog-bar" id="prog-bar" style="width:0%"></div>
-            </div>
-        </div>
-
-        <div class="stats-panel">
-            <div class="stats-panel-header">
-                <span class="stats-panel-title">Your progress</span>
-                <div class="chart-tabs">
-                    <button class="chart-tab active" onclick="switchChart('completion')">Completion</button>
-                    <button class="chart-tab" onclick="switchChart('runmin')">Run minutes</button>
-                    <button class="chart-tab" onclick="switchChart('streak')">Streak</button>
-                </div>
-            </div>
-            <div class="chart-wrap"><canvas id="main-chart"></canvas></div>
-            <div class="milestone-row" id="milestone-row"></div>
-        </div>
-
-        <div class="week-nav">
-            <div class="week-nav-center">
-                <button class="nav-btn" onclick="changeWeek(-1)">&#8592;</button>
-                <span class="week-label" id="week-label">Week 1</span>
-                <button class="nav-btn" onclick="changeWeek(1)">&#8594;</button>
-            </div>
-            <div class="legend">
-                <div class="leg">
-                    <div class="leg-dot" style="background:var(--run-border)"></div>Run
-                </div>
-                <div class="leg">
-                    <div class="leg-dot" style="background:var(--pilates-border)"></div>Pilates
-                </div>
-                <div class="leg">
-                    <div class="leg-dot" style="background:#a8d4b0;border:1px dashed #6aaa7c"></div>Yoga
-                </div>
-                <div class="leg">
-                    <div class="leg-dot" style="background:var(--strength-border)"></div>Strength
-                </div>
-                <div class="leg">
-                    <div class="leg-dot" style="background:var(--skip-border)"></div>Skipped
-                </div>
-            </div>
-        </div>
-
-        <p class="tap-hint">Tap once to mark done · tap again to skip, reschedule, or undo</p>
-
-        <div class="cal-grid" id="cal-grid"></div>
-
-        <div class="section-title">Log a session manually</div>
-        <div class="log-form">
-            <div class="form-row">
-                <select id="log-type">
-                    <option value="run">Run</option>
-                    <option value="pilates">Pilates</option>
-                    <option value="yoga">Yoga</option>
-                    <option value="strength">Strength</option>
-                </select>
-                <input type="number" id="log-dur" placeholder="min" min="1" max="300">
-                <input type="number" id="log-km" placeholder="km" min="0" max="50" step="0.1">
-                <input type="text" id="log-note" placeholder="Notes (optional)">
-                <button class="log-btn" onclick="logSession()">Log session &#8594;</button>
-            </div>
-        </div>
-
-        <div class="section-title">Session history — week <span id="hist-week">1</span></div>
-        <div class="history-wrap" id="history-wrap"></div>
-    </div>
-
-    <script src="config.js"></script>
-    <script src="schedule.js"></script>
     <script>
         const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         const DAYS_SHORT = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-        // Wed=2, Sat=5, Sun=6 are light days
-        const LIGHT_DAYS = new Set([2, 5, 6]);
+        const STORAGE_KEY = '_10k_app_v6';
 
-        // ── State ─────────────────────────────────────────────────────────────────────
+        // ── App state ─────────────────────────────────────────────────────────────────
+        let SCHEDULE = {};
+        let CONFIG = {};
         let week = 1;
         let sessionState = {};
         let skipReasons = {};
@@ -1354,26 +1905,357 @@
         let activeChart = 'completion';
         let chartInst = null;
 
-        try {
-            const raw = localStorage.getItem('_10k_tracker_v5');
-            if (raw) {
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return false;
                 const d = JSON.parse(raw);
+                if (!d.config || !d.schedule) return false;
+                SCHEDULE = d.schedule;
+                CONFIG = d.config;
+                CONFIG.startDate = new Date(d.config.startDate);
                 sessionState = d.sessionState || {};
                 skipReasons = d.skipReasons || {};
                 rescheduled = d.rescheduled || {};
                 log = d.log || [];
                 week = d.week || 1;
-            }
-        } catch (e) { }
+                return true;
+            } catch (e) { return false; }
+        }
 
-        function save() {
-            try { localStorage.setItem('_10k_tracker_v5', JSON.stringify({ sessionState, skipReasons, rescheduled, log, week })); } catch (e) { }
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    schedule: SCHEDULE, config: { ...CONFIG, startDate: CONFIG.startDate?.toISOString() },
+                    sessionState, skipReasons, rescheduled, log, week
+                }));
+            } catch (e) { }
+        }
+
+        // ── Onboarding ────────────────────────────────────────────────────────────────
+        let currentStep = 0;
+        const TOTAL_STEPS = 6;
+        const profile = { goal: null, level: null, daysPerWeek: 3, restDays: [], commitments: [], startDate: null };
+
+        function initOnboarding() {
+            // Default start date = next Monday
+            const today = new Date();
+            const daysToMon = (8 - today.getDay()) % 7 || 7;
+            const nextMon = new Date(today);
+            nextMon.setDate(today.getDate() + daysToMon);
+            profile.startDate = nextMon;
+            const iso = nextMon.toISOString().split('T')[0];
+            document.getElementById('ob-start-date').value = iso;
+
+            buildProgressDots();
+            buildRestDayGrid();
+            updateProgress();
+        }
+
+        function buildProgressDots() {
+            const el = document.getElementById('ob-progress');
+            el.innerHTML = '';
+            for (let i = 0; i < TOTAL_STEPS; i++) {
+                const d = document.createElement('div');
+                d.className = 'ob-step-dot';
+                d.id = `dot-${i}`;
+                el.appendChild(d);
+            }
+        }
+
+        function buildRestDayGrid() {
+            const grid = document.getElementById('rest-day-grid');
+            grid.innerHTML = '';
+            const today = new Date();
+            DAYS.forEach((d, i) => {
+                const dt = new Date(today);
+                dt.setDate(today.getDate() - today.getDay() + 1 + i);
+                const btn = document.createElement('div');
+                btn.className = 'ob-day-btn';
+                btn.id = `rday-${i}`;
+                btn.innerHTML = `<div class="ob-day-name">${d.slice(0, 3)}</div><div class="ob-day-num">${dt.getDate()}</div>`;
+                btn.onclick = () => toggleRestDay(i, btn);
+                grid.appendChild(btn);
+            });
+        }
+
+        function toggleRestDay(i, btn) {
+            const idx = profile.restDays.indexOf(i);
+            if (idx >= 0) { profile.restDays.splice(idx, 1); btn.classList.remove('selected'); }
+            else { profile.restDays.push(i); btn.classList.add('selected'); }
+        }
+
+        let commitCount = 0;
+        function addCommitment() {
+            const list = document.getElementById('ob-commit-list');
+            const id = commitCount++;
+            const row = document.createElement('div');
+            row.className = 'ob-commit-row';
+            row.id = `commit-${id}`;
+            row.innerHTML = `
+    <select class="ob-commit-day-sel" onchange="updateCommitment(${id})">
+      ${DAYS.map((d, i) => `<option value="${i}">${d}</option>`).join('')}
+    </select>
+    <input type="text" class="ob-commit-label-inp" placeholder="e.g. Pilates, Badminton…" oninput="updateCommitment(${id})">
+    <select class="ob-commit-intensity-sel" onchange="updateCommitment(${id})">
+      <option value="easy">Easy</option>
+      <option value="moderate" selected>Moderate</option>
+      <option value="hard">Hard</option>
+    </select>
+    <button class="ob-remove" onclick="removeCommitment(${id})">×</button>`;
+            list.appendChild(row);
+            profile.commitments.push({ id, day: 0, label: '', intensity: 'moderate' });
+        }
+
+        function updateCommitment(id) {
+            const row = document.getElementById(`commit-${id}`);
+            const entry = profile.commitments.find(c => c.id === id);
+            if (!entry || !row) return;
+            entry.day = parseInt(row.querySelector('.ob-commit-day-sel').value);
+            entry.label = row.querySelector('.ob-commit-label-inp').value.trim() || 'Session';
+            entry.intensity = row.querySelector('.ob-commit-intensity-sel').value;
+        }
+
+        function removeCommitment(id) {
+            document.getElementById(`commit-${id}`)?.remove();
+            profile.commitments = profile.commitments.filter(c => c.id !== id);
+        }
+
+        function selectOpt(el, key, val) {
+            el.closest('.ob-options').querySelectorAll('.ob-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            profile[key] = val;
+            const nextBtn = document.getElementById(`next-${currentStep}`);
+            if (nextBtn) { nextBtn.disabled = false; }
+        }
+
+        function updateProgress() {
+            for (let i = 0; i < TOTAL_STEPS; i++) {
+                const dot = document.getElementById(`dot-${i}`);
+                if (!dot) continue;
+                dot.className = 'ob-step-dot' + (i < currentStep ? ' done' : i === currentStep ? ' active' : '');
+            }
+        }
+
+        function nextStep() {
+            document.getElementById(`ob-step-${currentStep}`).classList.remove('visible');
+            currentStep++;
+            document.getElementById(`ob-step-${currentStep}`).classList.add('visible');
+            updateProgress();
+            if (currentStep === TOTAL_STEPS - 1) updateSummary();
+        }
+
+        function prevStep() {
+            document.getElementById(`ob-step-${currentStep}`).classList.remove('visible');
+            currentStep--;
+            document.getElementById(`ob-step-${currentStep}`).classList.add('visible');
+            updateProgress();
+        }
+
+        const GOAL_NAMES = { fitness: 'General fitness', '5k': '5K', '10k': '10K', half: 'Half marathon', marathon: 'Full marathon' };
+        const LEVEL_NAMES = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' };
+        const WEEK_COUNTS = { fitness: 10, '5k': 12, '10k': 18, half: 20, marathon: 24 };
+
+        function updateSummary() {
+            const rows = [
+                ['Goal', GOAL_NAMES[profile.goal] || '–'],
+                ['Fitness level', LEVEL_NAMES[profile.level] || '–'],
+                ['Active days', `${profile.daysPerWeek} per week`],
+                ['Rest days', profile.restDays.length ? profile.restDays.map(d => DAYS[d]).join(', ') : 'None set'],
+                ['Fixed sessions', profile.commitments.length
+                    ? profile.commitments.map(c => `${DAYS[c.day]}: ${c.label || 'Session'} (${c.intensity || 'moderate'})`).join(', ')
+                    : 'None'],
+                ['Duration', `${WEEK_COUNTS[profile.goal] || 18} weeks`],
+                ['Starting', profile.startDate ? profile.startDate.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }) : '–'],
+            ];
+            document.getElementById('ob-summary-rows').innerHTML = rows.map(([l, v]) =>
+                `<div class="ob-summary-row"><span class="ob-summary-label">${l}</span><span class="ob-summary-val">${v}</span></div>`
+            ).join('');
+        }
+
+        // ── Plan generation engine ────────────────────────────────────────────────────
+        function generatePlan(p) {
+            const WEEK_COUNTS = { fitness: 10, '5k': 12, '10k': 18, half: 20, marathon: 24 };
+            const GOAL_LABELS = { fitness: 'Running Fitness', '5k': '5K', '10k': '10K', half: 'Half Marathon', marathon: 'Marathon' };
+            const totalWeeks = WEEK_COUNTS[p.goal] || 18;
+            const goalLabel = GOAL_LABELS[p.goal] || '10K';
+
+            // ── Day allocation ──────────────────────────────────────────────────────────
+            const restDays = new Set(p.restDays || []);
+            const commitMap = {};  // day -> { label, intensity }
+            (p.commitments || []).forEach(c => {
+                commitMap[c.day] = { label: c.label || 'Session', intensity: c.intensity || 'moderate' };
+            });
+            const commitDays = new Set(Object.keys(commitMap).map(Number));
+
+            // Scheduling rule: don't put a hard or moderate run the day before a hard/moderate commitment
+            const protectedCommitDays = new Set(
+                Object.entries(commitMap)
+                    .filter(([, v]) => v.intensity === 'hard' || v.intensity === 'moderate')
+                    .map(([d]) => Number(d))
+            );
+            const noHardBefore = new Set([...protectedCommitDays].map(d => (d + 6) % 7));
+
+            // Build candidate active days in preferred order (avoid known rest + hard-before days for runs)
+            const preferred = [0, 1, 3, 4, 2, 5, 6]; // Mon Tue Thu Fri Wed Sat Sun
+            const active = preferred.filter(d => !restDays.has(d) && !commitDays.has(d));
+            const runCands = active.sort((a, b) => (noHardBefore.has(a) ? 1 : 0) - (noHardBefore.has(b) ? 1 : 0));
+
+            const daysPerWeek = p.daysPerWeek || 4;
+            const numRuns = Math.min(3, daysPerWeek - Math.min(commitDays.size, 1));
+            const runDays = runCands.slice(0, numRuns).sort((a, b) => a - b);
+            const longRunDay = runDays[runDays.length - 1];
+            const tempoDay = runDays.length >= 2 ? runDays[1] : runDays[0];
+
+            // Support slots (non-run, non-committed, non-rest)
+            const supportCands = active.filter(d => !runDays.includes(d));
+            const pilatesDay = supportCands[0] ?? null;
+            const strengthDay = supportCands[1] ?? null;
+
+            // ── Phase labels ────────────────────────────────────────────────────────────
+            const phases = buildPhaseLabels(p.goal, totalWeeks);
+
+            // ── Week-by-week schedule ───────────────────────────────────────────────────
+            const schedule = {};
+            const walkRunWeeks = p.level === 'beginner' ? Math.round(totalWeeks * 0.28) : p.level === 'intermediate' ? Math.round(totalWeeks * 0.15) : 0;
+            const startPeakMin = { beginner: 10, intermediate: 18, advanced: 28 }[p.level] || 10;
+            const peakMin = { fitness: 40, '5k': 35, '10k': 60, half: 90, marathon: 130 }[p.goal] || 60;
+
+            for (let w = 1; w <= totalWeeks; w++) {
+                const isDeload = w % 4 === 0;
+                const isRaceWk = w === totalWeeks;
+                const deload = isDeload ? 0.6 : 1.0;
+                const sessions = [];
+
+                // Run sessions
+                runDays.forEach(day => {
+                    const isLong = day === longRunDay;
+                    const isTempo = !isDeload && !isRaceWk && day === tempoDay && w > walkRunWeeks + 2;
+
+                    if (isRaceWk && isLong) {
+                        const raceLabel = { fitness: 'Parkrun!', '5k': '5K — race day!', '10k': '10K — race day!', half: 'Half marathon — race day!', marathon: 'Marathon — race day!' }[p.goal] || 'Race day!';
+                        sessions.push({ day, type: 'run', label: raceLabel, duration: null });
+                    } else if (w <= walkRunWeeks) {
+                        const prog = w / walkRunWeeks;
+                        const runM = Math.max(1, Math.round(1 + prog * 3));
+                        const wlkM = Math.max(1, Math.round(3 - prog * 2));
+                        const reps = isLong ? Math.round(4 + prog * 4) : Math.round(3 + prog * 3);
+                        const dur = Math.round(Math.min((runM + wlkM) * reps * deload, 40));
+                        sessions.push({ day, type: 'run', label: `Run ${runM} min / walk ${wlkM} min ×${reps}`, duration: dur });
+                    } else {
+                        const prog = (w - 1) / (totalWeeks - 1);
+                        const base = Math.round(startPeakMin + prog * (peakMin - startPeakMin));
+                        const raw = isLong ? Math.round(base * 1.3) : isTempo ? Math.round(base * 0.85) : base;
+                        const dur = Math.round(Math.min(raw * deload * (isRaceWk ? 0.5 : 1), peakMin));
+                        const label = isRaceWk ? `Easy shakeout ${dur} min` : isDeload ? `${dur} min easy — deload` : isLong ? `${dur} min easy — long run` : isTempo ? `${dur} min tempo` : `${dur} min easy`;
+                        if (dur >= 8) sessions.push({ day, type: 'run', label, duration: dur });
+                    }
+                    // Yoga as evening add-on on run days (not deload/race)
+                    if (!isDeload && !isRaceWk) sessions.push({ day, type: 'yoga', label: 'Yoga — evening stretch' });
+                });
+
+                // Fixed commitments — intensity drives card colour, label is the activity name
+                Object.entries(commitMap).forEach(([dayStr, info]) => {
+                    // Map intensity to a display type for card colouring
+                    const displayType = info.intensity === 'hard' ? 'strength'
+                        : info.intensity === 'moderate' ? 'pilates'
+                            : 'yoga';  // easy = yoga-style soft card
+                    const suffix = isDeload ? ' (easy today)' : '';
+                    sessions.push({ day: Number(dayStr), type: displayType, label: info.label + suffix, intensity: info.intensity, isFixed: true });
+                });
+
+                // Pilates slot — only add if no moderate/hard fixed commitment already fills a support day
+                const hardFixedDays = new Set(
+                    Object.entries(commitMap).filter(([, v]) => v.intensity !== 'easy').map(([d]) => Number(d))
+                );
+                if (pilatesDay !== null && !hardFixedDays.has(pilatesDay) && !isDeload && !isRaceWk) {
+                    sessions.push({ day: pilatesDay, type: 'pilates', label: 'Weighted pilates' });
+                }
+
+                // Strength (select weeks only) — skip if a hard fixed commitment already on that day
+                if (strengthDay !== null && !hardFixedDays.has(strengthDay) && !isDeload && !isRaceWk && daysPerWeek >= 4) {
+                    if ([3, 6, 9, 12, 15, 17].some(sw => Math.abs(w - sw) <= 1)) {
+                        sessions.push({ day: strengthDay, type: 'strength', label: 'Strength & conditioning 20 min' });
+                    }
+                }
+
+                // Deload yoga day
+                if (isDeload) {
+                    const yogaDay = active.find(d => !runDays.includes(d) && !commitDays.has(d));
+                    if (yogaDay != null) sessions.push({ day: yogaDay, type: 'yoga', label: 'Yoga — gentle recovery' });
+                }
+
+                // Sort by day, yoga after other sessions on same day
+                sessions.sort((a, b) => a.day - b.day || (a.type === 'yoga' ? 1 : -1));
+                schedule[String(w)] = sessions;
+            }
+
+            return {
+                schedule,
+                config: {
+                    goalLabel,
+                    goal: p.goal,
+                    level: p.level,
+                    totalWeeks,
+                    startDate: p.startDate ? p.startDate.toISOString() : new Date().toISOString(),
+                    phases,
+                }
+            };
+        }
+
+        function buildPhaseLabels(goal, totalWeeks) {
+            const g = goal;
+            if (g === '5k') return [{ max: Math.round(totalWeeks * .35), label: 'Phase 1 — Build base' }, { max: Math.round(totalWeeks * .7), label: 'Phase 2 — Build endurance' }, { max: totalWeeks, label: 'Phase 3 — 5K ready' }];
+            if (g === '10k') return [{ max: Math.round(totalWeeks * .28), label: 'Phase 1 — Return to running' }, { max: Math.round(totalWeeks * .55), label: 'Phase 2 — Build base' }, { max: Math.round(totalWeeks * .85), label: 'Phase 3 — 5K ready' }, { max: totalWeeks, label: 'Phase 4 — 10K build' }];
+            if (g === 'half') return [{ max: Math.round(totalWeeks * .2), label: 'Phase 1 — Foundation' }, { max: Math.round(totalWeeks * .45), label: 'Phase 2 — Aerobic base' }, { max: Math.round(totalWeeks * .7), label: 'Phase 3 — Endurance' }, { max: Math.round(totalWeeks * .9), label: 'Phase 4 — Race prep' }, { max: totalWeeks, label: 'Phase 5 — Taper' }];
+            if (g === 'marathon') return [{ max: Math.round(totalWeeks * .15), label: 'Phase 1 — Base' }, { max: Math.round(totalWeeks * .38), label: 'Phase 2 — Aerobic build' }, { max: Math.round(totalWeeks * .6), label: 'Phase 3 — Endurance' }, { max: Math.round(totalWeeks * .8), label: 'Phase 4 — Peak' }, { max: Math.round(totalWeeks * .92), label: 'Phase 5 — Race prep' }, { max: totalWeeks, label: 'Phase 6 — Taper' }];
+            return [{ max: Math.round(totalWeeks * .4), label: 'Phase 1 — Getting started' }, { max: totalWeeks, label: 'Phase 2 — Building fitness' }];
+        }
+
+        function generateAndLaunch() {
+            if (!profile.goal || !profile.level || !profile.startDate) return;
+            const result = generatePlan(profile);
+            SCHEDULE = result.schedule;
+            CONFIG = result.config;
+            week = 1;
+            sessionState = {};
+            skipReasons = {};
+            rescheduled = {};
+            log = [];
+            saveState();
+            launchTracker();
+        }
+
+        // ── Tracker launch ────────────────────────────────────────────────────────────
+        function launchTracker() {
+            document.getElementById('onboarding').style.display = 'none';
+            document.getElementById('tracker').style.display = 'block';
+            document.getElementById('tracker-title').textContent = `${CONFIG.goalLabel || '10K'} Training`;
+            document.getElementById('tracker-subtitle').textContent = `${CONFIG.totalWeeks}-week plan · started ${CONFIG.startDate ? new Date(CONFIG.startDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}`;
+            document.getElementById('s-pct-sub').textContent = `of ${CONFIG.totalWeeks} weeks`;
+            render();
+        }
+
+        function confirmReset() {
+            localStorage.removeItem(STORAGE_KEY);
+            closeModal('reset-modal');
+            document.getElementById('tracker').style.display = 'none';
+            document.getElementById('onboarding').style.display = 'block';
+            currentStep = 0;
+            Object.assign(profile, { goal: null, level: null, daysPerWeek: 3, restDays: [], commitments: [], startDate: null });
+            SCHEDULE = {}; CONFIG = {}; sessionState = {}; skipReasons = {}; rescheduled = {}; log = []; week = 1;
+            document.querySelectorAll('.ob-step').forEach((s, i) => { s.classList.toggle('visible', i === 0); });
+            document.querySelectorAll('.ob-option').forEach(o => o.classList.remove('selected'));
+            document.getElementById('ob-commit-list').innerHTML = '';
+            commitCount = 0;
+            initOnboarding();
         }
 
         // ── Helpers ───────────────────────────────────────────────────────────────────
         function getPhase(w) {
-            for (const p of CONFIG.phases) if (w <= p.max) return p.label;
-            return CONFIG.phases[CONFIG.phases.length - 1].label;
+            const phases = CONFIG.phases || [];
+            for (const p of phases) if (w <= p.max) return p.label;
+            return phases[phases.length - 1]?.label || '';
         }
         function getDate(w, d) {
             const dt = new Date(CONFIG.startDate);
@@ -1381,7 +2263,7 @@
             return dt;
         }
         function todayWD() {
-            const diff = Math.floor((new Date() - CONFIG.startDate) / 86400000);
+            const diff = Math.floor((new Date() - new Date(CONFIG.startDate)) / 86400000);
             if (diff < 0 || diff >= CONFIG.totalWeeks * 7) return null;
             return { w: Math.floor(diff / 7) + 1, d: diff % 7 };
         }
@@ -1398,15 +2280,11 @@
             return m[t] || '';
         }
         function getActsForDay(w, d) {
-            const base = (SCHEDULE[String(w)] || []).filter(s => s.day === d).map((act, ai) => ({
-                act, key: `${w}-${d}-${ai}`, isRescheduled: false
-            }));
+            const base = (SCHEDULE[String(w)] || []).filter(s => s.day === d).map((act, ai) => ({ act, key: `${w}-${d}-${ai}`, isRescheduled: false }));
             const extra = [];
             Object.entries(rescheduled).forEach(([rkey, info]) => {
                 const parts = rkey.split('-');
-                if (parseInt(parts[0]) === w && parseInt(parts[1]) === d) {
-                    extra.push({ act: info.act, key: rkey, isRescheduled: true, fromKey: info.fromKey });
-                }
+                if (parseInt(parts[0]) === w && parseInt(parts[1]) === d) extra.push({ act: info.act, key: rkey, isRescheduled: true });
             });
             return [...base, ...extra];
         }
@@ -1414,9 +2292,15 @@
         // ── Skip modal ────────────────────────────────────────────────────────────────
         let pendingKey = null, pendingAct = null, selReason = null;
 
-        function openSessionModal(key, act, currentState) {
+        function openModal(id) { document.getElementById(id).classList.add('open'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+        document.querySelectorAll('.modal-overlay').forEach(el => {
+            el.addEventListener('click', function (e) { if (e.target === this) this.classList.remove('open'); });
+        });
+
+        function openSessionModal(key, act, st) {
             pendingKey = key; pendingAct = act; selReason = null;
-            const isSkipped = currentState === 'skipped', isDone = currentState === 'done';
+            const isSkipped = st === 'skipped', isDone = st === 'done';
             document.getElementById('modal-heading').textContent = isSkipped ? 'Session skipped' : 'Skip this session?';
             document.getElementById('modal-subtext').textContent = isSkipped ? 'Undo if this was a mistake.' : `Skipping "${act.label}". Reason? (optional)`;
             document.getElementById('undo-banner').style.display = isSkipped ? 'flex' : 'none';
@@ -1426,12 +2310,8 @@
             document.getElementById('btn-reschedule').style.display = (!isSkipped && !key.startsWith('r-')) ? 'inline-block' : 'none';
             document.getElementById('skip-custom').value = '';
             document.querySelectorAll('.reason-chip').forEach(c => c.classList.remove('selected'));
-            document.getElementById('session-modal').classList.add('open');
+            openModal('session-modal');
         }
-        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-        document.querySelectorAll('.modal-overlay').forEach(el => {
-            el.addEventListener('click', function (e) { if (e.target === this) this.classList.remove('open'); });
-        });
         function selectReason(el, r) {
             document.querySelectorAll('.reason-chip').forEach(c => c.classList.remove('selected'));
             el.classList.add('selected'); selReason = r;
@@ -1443,17 +2323,15 @@
         }
         function confirmSkip() {
             if (!pendingKey) return;
-            const custom = document.getElementById('skip-custom').value.trim();
             sessionState[pendingKey] = 'skipped';
-            skipReasons[pendingKey] = custom || selReason || 'Skipped';
-            save(); closeModal('session-modal'); render();
+            skipReasons[pendingKey] = document.getElementById('skip-custom').value.trim() || selReason || 'Skipped';
+            saveState(); closeModal('session-modal'); render();
         }
-        function undoSkip() { if (!pendingKey) return; delete sessionState[pendingKey]; delete skipReasons[pendingKey]; save(); closeModal('session-modal'); render(); }
-        function undoDone() { if (!pendingKey) return; delete sessionState[pendingKey]; delete skipReasons[pendingKey]; save(); closeModal('session-modal'); render(); }
+        function undoSkip() { if (!pendingKey) return; delete sessionState[pendingKey]; delete skipReasons[pendingKey]; saveState(); closeModal('session-modal'); render(); }
+        function undoDone() { if (!pendingKey) return; delete sessionState[pendingKey]; delete skipReasons[pendingKey]; saveState(); closeModal('session-modal'); render(); }
 
-        // ── Reschedule modal ──────────────────────────────────────────────────────────
+        // ── Reschedule ────────────────────────────────────────────────────────────────
         let rescheduleTargetDay = null;
-
         function openRescheduleModal() {
             closeModal('session-modal');
             rescheduleTargetDay = null;
@@ -1463,57 +2341,47 @@
             grid.innerHTML = '';
             const confirmBtn = document.getElementById('btn-confirm-reschedule');
             confirmBtn.disabled = true; confirmBtn.style.opacity = '0.4';
-            DAYS_SHORT.forEach((dname, di) => {
-                const acts = getActsForDay(w, di);
-                const disabled = di === fromDay || acts.length >= 3;
+            DAYS_SHORT.forEach((dn, di) => {
+                const disabled = di === fromDay || getActsForDay(w, di).length >= 3;
                 const btn = document.createElement('div');
                 btn.className = 'rday-btn' + (disabled ? ' rday-disabled' : '');
-                btn.innerHTML = `<div class="rday-name">${dname}</div><div class="rday-date">${getDate(w, di).getDate()}</div>`;
+                btn.innerHTML = `<div class="rday-name">${dn}</div><div class="rday-date">${getDate(w, di).getDate()}</div>`;
                 if (!disabled) btn.onclick = () => {
                     document.querySelectorAll('.rday-btn').forEach(b => b.classList.remove('rday-selected'));
-                    btn.classList.add('rday-selected');
-                    rescheduleTargetDay = di;
+                    btn.classList.add('rday-selected'); rescheduleTargetDay = di;
                     confirmBtn.disabled = false; confirmBtn.style.opacity = '1';
                 };
                 grid.appendChild(btn);
             });
-            document.getElementById('reschedule-modal').classList.add('open');
+            openModal('reschedule-modal');
         }
         function confirmReschedule() {
             if (rescheduleTargetDay === null || !pendingKey || !pendingAct) return;
             const w = parseInt(pendingKey.split('-')[0]);
-            sessionState[pendingKey] = 'skipped';
-            skipReasons[pendingKey] = 'Rescheduled';
+            sessionState[pendingKey] = 'skipped'; skipReasons[pendingKey] = 'Rescheduled';
             const rIdx = Object.keys(rescheduled).filter(k => k.startsWith(`${w}-${rescheduleTargetDay}-r`)).length;
             rescheduled[`${w}-${rescheduleTargetDay}-r${rIdx}`] = { act: pendingAct, fromKey: pendingKey };
-            save(); closeModal('reschedule-modal'); render();
+            saveState(); closeModal('reschedule-modal'); render();
         }
 
-        // ── Auto-log modal ────────────────────────────────────────────────────────────
+        // ── Auto-log ──────────────────────────────────────────────────────────────────
         let autologKey = null, autologAct = null, autologWeek = null;
-
         function openAutoLogModal(key, act, w) {
             autologKey = key; autologAct = act; autologWeek = w;
             document.getElementById('al-dur').value = act.duration || '';
             document.getElementById('al-km').value = '';
             document.getElementById('al-note').value = '';
             document.getElementById('al-km-wrap').style.display = act.type === 'run' ? '' : 'none';
-            document.getElementById('autolog-modal').classList.add('open');
+            openModal('autolog-modal');
         }
         function confirmAutoLog() {
-            const dur = document.getElementById('al-dur').value;
-            const km = document.getElementById('al-km').value;
-            const note = document.getElementById('al-note').value.trim();
-            if (dur || km || note) {
-                log.push({ week: autologWeek, type: autologAct.type, dur: dur || null, km: km || null, note: note || null, ts: Date.now() });
-                save();
-            }
+            const dur = document.getElementById('al-dur').value, km = document.getElementById('al-km').value, note = document.getElementById('al-note').value.trim();
+            if (dur || km || note) { log.push({ week: autologWeek, type: autologAct.type, dur: dur || null, km: km || null, note: note || null, ts: Date.now() }); saveState(); }
             closeModal('autolog-modal'); render();
         }
 
-        // ── Edit log modal ────────────────────────────────────────────────────────────
+        // ── Edit log ──────────────────────────────────────────────────────────────────
         let editIdx = null;
-
         function openEditModal(idx) {
             editIdx = idx;
             const e = log[idx];
@@ -1522,29 +2390,19 @@
             document.getElementById('edit-dur').value = e.dur || '';
             document.getElementById('edit-km').value = e.km || '';
             document.getElementById('edit-note').value = e.note || '';
-            document.getElementById('edit-modal').classList.add('open');
+            openModal('edit-modal');
         }
         function saveEdit() {
             if (editIdx === null) return;
-            log[editIdx] = {
-                ...log[editIdx],
-                type: document.getElementById('edit-type').value,
-                dur: document.getElementById('edit-dur').value || null,
-                km: document.getElementById('edit-km').value || null,
-                note: document.getElementById('edit-note').value.trim() || null,
-            };
-            save(); closeModal('edit-modal'); render();
+            log[editIdx] = { ...log[editIdx], type: document.getElementById('edit-type').value, dur: document.getElementById('edit-dur').value || null, km: document.getElementById('edit-km').value || null, note: document.getElementById('edit-note').value.trim() || null };
+            saveState(); closeModal('edit-modal'); render();
         }
-        function deleteLogFromEdit() {
-            if (editIdx === null) return;
-            log.splice(editIdx, 1);
-            save(); closeModal('edit-modal'); render();
-        }
+        function deleteLogFromEdit() { if (editIdx === null) return; log.splice(editIdx, 1); saveState(); closeModal('edit-modal'); render(); }
 
-        // ── Tap logic ─────────────────────────────────────────────────────────────────
+        // ── Tap ───────────────────────────────────────────────────────────────────────
         function tapSession(key, act) {
             const st = sessionState[key];
-            if (!st) { sessionState[key] = 'done'; save(); openAutoLogModal(key, act, week); render(); }
+            if (!st) { sessionState[key] = 'done'; saveState(); openAutoLogModal(key, act, week); render(); }
             else openSessionModal(key, act, st);
         }
 
@@ -1559,47 +2417,29 @@
         }
         function getWeekStats() {
             return Array.from({ length: CONFIG.totalWeeks }, (_, i) => {
-                const w = i + 1;
-                let total = 0, done = 0, skipped = 0, runMin = 0;
-                for (let d = 0; d < 7; d++) {
-                    getActsForDay(w, d).forEach(({ key }) => {
-                        const st = sessionState[key];
-                        total++;
-                        if (st === 'done') done++;
-                        if (st === 'skipped') skipped++;
-                    });
-                }
+                const w = i + 1; let total = 0, done = 0, skipped = 0, runMin = 0;
+                for (let d = 0; d < 7; d++) getActsForDay(w, d).forEach(({ key }) => {
+                    const st = sessionState[key]; total++;
+                    if (st === 'done') done++; if (st === 'skipped') skipped++;
+                });
                 log.filter(e => e.week === w && e.type === 'run' && e.dur).forEach(e => runMin += parseFloat(e.dur));
                 return { w, total, done, skipped, runMin, pct: total ? Math.round((done / total) * 100) : 0 };
             });
         }
         function renderChart() {
-            const stats = getWeekStats();
-            const labels = stats.map(s => `W${s.w}`);
+            const stats = getWeekStats(), labels = stats.map(s => `W${s.w}`);
             const runClr = '#9ab020', mutedClr = '#b0b870';
             let datasets, yLabel, chartType = 'bar';
-
             if (activeChart === 'completion') {
-                datasets = [{
-                    label: 'Done %', data: stats.map(s => s.pct),
-                    backgroundColor: stats.map(s => s.done > 0 ? runClr + 'cc' : mutedClr + '44'),
-                    borderColor: stats.map(s => s.done > 0 ? runClr : mutedClr + '88'),
-                    borderWidth: 1.5, borderRadius: 4
-                }];
+                datasets = [{ label: 'Done %', data: stats.map(s => s.pct), backgroundColor: stats.map(s => s.done > 0 ? runClr + 'cc' : mutedClr + '44'), borderColor: stats.map(s => s.done > 0 ? runClr : mutedClr + '88'), borderWidth: 1.5, borderRadius: 4 }];
                 yLabel = '%';
             } else if (activeChart === 'runmin') {
-                datasets = [{
-                    label: 'Run minutes', data: stats.map(s => s.runMin),
-                    backgroundColor: runClr + 'aa', borderColor: runClr, borderWidth: 1.5, borderRadius: 4
-                }];
+                datasets = [{ label: 'Run minutes', data: stats.map(s => s.runMin), backgroundColor: runClr + 'aa', borderColor: runClr, borderWidth: 1.5, borderRadius: 4 }];
                 yLabel = 'min';
             } else {
                 let streak = 0, streakData = [];
                 stats.forEach(s => { streak = s.pct >= 50 ? streak + 1 : 0; streakData.push(streak); });
-                datasets = [{
-                    label: 'Streak', data: streakData, borderColor: runClr, backgroundColor: runClr + '22',
-                    borderWidth: 2, fill: true, tension: 0.4, pointBackgroundColor: runClr, pointRadius: 3
-                }];
+                datasets = [{ label: 'Streak', data: streakData, borderColor: runClr, backgroundColor: runClr + '22', borderWidth: 2, fill: true, tension: 0.4, pointBackgroundColor: runClr, pointRadius: 3 }];
                 yLabel = 'weeks'; chartType = 'line';
             }
             if (chartInst) chartInst.destroy();
@@ -1609,26 +2449,15 @@
                     responsive: true, maintainAspectRatio: false,
                     plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${Math.round(ctx.parsed.y)} ${yLabel}` } } },
                     scales: {
-                        x: {
-                            grid: { display: false }, ticks: {
-                                font: { family: 'Nunito', size: 10 }, color: '#c4aa94',
-                                callback: (v, i) => i === week - 1 ? `▶W${week}` : labels[i]
-                            }
-                        },
-                        y: {
-                            beginAtZero: true, max: activeChart === 'completion' ? 100 : undefined,
-                            grid: { color: 'rgba(180,130,90,0.08)' }, ticks: { font: { family: 'Nunito', size: 10 }, color: '#c4aa94' }
-                        }
+                        x: { grid: { display: false }, ticks: { font: { family: 'Nunito', size: 10 }, color: '#b0b870', callback: (v, i) => i === week - 1 ? `▶W${week}` : labels[i] } },
+                        y: { beginAtZero: true, max: activeChart === 'completion' ? 100 : undefined, grid: { color: 'rgba(140,150,30,0.08)' }, ticks: { font: { family: 'Nunito', size: 10 }, color: '#b0b870' } }
                     }
                 }
             });
         }
         function renderMilestones() {
             const stats = getWeekStats();
-            const totalDone = stats.reduce((a, s) => a + s.done, 0);
-            const totalRunMin = stats.reduce((a, s) => a + s.runMin, 0);
-            const weeksActive = stats.filter(s => s.done > 0).length;
-            const bestWeekPct = Math.max(0, ...stats.map(s => s.pct));
+            const totalDone = stats.reduce((a, s) => a + s.done, 0), totalRunMin = stats.reduce((a, s) => a + s.runMin, 0), weeksActive = stats.filter(s => s.done > 0).length, bestWeekPct = Math.max(0, ...stats.map(s => s.pct));
             document.getElementById('milestone-row').innerHTML = `
     <div class="milestone"><div class="milestone-val">${totalDone}</div><div class="milestone-label">Sessions done</div></div>
     <div class="milestone"><div class="milestone-val">${Math.round(totalRunMin)}</div><div class="milestone-label">Run minutes</div></div>
@@ -1639,50 +2468,33 @@
         // ── Render ────────────────────────────────────────────────────────────────────
         function render() {
             const td = todayWD();
-            document.getElementById('week-label').textContent = 'Week ' + week;
+            document.getElementById('week-label').textContent = `Week ${week}`;
             document.getElementById('phase-pill').textContent = getPhase(week);
             document.getElementById('hist-week').textContent = week;
 
-            // Calendar
             const grid = document.getElementById('cal-grid');
             grid.innerHTML = '';
             DAYS.forEach((dname, di) => {
-                const items = getActsForDay(week, di);
-                const dt = getDate(week, di);
-                const isToday = td && td.w === week && td.d === di;
-                const isLight = LIGHT_DAYS.has(di);
-
+                const items = getActsForDay(week, di), dt = getDate(week, di), isToday = td && td.w === week && td.d === di;
                 const col = document.createElement('div');
-                col.className = 'day-col' + (isToday ? ' is-today' : '') + (isLight ? ' is-light' : '');
+                col.className = 'day-col' + (isToday ? ' is-today' : '');
                 col.innerHTML = `<div class="day-head"><div class="day-name">${dname}</div><div class="day-date">${dt.getDate()}/${dt.getMonth() + 1}</div></div>`;
-
-                if (items.length === 0) {
-                    const r = document.createElement('div'); r.className = 'rest-label'; r.textContent = 'rest'; col.appendChild(r);
-                } else {
-                    items.forEach(({ act, key, isRescheduled }) => {
-                        const st = sessionState[key] || 'pending';
-                        const reason = skipReasons[key] || '';
-                        const durHtml = (act.type === 'run' && act.duration) ? `<span class="s-duration">~${act.duration} min</span>` : '';
-                        const reasonHtml = (st === 'skipped' && reason) ? `<span class="s-reason">${reason}</span>` : '';
-                        const card = document.createElement('div');
-                        card.className = `session-card ${typeClass(act.type)} state-${st}${isRescheduled ? ' rescheduled' : ''}`;
-                        card.innerHTML = `<span class="s-type">${act.type}</span><span class="s-label">${act.label}</span>${durHtml}${reasonHtml}`;
-                        card.onclick = () => tapSession(key, act);
-                        col.appendChild(card);
-                    });
-                }
+                if (items.length === 0) { const r = document.createElement('div'); r.className = 'rest-label'; r.textContent = 'rest'; col.appendChild(r); }
+                else items.forEach(({ act, key, isRescheduled }) => {
+                    const st = sessionState[key] || 'pending', reason = skipReasons[key] || '';
+                    const durHtml = (act.type === 'run' && act.duration) ? `<span class="s-duration">~${act.duration} min</span>` : '';
+                    const reasonHtml = (st === 'skipped' && reason) ? `<span class="s-reason">${reason}</span>` : '';
+                    const card = document.createElement('div');
+                    card.className = `session-card ${typeClass(act.type)} state-${st}${isRescheduled ? ' rescheduled' : ''}`;
+                    card.innerHTML = `<span class="s-type">${act.type}</span><span class="s-label">${act.label}</span>${durHtml}${reasonHtml}`;
+                    card.onclick = () => tapSession(key, act);
+                    col.appendChild(card);
+                });
                 grid.appendChild(col);
             });
 
-            // Stats bar
             let weekDone = 0, weekSkipped = 0, weekRunMin = 0;
-            for (let d = 0; d < 7; d++) {
-                getActsForDay(week, d).forEach(({ key }) => {
-                    const st = sessionState[key];
-                    if (st === 'done') weekDone++;
-                    if (st === 'skipped') weekSkipped++;
-                });
-            }
+            for (let d = 0; d < 7; d++) getActsForDay(week, d).forEach(({ key }) => { const st = sessionState[key]; if (st === 'done') weekDone++; if (st === 'skipped') weekSkipped++; });
             log.filter(e => e.week === week && e.type === 'run' && e.dur).forEach(e => weekRunMin += parseFloat(e.dur));
             const pct = Math.round(((week - 1) / CONFIG.totalWeeks) * 100);
             document.getElementById('s-done').textContent = weekDone;
@@ -1691,27 +2503,17 @@
             document.getElementById('s-pct').textContent = pct + '%';
             document.getElementById('prog-bar').style.width = pct + '%';
             document.getElementById('prog-label').textContent = `Week ${week} of ${CONFIG.totalWeeks}`;
+            renderChart(); renderMilestones();
 
-            renderChart();
-            renderMilestones();
-
-            // History — expandable rows
             const hw = document.getElementById('history-wrap');
             const wlog = log.map((e, i) => ({ ...e, realIdx: i })).filter(e => e.week === week).reverse();
-
-            if (wlog.length === 0) {
-                hw.innerHTML = '<div class="empty-state">No sessions logged this week yet.</div>';
-                return;
-            }
-            let html = `<div class="history-table-head">
-    <span>Type</span><span>Duration</span><span>Distance</span><span>Notes</span><span></span>
-  </div>`;
+            if (!wlog.length) { hw.innerHTML = '<div class="empty-state">No sessions logged this week yet.</div>'; return; }
+            let html = `<div class="history-table-head"><span>Type</span><span>Duration</span><span>Distance</span><span>Notes</span><span></span></div>`;
             wlog.forEach(e => {
                 const shortNote = (e.note || '').length > 40 ? e.note.slice(0, 40) + '…' : (e.note || '—');
-                const hasLongNote = (e.note || '').length > 40;
                 html += `<div class="hist-row" id="hrow-${e.realIdx}">
       <div class="hist-summary" onclick="toggleHistRow(${e.realIdx})">
-        <span class="h-type"><span class="type-badge" style="${typeBadgeStyle(e.type)}">${e.type}</span></span>
+        <span><span class="type-badge" style="${typeBadgeStyle(e.type)}">${e.type}</span></span>
         <span class="h-dur">${e.dur ? Math.round(e.dur) + ' min' : '—'}</span>
         <span class="h-km">${e.km ? parseFloat(e.km).toFixed(1) + ' km' : '—'}</span>
         <span class="h-note">${shortNote}</span>
@@ -1729,28 +2531,20 @@
             hw.innerHTML = html;
         }
 
-        function toggleHistRow(idx) {
-            const row = document.getElementById(`hrow-${idx}`);
-            if (row) row.classList.toggle('expanded');
-        }
-
-        // ── Actions ───────────────────────────────────────────────────────────────────
+        function toggleHistRow(idx) { document.getElementById(`hrow-${idx}`)?.classList.toggle('expanded'); }
         function logSession() {
-            const type = document.getElementById('log-type').value;
-            const dur = document.getElementById('log-dur').value;
-            const km = document.getElementById('log-km').value;
-            const note = document.getElementById('log-note').value.trim();
+            const type = document.getElementById('log-type').value, dur = document.getElementById('log-dur').value, km = document.getElementById('log-km').value, note = document.getElementById('log-note').value.trim();
             if (!dur && !km) { alert('Please add a duration or distance.'); return; }
             log.push({ week, type, dur: dur || null, km: km || null, note: note || null, ts: Date.now() });
-            document.getElementById('log-dur').value = '';
-            document.getElementById('log-km').value = '';
-            document.getElementById('log-note').value = '';
-            save(); render();
+            document.getElementById('log-dur').value = ''; document.getElementById('log-km').value = ''; document.getElementById('log-note').value = '';
+            saveState(); render();
         }
-        function delLog(i) { if (confirm('Delete this log entry?')) { log.splice(i, 1); save(); render(); } }
-        function changeWeek(dir) { week = Math.max(1, Math.min(CONFIG.totalWeeks, week + dir)); save(); render(); }
+        function delLog(i) { if (confirm('Delete this log entry?')) { log.splice(i, 1); saveState(); render(); } }
+        function changeWeek(dir) { week = Math.max(1, Math.min(CONFIG.totalWeeks, week + dir)); saveState(); render(); }
 
-        render();
+        // ── Boot ──────────────────────────────────────────────────────────────────────
+        if (loadState()) { launchTracker(); }
+        else { initOnboarding(); }
     </script>
 </body>
 
