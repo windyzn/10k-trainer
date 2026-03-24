@@ -1,83 +1,67 @@
-# 10K Training Tracker
+# Zone 2
 
-A personal running plan tracker — 18 weeks from walk/run intervals to a 10K finish.
+A personalised running training app. Answer a few questions about your goal, fitness level, schedule, and any injuries — and Zone 2 builds you a training plan and coaches you through it week by week.
+
+---
+
+## What it does
+
+- **Personalised plan generator** — goal (5K / 10K / half marathon / general fitness), fitness level, active days per week, rest days, fixed commitments, and injury history all shape the plan
+- **Evidence-based training** — walk/run intervals for beginners, 80/20 easy/hard split, 10% volume rule, deload every 3–4 weeks, taper before race week
+- **Weekly coach briefing** — context-aware guidance above the calendar: what this week is for, feedback on last week, injury reminders, phase context
+- **Recovery schedule** — post-run stretch/foam roll suggestions and rest-day mobility work, separate from active session count
+- **Session logging** — tap a session to log duration, distance, and notes; duration pre-fills from the plan
+- **Progress charts** — completion %, run minutes, and streak across the full plan
+
+---
 
 ## Files
 
-| File | What it does |
+| File | Purpose |
 |---|---|
-| `index.html` | The tracker UI — you rarely need to touch this |
-| `schedule.js` | Your full 18-week session plan — **edit this to change sessions** |
-| `config.js` | Start date, phase names, total weeks — **edit this to change dates** |
+| `index.html` | The entire app — questionnaire, plan generator, tracker, coach |
+| `favicon.svg` | App icon |
+| `README.md` | This file |
+
+`schedule.js` and `config.js` are no longer used and can be deleted from your repo if present.
 
 ---
 
 ## Hosting on GitHub Pages
 
-1. Create a new GitHub repo (can be private or public)
-2. Upload all three files (`index.html`, `schedule.js`, `config.js`)
+1. Create a GitHub repo (public or private)
+2. Upload `index.html` and `favicon.svg`
 3. Go to **Settings → Pages**
 4. Under **Source**, select **Deploy from a branch**
-5. Choose `main` branch, `/ (root)` folder → click **Save**
-6. Your tracker will be live at `https://yourusername.github.io/your-repo-name/`
+5. Choose `main` branch, `/ (root)` folder → **Save**
+6. Live at `https://yourusername.github.io/your-repo-name/`
 
-GitHub Pages usually takes 1–2 minutes to deploy on first publish.
-
----
-
-## Editing the plan
-
-### Change a session label
-Open `schedule.js`, find the week, find the day, update the `label` string.
-
-```js
-// Before
-{ day: 0, type: "run", label: "10 min easy" },
-
-// After
-{ day: 0, type: "run", label: "12 min easy" },
-```
-
-### Add a session
-Add a new line to the week's array:
-
-```js
-"5": [
-  { day: 0, type: "run",     label: "10 min easy" },
-  { day: 1, type: "pilates", label: "Weighted pilates" },
-  { day: 1, type: "yoga",    label: "Evening yoga" },   // ← added
-  ...
-],
-```
-
-### Remove a session
-Delete the line.
-
-### Change session type
-Types are: `"run"` · `"pilates"` · `"yoga"` · `"strength"`
-
-### Change your start date
-Open `config.js` and update `startDate`:
-
-```js
-startDate: new Date(2026, 2, 23),  // year, month-1 (so March = 2), day
-```
-
-### Change phase names
-In `config.js`, edit the `label` fields in the `phases` array.
+Pages usually deploys within 1–2 minutes. After pushing updates, do a hard refresh (`Cmd+Shift+R` / `Ctrl+Shift+R`) to bust the cache.
 
 ---
 
-## Days of the week
+## How the plan works
 
-In `schedule.js`, `day` maps to:
+On first visit, a 7-step questionnaire collects:
 
-| 0 | 1 | 2 | 3 | 4 | 5 | 6 |
-|---|---|---|---|---|---|---|
-| Mon | Tue | Wed | Thu | Fri | Sat | Sun |
+1. **Goal** — 5K, 10K, half marathon, or general fitness
+2. **Fitness level** — beginner, intermediate, or advanced
+3. **Active days per week** — 1–5 (run + pilates + strength; yoga/stretching excluded)
+4. **Rest days** — days that stay completely free
+5. **Fixed sessions** — existing classes or commitments; tick "Account for" if the plan should schedule around them
+6. **Injuries** — knee, lower back, shin/foot/ankle, or returning from injury (multi-select)
+7. **Start date**
+
+The plan is generated from these answers and stored in your browser. Every subsequent visit goes straight to the tracker. To start over, tap **↺ New plan** in the header.
 
 ---
 
-## Your logged data
+## Data & storage
 
-Session logs and tick-offs are saved in your browser's `localStorage`. They persist across visits as long as you use the same browser. They are **not** synced to GitHub — the repo only holds the plan structure.
+All data lives in your browser's `localStorage` — nothing is sent anywhere. The plan profile and your session logs persist across visits as long as you use the same browser. Clearing browser data or using private/incognito mode will reset the app.
+
+Two keys are stored:
+- `_10k_app_v6_profile` — your questionnaire answers (~300 bytes)
+- `_10k_app_v6_progress` — session tick-offs, logs, and current week
+
+The schedule is regenerated from your profile answers on every load, so it's never stored directly.
