@@ -312,25 +312,26 @@
             cursor: pointer;
         }
 
-        .ob-commit-intensity-sel {
+        .ob-commit-account-wrap {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .ob-commit-account-chk {
+            width: 15px;
+            height: 15px;
+            accent-color: var(--accent-dark);
+            cursor: pointer;
+        }
+
+        .ob-commit-account-label {
+            font-size: 11px;
             font-weight: 700;
-            font-size: 11px !important;
-            padding: 3px 6px;
-            border-radius: 6px !important;
-            border: 1.5px solid var(--border2) !important;
-            background: var(--surface2) !important;
-        }
-
-        .ob-commit-intensity-sel option[value="easy"] {
-            color: #0e5f80;
-        }
-
-        .ob-commit-intensity-sel option[value="moderate"] {
-            color: #8a4500;
-        }
-
-        .ob-commit-intensity-sel option[value="hard"] {
-            color: #6b1f7a;
+            color: var(--muted);
+            white-space: nowrap;
         }
 
         .ob-commit-row .ob-remove {
@@ -881,23 +882,11 @@
             opacity: .6;
         }
 
-        /* Fixed commitment cards — coloured by intensity */
-        .type-fixed-easy {
-            background: #f0f8f0;
-            border-color: #a8d4b0;
-            color: #2d6640;
-        }
-
-        .type-fixed-moderate {
+        /* Fixed commitment cards */
+        .type-fixed {
             background: var(--pilates-bg);
             border-color: var(--pilates-border);
             color: var(--pilates-text);
-        }
-
-        .type-fixed-hard {
-            background: var(--strength-bg);
-            border-color: var(--strength-border);
-            color: var(--strength-text);
         }
 
         .rest-label {
@@ -1661,8 +1650,8 @@
         <!-- Step 5: Fixed commitments -->
         <div class="ob-step" id="ob-step-4">
             <p class="ob-q">Any fixed classes or sessions?</p>
-            <p class="ob-sub">Add anything that's already in your week — pilates, spin, badminton, whatever. Tell us the
-                intensity so the plan can schedule runs sensibly around it.</p>
+            <p class="ob-sub">Add anything that's already in your week — pilates, spin, badminton, whatever. Tick
+                "Account for" if you want the plan to schedule runs around it.</p>
             <div class="ob-commitments" id="ob-commit-list"></div>
             <button class="ob-add-commit" onclick="addCommitment()">+ Add a session</button>
             <div class="ob-nav" style="margin-top:24px">
@@ -1677,38 +1666,40 @@
             <p class="ob-q">Any injuries or niggles we should know about?</p>
             <p class="ob-sub">We'll adjust the plan to protect you — fewer hard sessions, more walk/run, extra rest.
                 This is not medical advice; see a physio if you're in active pain.</p>
-            <div class="ob-options" id="injury-options">
-                <div class="ob-option" onclick="selectInjury(this,'none')">
+            <p class="ob-sub-hint" style="font-size:12px;color:var(--hint);font-style:italic;margin-bottom:14px">Select
+                all that apply. Select "No injuries" if you're feeling good.</p>
+            <div id="injury-options">
+                <div class="ob-option ob-multi" onclick="toggleInjury(this,'none')" id="inj-none">
                     <div class="ob-opt-icon">✓</div>
                     <div class="ob-opt-text"><span class="ob-opt-label">No injuries</span><span
                             class="ob-opt-desc">Feeling good, ready to go</span></div>
                 </div>
-                <div class="ob-option" onclick="selectInjury(this,'knee')">
+                <div class="ob-option ob-multi" onclick="toggleInjury(this,'knee')" id="inj-knee">
                     <div class="ob-opt-icon">🦵</div>
                     <div class="ob-opt-text"><span class="ob-opt-label">Knee (old or managed)</span><span
                             class="ob-opt-desc">e.g. runner's knee, patellofemoral pain, ITB — not currently
                             acute</span></div>
                 </div>
-                <div class="ob-option" onclick="selectInjury(this,'back')">
+                <div class="ob-option ob-multi" onclick="toggleInjury(this,'back')" id="inj-back">
                     <div class="ob-opt-icon">🔙</div>
                     <div class="ob-opt-text"><span class="ob-opt-label">Lower back (old or managed)</span><span
                             class="ob-opt-desc">History of back pain, not currently stopping you</span></div>
                 </div>
-                <div class="ob-option" onclick="selectInjury(this,'shin')">
+                <div class="ob-option ob-multi" onclick="toggleInjury(this,'shin')" id="inj-shin">
                     <div class="ob-opt-icon">⚡</div>
                     <div class="ob-opt-text"><span class="ob-opt-label">Shin / foot / ankle</span><span
                             class="ob-opt-desc">Shin splints, plantar fasciitis, or similar</span></div>
                 </div>
-                <div class="ob-option" onclick="selectInjury(this,'general')">
+                <div class="ob-option ob-multi" onclick="toggleInjury(this,'general')" id="inj-general">
                     <div class="ob-opt-icon">⚠</div>
                     <div class="ob-opt-text"><span class="ob-opt-label">Other / returning from injury</span><span
                             class="ob-opt-desc">Recently recovered or cautiously returning</span></div>
                 </div>
             </div>
             <div id="injury-warning"
-                style="display:none;margin-top:14px;padding:12px 14px;background:var(--skip-bg);border:1.5px solid var(--skip-border);border-radius:10px;font-size:13px;color:var(--skip-text);line-height:1.6">
+                style="display:none;margin-top:16px;padding:14px 16px;background:var(--skip-bg);border:1.5px solid var(--skip-border);border-radius:10px;font-size:13px;color:var(--skip-text);line-height:1.7">
             </div>
-            <div class="ob-nav">
+            <div class="ob-nav" style="margin-top:32px">
                 <button class="ob-btn ob-btn-back" onclick="prevStep()">← Back</button>
                 <button class="ob-btn ob-btn-next" onclick="nextStep()" id="next-5" disabled>Next →</button>
             </div>
@@ -2023,7 +2014,7 @@
         // ── Onboarding ────────────────────────────────────────────────────────────────
         let currentStep = 0;
         const TOTAL_STEPS = 7;
-        const profile = { goal: null, level: null, daysPerWeek: 3, restDays: [], commitments: [], injury: 'none', startDate: null };
+        const profile = { goal: null, level: null, daysPerWeek: 3, restDays: [], commitments: [], injuries: [], startDate: null };
 
         function initOnboarding() {
             // Default start date = next Monday
@@ -2082,14 +2073,13 @@
       ${DAYS.map((d, i) => `<option value="${i}">${d}</option>`).join('')}
     </select>
     <input type="text" class="ob-commit-label-inp" placeholder="e.g. Pilates, Badminton…" oninput="updateCommitment(${id})">
-    <select class="ob-commit-intensity-sel" onchange="updateCommitment(${id})">
-      <option value="easy">Easy</option>
-      <option value="moderate" selected>Moderate</option>
-      <option value="hard">Hard</option>
-    </select>
+    <label class="ob-commit-account-wrap" title="If checked, the plan will schedule runs to avoid clashing with this session">
+      <input type="checkbox" class="ob-commit-account-chk" checked onchange="updateCommitment(${id})">
+      <span class="ob-commit-account-label">Account for</span>
+    </label>
     <button class="ob-remove" onclick="removeCommitment(${id})">×</button>`;
             list.appendChild(row);
-            profile.commitments.push({ id, day: 0, label: '', intensity: 'moderate' });
+            profile.commitments.push({ id, day: 0, label: '', accountFor: true });
         }
 
         function updateCommitment(id) {
@@ -2098,7 +2088,7 @@
             if (!entry || !row) return;
             entry.day = parseInt(row.querySelector('.ob-commit-day-sel').value);
             entry.label = row.querySelector('.ob-commit-label-inp').value.trim() || 'Session';
-            entry.intensity = row.querySelector('.ob-commit-intensity-sel').value;
+            entry.accountFor = row.querySelector('.ob-commit-account-chk').checked;
         }
 
         function removeCommitment(id) {
@@ -2115,26 +2105,51 @@
         }
 
         const INJURY_WARNINGS = {
-            none: null,
-            knee: 'Your plan will avoid tempo runs early on, use walk/run intervals longer than usual, and keep easy runs truly easy. Strength sessions will focus on glutes and hips — the most important muscles for protecting your knee. If pain flares, skip that run and rest — do not push through.',
-            back: 'Your plan will start conservatively with shorter runs, avoid back-to-back running days, and include core-focused strength sessions. Yoga is especially important for you — hip flexor and hamstring mobility directly reduces lower back load during running. If your back talks to you after a run, take an extra rest day.',
-            shin: 'Your plan will increase volume very gradually (well within the 10% rule), emphasise soft surfaces, and include extra rest days between runs. No speed work until you are well established in the plan. Calf strength is key — the strength sessions are important for you.',
-            general: 'Your plan will take a cautious return-to-running approach — starting with walk/run intervals regardless of your fitness level, increasing volume slowly, and building in extra deload weeks. Stop if anything hurts more than a 3/10 and consult a physio.',
+            knee: 'Knee: avoid tempo runs early on, use walk/run intervals longer than usual, keep all runs easy. Strength focuses on glutes and hips — the key muscles protecting your knee. Stop if pain exceeds 3/10.',
+            back: 'Lower back: shorter runs initially, no back-to-back run days, core-focused strength sessions. Yoga is especially important — hip flexor and hamstring mobility directly reduces lower back load.',
+            shin: 'Shin/foot/ankle: very gradual volume increase, soft surfaces preferred, extra rest days between runs. No speed work until well into the plan. Calf strength sessions are important for you.',
+            general: 'Returning from injury: walk/run intervals regardless of fitness level, conservative ramp-up, extra deload weeks. Stop if anything hurts above 3/10 and consult a physio.',
         };
 
-        function selectInjury(el, val) {
-            document.querySelectorAll('#injury-options .ob-option').forEach(o => o.classList.remove('selected'));
-            el.classList.add('selected');
-            profile.injury = val;
+        function toggleInjury(el, val) {
+            const noneEl = document.getElementById('inj-none');
+
+            if (val === 'none') {
+                // Selecting "none" clears everything else
+                profile.injuries = [];
+                document.querySelectorAll('#injury-options .ob-option').forEach(o => o.classList.remove('selected'));
+                el.classList.add('selected');
+            } else {
+                // Deselect "none" when picking an actual injury
+                noneEl?.classList.remove('selected');
+                if (!profile.injuries) profile.injuries = [];
+                const idx = profile.injuries.indexOf(val);
+                if (idx >= 0) {
+                    profile.injuries.splice(idx, 1);
+                    el.classList.remove('selected');
+                } else {
+                    profile.injuries.push(val);
+                    el.classList.add('selected');
+                }
+            }
+
+            // Update warning box — show all relevant warnings
             const warning = document.getElementById('injury-warning');
-            if (INJURY_WARNINGS[val]) {
-                warning.textContent = INJURY_WARNINGS[val];
+            const activeInjuries = (profile.injuries || []).filter(i => INJURY_WARNINGS[i]);
+            if (activeInjuries.length > 0) {
+                warning.innerHTML = activeInjuries.map(i =>
+                    `<div style="margin-bottom:${activeInjuries.length > 1 ? '10px' : '0'}">${INJURY_WARNINGS[i]}</div>`
+                ).join('');
                 warning.style.display = 'block';
             } else {
                 warning.style.display = 'none';
             }
+
+            // Enable next once user has made a selection
+            const hasSelection = (profile.injuries && profile.injuries.length > 0) ||
+                document.querySelector('#inj-none.selected');
             const nextBtn = document.getElementById('next-5');
-            if (nextBtn) nextBtn.disabled = false;
+            if (nextBtn) nextBtn.disabled = !hasSelection;
         }
 
         function updateProgress() {
@@ -2170,9 +2185,9 @@
                 ['Fitness level', LEVEL_NAMES[profile.level] || '–'],
                 ['Active days', `${profile.daysPerWeek} per week`],
                 ['Rest days', profile.restDays.length ? profile.restDays.map(d => DAYS[d]).join(', ') : 'None set'],
-                ['Injury notes', profile.injury && profile.injury !== 'none' ? ({ knee: 'Knee (managed)', back: 'Lower back (managed)', shin: 'Shin/foot/ankle', general: 'Returning from injury' }[profile.injury] || 'None') : 'None'],
+                ['Injury notes', (profile.injuries && profile.injuries.length > 0) ? profile.injuries.map(i => ({ knee: 'Knee', back: 'Lower back', shin: 'Shin/foot/ankle', general: 'Returning from injury' }[i] || i)).join(', ') : 'None'],
                 ['Fixed sessions', profile.commitments.length
-                    ? profile.commitments.map(c => `${DAYS[c.day]}: ${c.label || 'Session'} (${c.intensity || 'moderate'})`).join(', ')
+                    ? profile.commitments.map(c => `${DAYS[c.day]}: ${c.label || 'Session'}${c.accountFor === false ? ' (ignored)' : ''}`).join(', ')
                     : 'None'],
                 ['Duration', (() => {
                     const wc = { fitness: { beginner: 10, intermediate: 10, advanced: 8 }, '5k': { beginner: 12, intermediate: 10, advanced: 8 }, '10k': { beginner: 18, intermediate: 16, advanced: 14 }, half: { beginner: 20, intermediate: 18, advanced: 16 } };
@@ -2201,8 +2216,9 @@
         function generatePlan(p) {
             const goal = p.goal || '10k';
             const level = p.level || 'beginner';
-            const injury = p.injury || 'none';
-            const hasInjury = injury !== 'none';
+            const injuries = p.injuries || [];
+            const injury = injuries.length > 0 ? injuries[0] : 'none'; // primary for labels
+            const hasInjury = injuries.length > 0;
 
             // ── Plan length: goal × level × injury ──────────────────────────────────
             // Injury adds 2–4 weeks to allow conservative ramp-up
@@ -2221,17 +2237,15 @@
             // ── Day allocation ────────────────────────────────────────────────────────
             const restDays = new Set(p.restDays || []);
             const commitMap = {};
-            (p.commitments || []).forEach(c => {
-                commitMap[c.day] = { label: c.label || 'Session', intensity: c.intensity || 'moderate' };
+            // Only include commitments the user wants the plan to account for
+            (p.commitments || []).filter(c => c.accountFor !== false).forEach(c => {
+                commitMap[c.day] = { label: c.label || 'Session' };
             });
             const commitDays = new Set(Object.keys(commitMap).map(Number));
 
             // Protect day before any moderate/hard fixed commitment
-            const protectedCommitDays = new Set(
-                Object.entries(commitMap)
-                    .filter(([, v]) => v.intensity === 'hard' || v.intensity === 'moderate')
-                    .map(([d]) => Number(d))
-            );
+            // All accounted-for sessions get a rest buffer — don't put a hard run the day before
+            const protectedCommitDays = new Set(Object.keys(commitMap).map(Number));
             const noHardBefore = new Set([...protectedCommitDays].map(d => (d + 6) % 7));
 
             const preferred = [0, 1, 3, 4, 2, 5, 6]; // Mon Tue Thu Fri Wed Sat Sun
@@ -2387,11 +2401,11 @@
 
                 // Fixed commitments
                 Object.entries(commitMap).forEach(([dayStr, info]) => {
-                    sessions.push({ day: Number(dayStr), type: 'fixed', label: info.label + (isDeload ? ' (easy today)' : ''), intensity: info.intensity, isFixed: true });
+                    sessions.push({ day: Number(dayStr), type: 'fixed', label: info.label + (isDeload ? ' (easy today)' : ''), isFixed: true });
                 });
 
                 // Pilates (injury runners: always include if slot available — core stability is key)
-                const hardFixedDays = new Set(Object.entries(commitMap).filter(([, v]) => v.intensity !== 'easy').map(([d]) => Number(d)));
+                const hardFixedDays = new Set(Object.keys(commitMap).map(Number));
                 if (pilatesDay !== null && !hardFixedDays.has(pilatesDay) && !isRaceWk) {
                     // Include on deload weeks too for injured runners (it's protective, not taxing)
                     if (!isDeload || hasInjury) {
@@ -2487,7 +2501,7 @@
             document.getElementById('tracker').style.display = 'none';
             document.getElementById('onboarding').style.display = 'block';
             currentStep = 0;
-            Object.assign(profile, { goal: null, level: null, daysPerWeek: 3, restDays: [], commitments: [], injury: 'none', startDate: null });
+            Object.assign(profile, { goal: null, level: null, daysPerWeek: 3, restDays: [], commitments: [], injuries: [], startDate: null });
             SCHEDULE = {}; CONFIG = {}; sessionState = {}; skipReasons = {}; rescheduled = {}; log = []; week = 1;
             document.querySelectorAll('.ob-step').forEach((s, i) => { s.classList.toggle('visible', i === 0); });
             document.querySelectorAll('.ob-option').forEach(o => o.classList.remove('selected'));
@@ -2513,16 +2527,11 @@
             return { w: Math.floor(diff / 7) + 1, d: diff % 7 };
         }
         function typeClass(t, intensity) {
-            if (t === 'fixed') return `type-fixed-${intensity || 'moderate'}`;
+            if (t === 'fixed') return 'type-fixed';
             return { run: 'type-run', pilates: 'type-pilates', yoga: 'type-yoga', strength: 'type-strength' }[t] || '';
         }
         function typeBadgeStyle(t, intensity) {
-            if (t === 'fixed') {
-                const i = intensity || 'moderate';
-                if (i === 'hard') return 'background:var(--strength-bg);color:var(--strength-text);border:1px solid var(--strength-border)';
-                if (i === 'easy') return 'background:#f0f8f0;color:#2d6640;border:1px solid #a8d4b0';
-                return 'background:var(--pilates-bg);color:var(--pilates-text);border:1px solid var(--pilates-border)';
-            }
+            if (t === 'fixed') return 'background:var(--pilates-bg);color:var(--pilates-text);border:1px solid var(--pilates-border)';
             const m = {
                 run: 'background:var(--run-bg);color:var(--run-text);border:1px solid var(--run-border)',
                 pilates: 'background:var(--pilates-bg);color:var(--pilates-text);border:1px solid var(--pilates-border)',
@@ -2738,7 +2747,7 @@
                     const reasonHtml = (st === 'skipped' && reason) ? `<span class="s-reason">${reason}</span>` : '';
                     const card = document.createElement('div');
                     card.className = `session-card ${typeClass(act.type, act.intensity)} state-${st}${isRescheduled ? ' rescheduled' : ''}`;
-                    const typeTag = act.type === 'fixed' ? (act.intensity || 'moderate') : act.type;
+                    const typeTag = act.type === 'fixed' ? 'session' : act.type;
                     card.innerHTML = `<span class="s-type">${typeTag}</span><span class="s-label">${act.label}</span>${durHtml}${reasonHtml}`;
                     card.onclick = () => tapSession(key, act);
                     col.appendChild(card);
@@ -2766,7 +2775,7 @@
                 const shortNote = (e.note || '').length > 40 ? e.note.slice(0, 40) + '…' : (e.note || '—');
                 html += `<div class="hist-row" id="hrow-${e.realIdx}">
       <div class="hist-summary" onclick="toggleHistRow(${e.realIdx})">
-        <span><span class="type-badge" style="${typeBadgeStyle(e.type, e.intensity)}">${e.type === 'fixed' ? (e.intensity || 'moderate') : e.type}</span></span>
+        <span><span class="type-badge" style="${typeBadgeStyle(e.type, e.intensity)}">${e.type === 'fixed' ? 'session' : e.type}</span></span>
         <span class="h-dur">${e.dur ? Math.round(e.dur) + ' min' : '—'}</span>
         <span class="h-km">${e.km ? parseFloat(e.km).toFixed(1) + ' km' : '—'}</span>
         <span class="h-note">${shortNote}</span>
