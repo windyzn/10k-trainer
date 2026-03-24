@@ -1574,22 +1574,17 @@
                 <div class="ob-option" onclick="selectOpt(this,'goal','5k')">
                     <div class="ob-opt-icon">🎯</div>
                     <div class="ob-opt-text"><span class="ob-opt-label">5K</span><span class="ob-opt-desc">A great first
-                            race goal — 10–12 weeks</span></div>
+                            race goal — 8–12 weeks</span></div>
                 </div>
                 <div class="ob-option" onclick="selectOpt(this,'goal','10k')">
                     <div class="ob-opt-icon">📈</div>
                     <div class="ob-opt-text"><span class="ob-opt-label">10K</span><span class="ob-opt-desc">Step up the
-                            distance — 16–18 weeks</span></div>
+                            distance — 14–18 weeks</span></div>
                 </div>
                 <div class="ob-option" onclick="selectOpt(this,'goal','half')">
                     <div class="ob-opt-icon">🏅</div>
                     <div class="ob-opt-text"><span class="ob-opt-label">Half marathon</span><span
-                            class="ob-opt-desc">The big leap — 20 weeks</span></div>
-                </div>
-                <div class="ob-option" onclick="selectOpt(this,'goal','marathon')">
-                    <div class="ob-opt-icon">🏆</div>
-                    <div class="ob-opt-text"><span class="ob-opt-label">Full marathon</span><span
-                            class="ob-opt-desc">The ultimate challenge — 24 weeks</span></div>
+                            class="ob-opt-desc">The big leap — 18–20 weeks</span></div>
                 </div>
             </div>
             <div class="ob-nav"><span></span><button class="ob-btn ob-btn-next" onclick="nextStep()" id="next-0"
@@ -1676,8 +1671,50 @@
             </div>
         </div>
 
-        <!-- Step 6: Start date + review -->
+
+        <!-- Step 5b: Injuries -->
         <div class="ob-step" id="ob-step-5">
+            <p class="ob-q">Any injuries or niggles we should know about?</p>
+            <p class="ob-sub">We'll adjust the plan to protect you — fewer hard sessions, more walk/run, extra rest.
+                This is not medical advice; see a physio if you're in active pain.</p>
+            <div class="ob-options" id="injury-options">
+                <div class="ob-option" onclick="selectInjury(this,'none')">
+                    <div class="ob-opt-icon">✓</div>
+                    <div class="ob-opt-text"><span class="ob-opt-label">No injuries</span><span
+                            class="ob-opt-desc">Feeling good, ready to go</span></div>
+                </div>
+                <div class="ob-option" onclick="selectInjury(this,'knee')">
+                    <div class="ob-opt-icon">🦵</div>
+                    <div class="ob-opt-text"><span class="ob-opt-label">Knee (old or managed)</span><span
+                            class="ob-opt-desc">e.g. runner's knee, patellofemoral pain, ITB — not currently
+                            acute</span></div>
+                </div>
+                <div class="ob-option" onclick="selectInjury(this,'back')">
+                    <div class="ob-opt-icon">🔙</div>
+                    <div class="ob-opt-text"><span class="ob-opt-label">Lower back (old or managed)</span><span
+                            class="ob-opt-desc">History of back pain, not currently stopping you</span></div>
+                </div>
+                <div class="ob-option" onclick="selectInjury(this,'shin')">
+                    <div class="ob-opt-icon">⚡</div>
+                    <div class="ob-opt-text"><span class="ob-opt-label">Shin / foot / ankle</span><span
+                            class="ob-opt-desc">Shin splints, plantar fasciitis, or similar</span></div>
+                </div>
+                <div class="ob-option" onclick="selectInjury(this,'general')">
+                    <div class="ob-opt-icon">⚠</div>
+                    <div class="ob-opt-text"><span class="ob-opt-label">Other / returning from injury</span><span
+                            class="ob-opt-desc">Recently recovered or cautiously returning</span></div>
+                </div>
+            </div>
+            <div id="injury-warning"
+                style="display:none;margin-top:14px;padding:12px 14px;background:var(--skip-bg);border:1.5px solid var(--skip-border);border-radius:10px;font-size:13px;color:var(--skip-text);line-height:1.6">
+            </div>
+            <div class="ob-nav">
+                <button class="ob-btn ob-btn-back" onclick="prevStep()">← Back</button>
+                <button class="ob-btn ob-btn-next" onclick="nextStep()" id="next-5" disabled>Next →</button>
+            </div>
+        </div>
+        <!-- Step 7: Start date + review -->
+        <div class="ob-step" id="ob-step-6">
             <p class="ob-q">When do you want to start?</p>
             <p class="ob-sub">Pick the Monday you want your first week to begin.</p>
             <div class="ob-date-row">
@@ -1985,8 +2022,8 @@
 
         // ── Onboarding ────────────────────────────────────────────────────────────────
         let currentStep = 0;
-        const TOTAL_STEPS = 6;
-        const profile = { goal: null, level: null, daysPerWeek: 3, restDays: [], commitments: [], startDate: null };
+        const TOTAL_STEPS = 7;
+        const profile = { goal: null, level: null, daysPerWeek: 3, restDays: [], commitments: [], injury: 'none', startDate: null };
 
         function initOnboarding() {
             // Default start date = next Monday
@@ -2017,14 +2054,11 @@
         function buildRestDayGrid() {
             const grid = document.getElementById('rest-day-grid');
             grid.innerHTML = '';
-            const today = new Date();
             DAYS.forEach((d, i) => {
-                const dt = new Date(today);
-                dt.setDate(today.getDate() - today.getDay() + 1 + i);
                 const btn = document.createElement('div');
                 btn.className = 'ob-day-btn';
                 btn.id = `rday-${i}`;
-                btn.innerHTML = `<div class="ob-day-name">${d.slice(0, 3)}</div><div class="ob-day-num">${dt.getDate()}</div>`;
+                btn.textContent = d.slice(0, 3);
                 btn.onclick = () => toggleRestDay(i, btn);
                 grid.appendChild(btn);
             });
@@ -2080,6 +2114,29 @@
             if (nextBtn) { nextBtn.disabled = false; }
         }
 
+        const INJURY_WARNINGS = {
+            none: null,
+            knee: 'Your plan will avoid tempo runs early on, use walk/run intervals longer than usual, and keep easy runs truly easy. Strength sessions will focus on glutes and hips — the most important muscles for protecting your knee. If pain flares, skip that run and rest — do not push through.',
+            back: 'Your plan will start conservatively with shorter runs, avoid back-to-back running days, and include core-focused strength sessions. Yoga is especially important for you — hip flexor and hamstring mobility directly reduces lower back load during running. If your back talks to you after a run, take an extra rest day.',
+            shin: 'Your plan will increase volume very gradually (well within the 10% rule), emphasise soft surfaces, and include extra rest days between runs. No speed work until you are well established in the plan. Calf strength is key — the strength sessions are important for you.',
+            general: 'Your plan will take a cautious return-to-running approach — starting with walk/run intervals regardless of your fitness level, increasing volume slowly, and building in extra deload weeks. Stop if anything hurts more than a 3/10 and consult a physio.',
+        };
+
+        function selectInjury(el, val) {
+            document.querySelectorAll('#injury-options .ob-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            profile.injury = val;
+            const warning = document.getElementById('injury-warning');
+            if (INJURY_WARNINGS[val]) {
+                warning.textContent = INJURY_WARNINGS[val];
+                warning.style.display = 'block';
+            } else {
+                warning.style.display = 'none';
+            }
+            const nextBtn = document.getElementById('next-5');
+            if (nextBtn) nextBtn.disabled = false;
+        }
+
         function updateProgress() {
             for (let i = 0; i < TOTAL_STEPS; i++) {
                 const dot = document.getElementById(`dot-${i}`);
@@ -2103,9 +2160,9 @@
             updateProgress();
         }
 
-        const GOAL_NAMES = { fitness: 'General fitness', '5k': '5K', '10k': '10K', half: 'Half marathon', marathon: 'Full marathon' };
+        const GOAL_NAMES = { fitness: 'General fitness', '5k': '5K', '10k': '10K', half: 'Half marathon' };
         const LEVEL_NAMES = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' };
-        const WEEK_COUNTS = { fitness: 10, '5k': 12, '10k': 18, half: 20, marathon: 24 };
+        const WEEK_COUNTS = { fitness: 10, '5k': 12, '10k': 18, half: 20 };
 
         function updateSummary() {
             const rows = [
@@ -2113,10 +2170,16 @@
                 ['Fitness level', LEVEL_NAMES[profile.level] || '–'],
                 ['Active days', `${profile.daysPerWeek} per week`],
                 ['Rest days', profile.restDays.length ? profile.restDays.map(d => DAYS[d]).join(', ') : 'None set'],
+                ['Injury notes', profile.injury && profile.injury !== 'none' ? ({ knee: 'Knee (managed)', back: 'Lower back (managed)', shin: 'Shin/foot/ankle', general: 'Returning from injury' }[profile.injury] || 'None') : 'None'],
                 ['Fixed sessions', profile.commitments.length
                     ? profile.commitments.map(c => `${DAYS[c.day]}: ${c.label || 'Session'} (${c.intensity || 'moderate'})`).join(', ')
                     : 'None'],
-                ['Duration', `${WEEK_COUNTS[profile.goal] || 18} weeks`],
+                ['Duration', (() => {
+                    const wc = { fitness: { beginner: 10, intermediate: 10, advanced: 8 }, '5k': { beginner: 12, intermediate: 10, advanced: 8 }, '10k': { beginner: 18, intermediate: 16, advanced: 14 }, half: { beginner: 20, intermediate: 18, advanced: 16 } };
+                    const base = (wc[profile.goal] || wc['10k'])[profile.level] || 16;
+                    const bonus = (profile.injury && profile.injury !== 'none') ? (profile.goal === 'half' ? 4 : 2) : 0;
+                    return `${base + bonus} weeks${bonus ? ' (includes extra time for injury care)' : ''}`;
+                })()],
                 ['Starting', profile.startDate ? profile.startDate.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }) : '–'],
             ];
             document.getElementById('ob-summary-rows').innerHTML = rows.map(([l, v]) =>
@@ -2125,21 +2188,45 @@
         }
 
         // ── Plan generation engine ────────────────────────────────────────────────────
-        function generatePlan(p) {
-            const WEEK_COUNTS = { fitness: 10, '5k': 12, '10k': 18, half: 20, marathon: 24 };
-            const GOAL_LABELS = { fitness: 'Running Fitness', '5k': '5K', '10k': '10K', half: 'Half Marathon', marathon: 'Marathon' };
-            const totalWeeks = WEEK_COUNTS[p.goal] || 18;
-            const goalLabel = GOAL_LABELS[p.goal] || '10K';
+        // Evidence basis:
+        //  - 80/20 rule: ~80% easy effort, ~20% quality (Seiler, Maffetone, Hal Higdon)
+        //  - 10% rule: weekly volume increases ≤10% (Complete Physio, BJSM)
+        //  - Previous injury = #1 risk factor for re-injury (Physio-Pedia 2024)
+        //  - Strength training = most important injury prevention (Complete Physio)
+        //  - Deload every 3–4 weeks: drop volume 30–40% (Higdon, Hanson method)
+        //  - Walk/run: validated for beginners and injury return (Galloway, BWH Rehab)
+        //  - 1–2 run days: base aerobic only, no quality work until 3+ days
+        //  - Injury mods: conservative ramp, no tempo/intervals, extra rest, run/walk
 
-            // ── Day allocation ──────────────────────────────────────────────────────────
+        function generatePlan(p) {
+            const goal = p.goal || '10k';
+            const level = p.level || 'beginner';
+            const injury = p.injury || 'none';
+            const hasInjury = injury !== 'none';
+
+            // ── Plan length: goal × level × injury ──────────────────────────────────
+            // Injury adds 2–4 weeks to allow conservative ramp-up
+            const BASE_WEEKS = {
+                fitness: { beginner: 10, intermediate: 10, advanced: 8 },
+                '5k': { beginner: 12, intermediate: 10, advanced: 8 },
+                '10k': { beginner: 18, intermediate: 16, advanced: 14 },
+                half: { beginner: 20, intermediate: 18, advanced: 16 },
+            };
+            const injuryWeekBonus = hasInjury ? (goal === 'half' ? 4 : 2) : 0;
+            const totalWeeks = ((BASE_WEEKS[goal] || BASE_WEEKS['10k'])[level] || 16) + injuryWeekBonus;
+
+            const GOAL_LABELS = { fitness: 'Running Fitness', '5k': '5K', '10k': '10K', half: 'Half Marathon' };
+            const goalLabel = GOAL_LABELS[goal] || '10K';
+
+            // ── Day allocation ────────────────────────────────────────────────────────
             const restDays = new Set(p.restDays || []);
-            const commitMap = {};  // day -> { label, intensity }
+            const commitMap = {};
             (p.commitments || []).forEach(c => {
                 commitMap[c.day] = { label: c.label || 'Session', intensity: c.intensity || 'moderate' };
             });
             const commitDays = new Set(Object.keys(commitMap).map(Number));
 
-            // Scheduling rule: don't put a hard or moderate run the day before a hard/moderate commitment
+            // Protect day before any moderate/hard fixed commitment
             const protectedCommitDays = new Set(
                 Object.entries(commitMap)
                     .filter(([, v]) => v.intensity === 'hard' || v.intensity === 'moderate')
@@ -2147,92 +2234,187 @@
             );
             const noHardBefore = new Set([...protectedCommitDays].map(d => (d + 6) % 7));
 
-            // Build candidate active days in preferred order (avoid known rest + hard-before days for runs)
             const preferred = [0, 1, 3, 4, 2, 5, 6]; // Mon Tue Thu Fri Wed Sat Sun
             const active = preferred.filter(d => !restDays.has(d) && !commitDays.has(d));
-            const runCands = active.sort((a, b) => (noHardBefore.has(a) ? 1 : 0) - (noHardBefore.has(b) ? 1 : 0));
+            const runCands = [...active].sort((a, b) => (noHardBefore.has(a) ? 1 : 0) - (noHardBefore.has(b) ? 1 : 0));
 
-            const daysPerWeek = p.daysPerWeek || 4;
-            const numRuns = Math.min(3, daysPerWeek - Math.min(commitDays.size, 1));
+            // ── Run days: directly from questionnaire answer ─────────────────────────
+            // Injury caps runs at 3 regardless of choice — never do back-to-back with injury
+            const requestedRuns = parseInt(p.daysPerWeek) || 3;
+            const maxRuns = hasInjury ? Math.min(requestedRuns, 3)
+                : (goal === 'half' && level !== 'beginner') ? Math.min(requestedRuns, 4)
+                    : Math.min(requestedRuns, 4);
+            const numRuns = Math.max(1, Math.min(maxRuns, runCands.length));
             const runDays = runCands.slice(0, numRuns).sort((a, b) => a - b);
-            const longRunDay = runDays[runDays.length - 1];
-            const tempoDay = runDays.length >= 2 ? runDays[1] : runDays[0];
 
-            // Support slots (non-run, non-committed, non-rest)
-            const supportCands = active.filter(d => !runDays.includes(d));
+            // With injury, ensure no back-to-back run days
+            const safeRunDays = hasInjury ? ensureRestBetweenRuns(runDays) : runDays;
+
+            const longRunDay = safeRunDays[safeRunDays.length - 1];
+            const tempoDay = safeRunDays.length >= 2 ? safeRunDays[Math.floor(safeRunDays.length / 2)] : safeRunDays[0];
+
+            const supportCands = active.filter(d => !safeRunDays.includes(d));
             const pilatesDay = supportCands[0] ?? null;
             const strengthDay = supportCands[1] ?? null;
+            const phases = buildPhaseLabels(goal, totalWeeks);
 
-            // ── Phase labels ────────────────────────────────────────────────────────────
-            const phases = buildPhaseLabels(p.goal, totalWeeks);
+            // ── Training parameters: level + injury ──────────────────────────────────
+            // Walk/run phase: injury forces this even for advanced runners
+            const walkRunWeeksByLevel = {
+                beginner: Math.round(totalWeeks * 0.30),
+                intermediate: Math.round(totalWeeks * 0.12),
+                advanced: 0,
+            };
+            const walkRunWeeks = hasInjury
+                ? Math.max(walkRunWeeksByLevel[level], Math.round(totalWeeks * 0.20)) // minimum 20% walk/run if injured
+                : walkRunWeeksByLevel[level];
 
-            // ── Week-by-week schedule ───────────────────────────────────────────────────
+            // Easy run starting duration after walk/run phase
+            const easyStartMin = hasInjury
+                ? { beginner: 10, intermediate: 15, advanced: 20 }[level]
+                : { beginner: 12, intermediate: 22, advanced: 32 }[level];
+
+            // Peak durations (long run and easy). With injury, cap peaks lower.
+            const LONG_PEAKS = { fitness: 40, '5k': 42, '10k': 65, half: 110 };
+            const injuryPeakFactor = hasInjury ? 0.75 : 1.0;
+            const longPeakMin = Math.round((LONG_PEAKS[goal] || 60) * injuryPeakFactor);
+            const easyPeakMin = Math.round(longPeakMin * 0.60);
+
+            // Quality work (tempo, intervals): disabled entirely for injury, delayed for beginners
+            // 80/20 rule: only 1 quality session per week, only when ≥3 run days
+            const canDoQuality = !hasInjury && safeRunDays.length >= 3;
+            const tempoStartWk = canDoQuality
+                ? walkRunWeeks + ({ beginner: 4, intermediate: 2, advanced: 1 }[level])
+                : Infinity; // never
+
+            // Intervals: only half/advanced 10K, second half of plan, injury-free
+            const hasIntervals = canDoQuality && (goal === 'half' || (goal === '10k' && level === 'advanced'));
+            const intervalStartWk = Math.round(totalWeeks * 0.55);
+
+            // Strength frequency: injury runners benefit most — prioritise it
+            const strengthWks = hasInjury
+                ? [2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21] // every 2 weeks
+                : level === 'advanced' ? [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]
+                    : level === 'intermediate' ? [3, 6, 9, 12, 15, 18, 21]
+                        : [4, 8, 12, 16, 20];
+
+            // Session-level injury notes for the card
+            const INJURY_NOTES = {
+                knee: 'Keep easy — stop if knee pain above 3/10',
+                back: 'Keep core braced — stop if back tightens',
+                shin: 'Soft surface preferred — listen to shins',
+                general: 'Conservative effort — stop if anything hurts',
+            };
+            const injuryNote = INJURY_NOTES[injury] || null;
+
+            // ── Week-by-week schedule ─────────────────────────────────────────────────
             const schedule = {};
-            const walkRunWeeks = p.level === 'beginner' ? Math.round(totalWeeks * 0.28) : p.level === 'intermediate' ? Math.round(totalWeeks * 0.15) : 0;
-            const startPeakMin = { beginner: 10, intermediate: 18, advanced: 28 }[p.level] || 10;
-            const peakMin = { fitness: 40, '5k': 35, '10k': 60, half: 90, marathon: 130 }[p.goal] || 60;
 
             for (let w = 1; w <= totalWeeks; w++) {
-                const isDeload = w % 4 === 0;
+                // Deload every 3 weeks for injured runners, every 4 for healthy
+                const deloadCycle = hasInjury ? 3 : 4;
+                const isDeload = w % deloadCycle === 0;
                 const isRaceWk = w === totalWeeks;
-                const deload = isDeload ? 0.6 : 1.0;
+                // Taper: last 2 weeks for half, last 1 week for others
+                const taperStart = goal === 'half' ? totalWeeks - 2 : totalWeeks - 1;
+                const isTaperWk = !isRaceWk && w >= taperStart;
+                const deload = isDeload ? 0.65 : 1.0;
+                const taper = isTaperWk ? 0.70 : 1.0;
                 const sessions = [];
 
-                // Run sessions
-                runDays.forEach(day => {
+                safeRunDays.forEach(day => {
                     const isLong = day === longRunDay;
-                    const isTempo = !isDeload && !isRaceWk && day === tempoDay && w > walkRunWeeks + 2;
+                    const isTempo = canDoQuality && !isDeload && !isRaceWk && !isTaperWk && day === tempoDay && w >= tempoStartWk && !(hasIntervals && w >= intervalStartWk);
+                    const isInterv = hasIntervals && !isDeload && !isRaceWk && !isTaperWk && day === tempoDay && w >= intervalStartWk;
 
                     if (isRaceWk && isLong) {
-                        const raceLabel = { fitness: 'Parkrun!', '5k': '5K — race day!', '10k': '10K — race day!', half: 'Half marathon — race day!', marathon: 'Marathon — race day!' }[p.goal] || 'Race day!';
-                        sessions.push({ day, type: 'run', label: raceLabel, duration: null });
+                        const raceLabel = { fitness: 'Parkrun — go for it!', '5k': '5K — race day!', '10k': '10K — race day!', half: 'Half marathon — race day!' }[goal] || 'Race day!';
+                        sessions.push({ day, type: 'run', label: raceLabel, duration: null, injuryNote });
+
                     } else if (w <= walkRunWeeks) {
+                        // Walk/run intervals — Galloway method, ratio improves each week
                         const prog = w / walkRunWeeks;
-                        const runM = Math.max(1, Math.round(1 + prog * 3));
+                        // Beginner/injury: start 1:3 → build to 5:1. Intermediate: 2:2 → 7:1
+                        const runM = hasInjury
+                            ? Math.max(1, Math.round(1 + prog * 4))       // 1→5 min (cautious)
+                            : level === 'beginner'
+                                ? Math.max(1, Math.round(1 + prog * 4))        // 1→5 min
+                                : Math.max(2, Math.round(2 + prog * 5));        // 2→7 min (intermediate)
                         const wlkM = Math.max(1, Math.round(3 - prog * 2));
                         const reps = isLong ? Math.round(4 + prog * 4) : Math.round(3 + prog * 3);
-                        const dur = Math.round(Math.min((runM + wlkM) * reps * deload, 40));
-                        sessions.push({ day, type: 'run', label: `Run ${runM} min / walk ${wlkM} min ×${reps}`, duration: dur });
+                        const dur = Math.round(Math.min((runM + wlkM) * reps * deload, hasInjury ? 35 : 45));
+                        const noteStr = injuryNote ? ` · ${injuryNote}` : '';
+                        sessions.push({ day, type: 'run', label: `Run ${runM} min / walk ${wlkM} min ×${reps}${noteStr}`, duration: dur });
+
                     } else {
-                        const prog = (w - 1) / (totalWeeks - 1);
-                        const base = Math.round(startPeakMin + prog * (peakMin - startPeakMin));
-                        const raw = isLong ? Math.round(base * 1.3) : isTempo ? Math.round(base * 0.85) : base;
-                        const dur = Math.round(Math.min(raw * deload * (isRaceWk ? 0.5 : 1), peakMin));
-                        const label = isRaceWk ? `Easy shakeout ${dur} min` : isDeload ? `${dur} min easy — deload` : isLong ? `${dur} min easy — long run` : isTempo ? `${dur} min tempo` : `${dur} min easy`;
+                        // Continuous running — linear progression from start to peak
+                        const contProg = Math.min(1, (w - walkRunWeeks - 1) / Math.max(1, totalWeeks - walkRunWeeks - 3));
+                        const easyBase = Math.round(easyStartMin + contProg * (easyPeakMin - easyStartMin));
+                        const longBase = Math.round(easyStartMin + contProg * (longPeakMin - easyStartMin));
+
+                        let dur, label;
+                        if (isRaceWk) {
+                            dur = Math.round(easyBase * 0.5);
+                            label = `Easy shakeout ${dur} min`;
+                        } else if (isTaperWk && isLong) {
+                            dur = Math.round(longBase * taper);
+                            label = `${dur} min easy — taper long run`;
+                        } else if (isTaperWk) {
+                            dur = Math.round(easyBase * taper);
+                            label = `${dur} min easy — taper`;
+                        } else if (isInterv) {
+                            const repDur = level === 'advanced' ? 3 : 2;
+                            const reps = level === 'advanced' ? 8 : 6;
+                            dur = 10 + repDur * reps + 10;
+                            label = `Intervals: ${reps}×${repDur} min fast`;
+                        } else if (isTempo) {
+                            dur = Math.round(easyBase * 0.9 * deload);
+                            label = isDeload ? `${dur} min easy — deload` : `${dur} min tempo`;
+                        } else if (isLong) {
+                            dur = Math.round(longBase * deload);
+                            label = isDeload ? `${dur} min easy — deload` : `${dur} min — long run`;
+                        } else {
+                            dur = Math.round(easyBase * deload);
+                            label = isDeload ? `${dur} min easy — deload` : `${dur} min easy`;
+                        }
+                        if (injuryNote && !isRaceWk) label += ` · ${injuryNote}`;
                         if (dur >= 8) sessions.push({ day, type: 'run', label, duration: dur });
                     }
-                    // Yoga as evening add-on on run days (not deload/race)
+
+                    // Yoga: evening add-on on run days (not deload or race week)
                     if (!isDeload && !isRaceWk) sessions.push({ day, type: 'yoga', label: 'Yoga — evening stretch' });
                 });
 
-                // Fixed commitments — stored with type:'fixed' + intensity for card colour
+                // Fixed commitments
                 Object.entries(commitMap).forEach(([dayStr, info]) => {
-                    const suffix = isDeload ? ' (easy today)' : '';
-                    sessions.push({ day: Number(dayStr), type: 'fixed', label: info.label + suffix, intensity: info.intensity, isFixed: true });
+                    sessions.push({ day: Number(dayStr), type: 'fixed', label: info.label + (isDeload ? ' (easy today)' : ''), intensity: info.intensity, isFixed: true });
                 });
 
-                // Pilates slot — only add if no moderate/hard fixed commitment already fills a support day
-                const hardFixedDays = new Set(
-                    Object.entries(commitMap).filter(([, v]) => v.intensity !== 'easy').map(([d]) => Number(d))
-                );
-                if (pilatesDay !== null && !hardFixedDays.has(pilatesDay) && !isDeload && !isRaceWk) {
-                    sessions.push({ day: pilatesDay, type: 'pilates', label: 'Weighted pilates' });
-                }
-
-                // Strength (select weeks only) — skip if a hard fixed commitment already on that day
-                if (strengthDay !== null && !hardFixedDays.has(strengthDay) && !isDeload && !isRaceWk && daysPerWeek >= 4) {
-                    if ([3, 6, 9, 12, 15, 17].some(sw => Math.abs(w - sw) <= 1)) {
-                        sessions.push({ day: strengthDay, type: 'strength', label: 'Strength & conditioning 20 min' });
+                // Pilates (injury runners: always include if slot available — core stability is key)
+                const hardFixedDays = new Set(Object.entries(commitMap).filter(([, v]) => v.intensity !== 'easy').map(([d]) => Number(d)));
+                if (pilatesDay !== null && !hardFixedDays.has(pilatesDay) && !isRaceWk) {
+                    // Include on deload weeks too for injured runners (it's protective, not taxing)
+                    if (!isDeload || hasInjury) {
+                        sessions.push({ day: pilatesDay, type: 'pilates', label: hasInjury ? 'Pilates — core & hip stability' : 'Weighted pilates' });
                     }
                 }
 
-                // Deload yoga day
+                // Strength
+                if (strengthDay !== null && !hardFixedDays.has(strengthDay) && !isRaceWk && !isDeload) {
+                    if (strengthWks.includes(w)) {
+                        const strengthLabel = hasInjury
+                            ? 'Glute & hip strength — injury prevention'
+                            : 'Strength & conditioning 20 min';
+                        sessions.push({ day: strengthDay, type: 'strength', label: strengthLabel });
+                    }
+                }
+
+                // Deload yoga
                 if (isDeload) {
-                    const yogaDay = active.find(d => !runDays.includes(d) && !commitDays.has(d));
+                    const yogaDay = active.find(d => !safeRunDays.includes(d) && !commitDays.has(d));
                     if (yogaDay != null) sessions.push({ day: yogaDay, type: 'yoga', label: 'Yoga — gentle recovery' });
                 }
 
-                // Sort by day, yoga after other sessions on same day
                 sessions.sort((a, b) => a.day - b.day || (a.type === 'yoga' ? 1 : -1));
                 schedule[String(w)] = sessions;
             }
@@ -2240,22 +2422,30 @@
             return {
                 schedule,
                 config: {
-                    goalLabel,
-                    goal: p.goal,
-                    level: p.level,
-                    totalWeeks,
-                    startDate: p.startDate ? p.startDate.toISOString() : new Date().toISOString(),
-                    phases,
+                    goalLabel, goal, level, injury, totalWeeks,
+                    startDate: p.startDate instanceof Date ? p.startDate.toISOString() : p.startDate,
+                    phases
                 }
             };
         }
 
+        // Ensure no back-to-back run days (important for injury prevention)
+        function ensureRestBetweenRuns(days) {
+            if (days.length <= 1) return days;
+            const result = [days[0]];
+            for (let i = 1; i < days.length; i++) {
+                if (days[i] - result[result.length - 1] > 1) {
+                    result.push(days[i]);
+                }
+                // If back-to-back, skip this day (it won't be scheduled)
+            }
+            return result;
+        }
         function buildPhaseLabels(goal, totalWeeks) {
             const g = goal;
             if (g === '5k') return [{ max: Math.round(totalWeeks * .35), label: 'Phase 1 — Build base' }, { max: Math.round(totalWeeks * .7), label: 'Phase 2 — Build endurance' }, { max: totalWeeks, label: 'Phase 3 — 5K ready' }];
             if (g === '10k') return [{ max: Math.round(totalWeeks * .28), label: 'Phase 1 — Return to running' }, { max: Math.round(totalWeeks * .55), label: 'Phase 2 — Build base' }, { max: Math.round(totalWeeks * .85), label: 'Phase 3 — 5K ready' }, { max: totalWeeks, label: 'Phase 4 — 10K build' }];
             if (g === 'half') return [{ max: Math.round(totalWeeks * .2), label: 'Phase 1 — Foundation' }, { max: Math.round(totalWeeks * .45), label: 'Phase 2 — Aerobic base' }, { max: Math.round(totalWeeks * .7), label: 'Phase 3 — Endurance' }, { max: Math.round(totalWeeks * .9), label: 'Phase 4 — Race prep' }, { max: totalWeeks, label: 'Phase 5 — Taper' }];
-            if (g === 'marathon') return [{ max: Math.round(totalWeeks * .15), label: 'Phase 1 — Base' }, { max: Math.round(totalWeeks * .38), label: 'Phase 2 — Aerobic build' }, { max: Math.round(totalWeeks * .6), label: 'Phase 3 — Endurance' }, { max: Math.round(totalWeeks * .8), label: 'Phase 4 — Peak' }, { max: Math.round(totalWeeks * .92), label: 'Phase 5 — Race prep' }, { max: totalWeeks, label: 'Phase 6 — Taper' }];
             return [{ max: Math.round(totalWeeks * .4), label: 'Phase 1 — Getting started' }, { max: totalWeeks, label: 'Phase 2 — Building fitness' }];
         }
 
@@ -2297,7 +2487,7 @@
             document.getElementById('tracker').style.display = 'none';
             document.getElementById('onboarding').style.display = 'block';
             currentStep = 0;
-            Object.assign(profile, { goal: null, level: null, daysPerWeek: 3, restDays: [], commitments: [], startDate: null });
+            Object.assign(profile, { goal: null, level: null, daysPerWeek: 3, restDays: [], commitments: [], injury: 'none', startDate: null });
             SCHEDULE = {}; CONFIG = {}; sessionState = {}; skipReasons = {}; rescheduled = {}; log = []; week = 1;
             document.querySelectorAll('.ob-step').forEach((s, i) => { s.classList.toggle('visible', i === 0); });
             document.querySelectorAll('.ob-option').forEach(o => o.classList.remove('selected'));
